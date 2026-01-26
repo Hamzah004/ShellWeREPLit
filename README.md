@@ -1,0 +1,1 @@
+a custom, lightweight Unix shell interpreter developed in C, designed to emulate core bash functionality. This project covers essential command-line interface concepts, including prompt display, command execution, parsing, signal handling, and pipeline/redirection management. It serves as a comprehensive introduction to process management and low-level system calls.
