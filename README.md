@@ -1,1 +1,9 @@
 a custom, lightweight Unix shell interpreter developed in C, designed to emulate core bash functionality. This project covers essential command-line interface concepts, including prompt display, command execution, parsing, signal handling, and pipeline/redirection management. It serves as a comprehensive introduction to process management and low-level system calls.
+
+## Resources
+
+[BEHIND THE SCENES: What happens when you execute a command in the shell?](https://medium.com/@SergioPietri/behind-the-scenes-what-happens-when-you-execute-a-command-in-the-shell-9fef53832f6a)
+
+[Medium Building a mini-bash](https://m4nnb3ll.medium.com/minishell-building-a-mini-bash-a-42-project-b55a10598218)
+
+[Building a Parser from scratch](https://www.youtube.com/watch?v=4m7ubrdbWQU&t=38s)
