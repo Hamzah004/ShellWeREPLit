@@ -34,12 +34,6 @@ void free_tokens(t_tokens *head)
 	}
 }
 
-int	special_character(char character)
-{
-	return (character == '|' || character == '<' || character == '>'
-		|| character == '\'' || character == '\"' || character == '-');
-}
-
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
@@ -52,6 +46,43 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
+char *remove_spaces(char *str)
+{
+	int start;
+	int end;
+	int i;
+	char *new;
+
+	start = 0;
+	i = 0;
+	if (!str)
+		return (NULL);
+	while (str[start] == ' ')
+		start++;
+	if (str[start] == '\0')
+		return ft_strdup("");
+	end = ft_strlen(str) - 1;
+	while (end > start && str[end] == ' ')
+		end--;
+	new = malloc((end - start) + 2);
+	if (!new)
+		return (NULL);
+	while (i < (end - start) + 1)
+	{
+		new[i] = str[start + i];
+		i++;
+	}
+	new[i] = '\0';
+	return (new);
+}
+
+
+int	special_character(char character)
+{
+	return (character == '|' || character == '<' || character == '>'
+		|| character == '\'' || character == '\"' || character == '-');
+}
+
 t_tokens *new_token(t_token_type type, char *value)
 {
 	t_tokens *token;
@@ -60,7 +91,12 @@ t_tokens *new_token(t_token_type type, char *value)
 	if (!token)
 		return NULL;
 	token->type = type;
-	token->value = value;
+	token->value = ft_strdup(value);
+	if (!token->value)
+	{
+		free(token);
+		return NULL;
+	}
 	token->next = NULL;
 	return (token);
 }
@@ -68,32 +104,41 @@ t_tokens *new_token(t_token_type type, char *value)
 t_token_type set_token_type(char *str)
 {
 	if (!str)
-		return TOK_WORD;
+		return (TOK_WORD);
 	if (ft_strcmp(str, "|") == 0)
-		return TOK_PIPE;
+		return (TOK_PIPE);
 	if (ft_strcmp(str, "<") == 0)
-		return TOK_REDIR_IN;
+		return (TOK_REDIR_IN);
 	if (ft_strcmp(str, ">") == 0)
-		return TOK_REDIR_OUT;
+		return (TOK_REDIR_OUT);
 	if (ft_strcmp(str, ">>") == 0)
-	return TOK_APPEND;
+	return (TOK_APPEND);
 	if (ft_strcmp(str, "<<") == 0)
-		return TOK_HEREDOC;
+		return (TOK_HEREDOC);
+	if (ft_strcmp(str, "\"") == 0)
+		return (TOK_DOUBLE_QUOTE);
+	if (ft_strcmp(str, "\'") == 0)
+		return 	(TOK_SINGLE_QUOTE);
 	return TOK_WORD;
 }
 
 void	add_token(char *str, t_tokens **tokens)
 {
-	t_tokens	*new;
-	t_tokens	*tmp;
+	t_tokens		*new;
+	t_tokens		*tmp;
+	char			*str_no_space;
 	t_token_type	type;
 
-	type = set_token_type(str);
-	new = new_token(type, str);
+	if (!str || ft_strcmp(str, " ") == 0 || !str[0])
+		return ;
+	str_no_space = remove_spaces(str);
+	type = set_token_type(str_no_space);
+	new = new_token(type, str_no_space);
 	if (!*tokens)
 	{
+		// TODO free the things
 		*tokens = new;
-		return;
+		return ;
 	}
 	tmp = *tokens;
 	while (tmp->next)
@@ -141,21 +186,20 @@ void	token_analyser(char *command, t_tokens *my_tokens)
 	token = calloc(1, sizeof(char));
 	while (command[i])
 	{
-		if ( !special_character(command[i]))
+		if (!special_character(command[i]))
 			token = append_char (token, command[i]);
 		else
 		{
 			add_token(token, &my_tokens);
-			printf("%s\n", token);
 			token = free_realloc(token);
 			token = append_char (token, command[i]);
 			add_token(token, &my_tokens);
-			printf("%s\n", token);
 			if (command[i] != '-')
 				token = free_realloc(token);
 		}
 		i++;
 	}
+	add_token(token, &my_tokens);
 }
 
 t_tokens	*init_tokens(void)
@@ -165,19 +209,49 @@ t_tokens	*init_tokens(void)
 	token = malloc(sizeof(t_tokens));
 	if (!token)
 		return NULL;
-
 	token->type = TOK_WORD;
 	token->value = NULL;
 	token->next = NULL;
-
 	return (token);
 }
+
+void print_tokens(t_tokens *head)
+{
+	t_tokens *tmp = head;
+
+	while (tmp)
+	{
+		printf("Token: \"%s\"  |  Type: ", tmp->value);
+		if (tmp->type == TOK_WORD)
+			printf("WORD");
+		else if (tmp->type == TOK_PIPE)
+			printf("PIPE");
+		else if (tmp->type == TOK_REDIR_IN)
+			printf("REDIR_IN");
+		else if (tmp->type == TOK_REDIR_OUT)
+			printf("REDIR_OUT");
+		else if (tmp->type == TOK_APPEND)
+			printf("APPEND");
+		else if (tmp->type == TOK_HEREDOC)
+			printf("HEREDOC");
+		else if (tmp->type == TOK_SINGLE_QUOTE)
+			printf("SINGLE QUOTE");
+		else if (tmp->type == TOK_DOUBLE_QUOTE)
+			printf("DOUBLE QUOTE");
+		else
+			printf("UNKNOWN");
+		printf("\n");
+		tmp = tmp->next;
+	}
+}
+
 int	main()
 {
 	t_tokens	*my_tokens;
 
-	char *input = "ls -la | grep a > infile.txt";
+	char *input = "ls -la | < grep a >> \"$HOME\" infile.txt";
 
 	my_tokens = init_tokens();
 	token_analyser(input, my_tokens);
+	print_tokens(my_tokens);
 }
