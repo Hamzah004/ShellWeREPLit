@@ -1,227 +1,136 @@
-#include <unistd.h>
-#include <stdio.h>
-#include "./libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/11 16:20:29 by amufleh           #+#    #+#             */
+/*   Updated: 2026/02/11 16:20:29 by amufleh          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-typedef enum
-{
-	TOK_WORD,
-	TOK_PIPE,
-	TOK_REDIR_IN,
-	TOK_REDIR_OUT,
-	TOK_APPEND,
-	TOK_HEREDOC,
-	TOK_SINGLE_QUOTE,
-	TOK_DOUBLE_QUOTE
-}	t_token_type;
+#include "tokenizer.h"
 
-typedef struct s_token
-{
-	t_token_type	type;
-	char			*value;
-	struct s_token	*next;
-}	t_tokens;
-
-void free_tokens(t_tokens *head)
+void	free_tokens(t_tokens *head)
 {
 	t_tokens *tmp;
 
 	while (head)
 	{
-		tmp = head;
-		head = head->next;
-		free(tmp->value);
-		free(tmp);
+		tmp = head->next;
+		free(head->value);
+		free(head);
+		head = tmp;
 	}
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	int	i;
-
-	i = 0;
-	if (!s1 || !s2)
-		return (1);
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
-
-char *remove_spaces(char *str)
-{
-	int start;
-	int end;
-	int i;
-	char *new;
-
-	start = 0;
-	i = 0;
-	if (!str)
-		return (NULL);
-	while (str[start] == ' ')
-		start++;
-	if (str[start] == '\0')
-		return ft_strdup("");
-	end = ft_strlen(str) - 1;
-	while (end > start && str[end] == ' ')
-		end--;
-	new = malloc((end - start) + 2);
-	if (!new)
-		return (NULL);
-	while (i < (end - start) + 1)
-	{
-		new[i] = str[start + i];
-		i++;
-	}
-	new[i] = '\0';
-	return (new);
-}
-
-
-int	special_character(char character)
-{
-	return (character == '|' || character == '<' || character == '>'
-		|| character == '\'' || character == '\"' || character == '-');
-}
-
-t_tokens *new_token(t_token_type type, char *value)
-{
-	t_tokens *token;
-
-	token = malloc(sizeof(t_tokens));
-	if (!token)
-		return NULL;
-	token->type = type;
-	token->value = ft_strdup(value);
-	if (!token->value)
-	{
-		free(token);
-		return NULL;
-	}
-	token->next = NULL;
-	return (token);
-}
-
-t_token_type set_token_type(char *str)
-{
-	if (!str)
-		return (TOK_WORD);
-	if (ft_strcmp(str, "|") == 0)
-		return (TOK_PIPE);
-	if (ft_strcmp(str, "<") == 0)
-		return (TOK_REDIR_IN);
-	if (ft_strcmp(str, ">") == 0)
-		return (TOK_REDIR_OUT);
-	if (ft_strcmp(str, ">>") == 0)
-	return (TOK_APPEND);
-	if (ft_strcmp(str, "<<") == 0)
-		return (TOK_HEREDOC);
-	if (ft_strcmp(str, "\"") == 0)
-		return (TOK_DOUBLE_QUOTE);
-	if (ft_strcmp(str, "\'") == 0)
-		return 	(TOK_SINGLE_QUOTE);
-	return TOK_WORD;
-}
-
-void	add_token(char *str, t_tokens **tokens)
+int	add_token(t_tokens **tokens, char *value)
 {
 	t_tokens		*new;
 	t_tokens		*tmp;
-	char			*str_no_space;
 	t_token_type	type;
 
-	if (!str || ft_strcmp(str, " ") == 0 || !str[0])
-		return ;
-	str_no_space = remove_spaces(str);
-	type = set_token_type(str_no_space);
-	new = new_token(type, str_no_space);
+	type = set_token_type(value);
+	new = new_token(value, type);
+	if (!new)
+		return (0);
 	if (!*tokens)
-	{
-		// TODO free the things
 		*tokens = new;
-		return ;
+	else
+	{
+		tmp = *tokens;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
 	}
-	tmp = *tokens;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
+	return (1);
 }
 
-char	*free_realloc(char *token)
+int	extract_tokin(t_tokens **my_tokens, char *command, int start, int end)
 {
-	free(token);
-	token = calloc(1, sizeof(char));
+	char	*token;
+
+	token = ft_substr(command, start, end);
 	if (!token)
-	{
-		//TODO add fun to free
-		return (NULL);
-	}
-	return (token);
+		return (0);
+	if (!add_token(my_tokens, token))
+		return (0);
+	return (1);
 }
 
-char	*append_char (char *str, char c)
+int	handel_operators(t_tokens **my_tokens, char *command, int *i)
 {
-	int		size;
+	if ((command[*i] == '<' && command[*i + 1] == '<')
+	|| (command[*i] == '>' && command[*i + 1] == '>'))
+	{
+		if (!extract_tokin(my_tokens, command, *i, 2))
+			return (0);
+		*i += 2;
+	}
+	else
+	{
+		if (!extract_tokin(my_tokens, command, *i, 1))
+			return (0);
+		*i += 1;
+	}
+	return (1);
+}
+
+int	handle_word(t_tokens **my_tokens, char *command, int *i)
+{
+	int	start;
+
+	start = *i;
+	while (command[*i] && !is_separator(command[*i]))
+	{
+		if (command[*i] == '\'' || command[*i] == '\"')
+		{
+			char quote = command[(*i)++];
+			while (command[*i] && command[*i] != quote)
+				(*i)++;
+		}
+		if (command[*i])
+			(*i)++;
+	}
+	if (!extract_tokin(my_tokens, command, start, *i - start))
+		return 0;
+	return (1);
+}
+
+int	token_analyser(char *command, t_tokens **my_tokens)
+{
 	int		i;
-	char	*tmp;
+	int		start;
+	char	*token;
+	char	quote;
 
 	i = 0;
-	size = ft_strlen(str);
-	tmp = realloc(str, size + 2);
-	while (str[i])
-	{
-		tmp[i] = str[i];
-		i++;
-	}
-	tmp[i] = c;
-	tmp[i + 1] = '\0';
-	return (tmp);
-}
-
-void	token_analyser(char *command, t_tokens *my_tokens)
-{
-	int			i;
-	char		*token;
-
-	i = 0;
-	token = calloc(1, sizeof(char));
+	if (!command)
+		return (0);
 	while (command[i])
 	{
-		if (!special_character(command[i]))
-			token = append_char (token, command[i]);
-		else
+		if (command[i] == ' ' || command[i] == '\t')
 		{
-			add_token(token, &my_tokens);
-			token = free_realloc(token);
-			token = append_char (token, command[i]);
-			add_token(token, &my_tokens);
-			if (command[i] != '-')
-				token = free_realloc(token);
+			i++;
+			continue;
 		}
-		i++;
+		if (is_operator(command[i]))
+			if (!handel_operators(my_tokens, command, &i))
+				return (0);
+		else
+			if (!handle_word(my_tokens, command, &i))
+				return (0);
 	}
-	add_token(token, &my_tokens);
+	return (1);
 }
 
-t_tokens	*init_tokens(void)
-{
-	t_tokens *token;
-
-	token = malloc(sizeof(t_tokens));
-	if (!token)
-		return NULL;
-	token->type = TOK_WORD;
-	token->value = NULL;
-	token->next = NULL;
-	return (token);
-}
-
-void print_tokens(t_tokens *head)
+void	print_tokens(t_tokens *head)
 {
 	t_tokens *tmp = head;
-
-	while (tmp)
+ 	while (tmp)
 	{
-		printf("Token: \"%s\"  |  Type: ", tmp->value);
+		printf("Token: [%s]  ", tmp->value);
 		if (tmp->type == TOK_WORD)
 			printf("WORD");
 		else if (tmp->type == TOK_PIPE)
@@ -234,10 +143,6 @@ void print_tokens(t_tokens *head)
 			printf("APPEND");
 		else if (tmp->type == TOK_HEREDOC)
 			printf("HEREDOC");
-		else if (tmp->type == TOK_SINGLE_QUOTE)
-			printf("SINGLE QUOTE");
-		else if (tmp->type == TOK_DOUBLE_QUOTE)
-			printf("DOUBLE QUOTE");
 		else
 			printf("UNKNOWN");
 		printf("\n");
@@ -245,13 +150,12 @@ void print_tokens(t_tokens *head)
 	}
 }
 
-int	main()
+int main()
 {
-	t_tokens	*my_tokens;
+	t_tokens *my_tokens = NULL;
 
-	char *input = "ls -la | < grep a >> \"$HOME\" infile.txt";
-
-	my_tokens = init_tokens();
-	token_analyser(input, my_tokens);
+	char *input = "<< \'l\'s -la | < grep a >> \"\'$HOME\'\" infile.txt echo \"abdallah\" -n";
+	token_analyser(input, &my_tokens);
 	print_tokens(my_tokens);
+	return (0);
 }
