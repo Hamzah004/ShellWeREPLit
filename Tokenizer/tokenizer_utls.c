@@ -6,23 +6,24 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:20:22 by amufleh           #+#    #+#             */
-/*   Updated: 2026/02/11 16:27:09 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/02/12 10:01:45 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 
-
-int	ft_strcmp(const char *s1, const char *s2)
+int	free_tokens(t_tokens *head)
 {
-	int i;
+	t_tokens	*tmp;
 
-	i = 0;
-	if (!s1 || !s2)
-		return (1);
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	while (head)
+	{
+		tmp = head->next;
+		free(head->value);
+		free(head);
+		head = tmp;
+	}
+	return (0);
 }
 
 int	is_separator(char c)
