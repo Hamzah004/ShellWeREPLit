@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:25:30 by amufleh           #+#    #+#             */
-/*   Updated: 2026/02/12 10:01:52 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/02/14 13:44:05 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,27 @@ typedef enum token_type
 	TOK_HEREDOC,
 }	t_token_type;
 
+// typedef struct s_redic
+// {
+// 	char *name;
+// 	enum type;
+// } t_redic;
+
+// typedef struct s_command_info
+// {
+// 	char *command;
+// 	char **args;
+// 	t_redic input;
+// 	t_redic output;
+
+// } t_command_info;
+
 typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
 	struct s_token	*next;
+	struct s_token	*prev;
 }	t_tokens;
 
 int				free_tokens(t_tokens *head);

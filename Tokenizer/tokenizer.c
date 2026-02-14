@@ -12,7 +12,7 @@
 
 #include "tokenizer.h"
 
-int	add_token(t_tokens **tokens, char *value)
+int add_token(t_tokens **tokens, char *value)
 {
 	t_tokens		*new;
 	t_tokens		*tmp;
@@ -22,6 +22,8 @@ int	add_token(t_tokens **tokens, char *value)
 	new = new_token(value, type);
 	if (!new)
 		return (0);
+	new->next = NULL;
+	new->prev = NULL;
 	if (!*tokens)
 		*tokens = new;
 	else
@@ -30,6 +32,7 @@ int	add_token(t_tokens **tokens, char *value)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = new;
+		new->prev = tmp;
 	}
 	return (1);
 }
