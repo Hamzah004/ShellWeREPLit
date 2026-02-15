@@ -10,26 +10,36 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <signal.h>
+#include "include/minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <stdlib.h>
+
+static t_error	validate_arguments(int argc)
+{
+	if (argc > 1)
+		return (ERROR_INVALID_ARGS);
+	return (ERROR_SUCCESS);
+}
 
 int	main(int argc, char **argv, char **env)
 {
-	struct sigaction	sa;
-	char	*buf;
+	char	*line;
+	t_error	err;
 
-	while ((buf = readline("minishell$")) != NULL)
+	(void)env;
+	(void)argv;
+	err = validate_arguments(argc);
+	if (err != ERROR_SUCCESS)
 	{
-		if (strlen(buf) > 0)
-		{
-			add_history(buf);
-		}
-		printf("You typed: %s\n", buf);
-		free(buf);
+		print_error(err);
+		return (err);
+	}
+	while ((line = readline("minishell$")) != NULL)
+	{
+		if (strlen(line) > 0)
+			add_history(line);
+		free(line);
 	}
 	return (0);
 }

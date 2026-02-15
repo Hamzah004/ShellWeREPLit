@@ -3,46 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 12:25:39 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/20 11:19:32 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/15 19:24:38 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/09/10 21:01:12 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
+#include <stdio.h>
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*new_str;
-	size_t	i;
-	size_t	j;
+	char	*new_string;
+	size_t	s1_len;
+	size_t	s2_len;
 
 	if (!s1 || !s2)
 		return (NULL);
-	i = 0;
-	j = 0;
-	new_str = malloc(((ft_strlen(s1) + ft_strlen(s2)) + 1) * sizeof(char));
-	if (!new_str)
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	new_string = (char *)malloc(s1_len + s2_len + 1);
+	if (!new_string)
 		return (NULL);
-	while (i < ft_strlen(s1))
-	{
-		new_str[i] = s1[i];
-		i++;
-	}
-	while (i < (ft_strlen(s1) + ft_strlen(s2)))
-	{
-		new_str[i] = s2[j];
-		j++;
-		i++;
-	}
-	new_str[i] = '\0';
-	return (new_str);
+	ft_strlcpy(new_string, s1, s1_len + 1);
+	ft_strlcpy(new_string + s1_len, s2, s2_len + 1);
+	return (new_string);
 }
-/*int main()
+/*
+int	main(void)
 {
-	char *a = "hello ";
-	char *b = "goodbye";
-	char *x = ft_strjoin(a, b);
-	printf("%s", x);
+	printf("%s", ft_strjoin("hamzah ", "bani-ata"));
 }*/

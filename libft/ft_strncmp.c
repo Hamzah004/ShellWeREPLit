@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 10:58:04 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/14 13:04:55 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/08 15:27:25 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/08 15:27:29 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,18 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	i = 0;
 	while ((s1[i] || s2[i]) && i < n)
 	{
-		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+		if (s1[i] != s2[i])
 			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 		i++;
 	}
 	return (0);
 }
-/*int	main()
-{
-	char s1[] = "abc";
-	char s2[] = "abd";
-	printf("%d",ft_strncmp(s1,s2,3));
+/*
+int	main(void) {
+  char arr1[] = "a", arr2[] = "f";
+  int result;
+
+  result = strncmp(arr1, arr2, 1);
+  printf("%d\n", result);
+  return (0);
 }*/

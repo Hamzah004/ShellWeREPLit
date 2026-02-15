@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 14:24:25 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/16 18:50:36 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/10 23:01:46 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/17 18:16:27 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,14 @@
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {
-	unsigned char	*t;
-	int				i;
+	size_t	i;
 
-	t = (unsigned char *)s;
 	i = 0;
-	while (n--)
+	while (i < n)
 	{
-		if (t[i] == (unsigned char)c)
-		{
-			return ((unsigned char *)t + i);
-		}
+		if (((unsigned char *)s)[i] == (unsigned char)c)
+			return ((void *)&((unsigned char *)s)[i]);
 		i++;
 	}
 	return (NULL);
 }
-/*int main()
-{
-	char *str = "Abdallah";
-	str = ft_memchr(str, 108, 8);
-	printf("%s", str);
-}*/

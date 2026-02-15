@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 10:41:24 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/11 12:42:04 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/07 15:23:22 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/24 15:39:10 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
-	while (s[i])
+	while (s[i] != '\0')
 	{
 		i++;
 	}
 	return (i);
 }
-/*int main()
+/*
+int	main(void)
 {
-	printf("%zu",ft_strlen("12345678"));
+	printf("Me: %zu\n",ft_strlen("this is good"));
+	printf("Original: %zu\n",strlen("this is good"));
 }*/

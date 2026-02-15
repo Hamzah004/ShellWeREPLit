@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/20 10:45:56 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/20 10:46:09 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/24 14:52:45 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/25 15:54:45 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,12 @@
 
 t_list	*ft_lstnew(void *content)
 {
-	t_list	*new;
+	t_list	*new_node;
 
-	new = (t_list *)malloc(sizeof(t_list));
-	if (!new)
+	new_node = malloc(sizeof(t_list));
+	if (!new_node)
 		return (NULL);
-	new->content = content;
-	new ->next = NULL;
-	return (new);
+	new_node->content = content;
+	new_node->next = NULL;
+	return (new_node);
 }
-/*int main()
-{
-    t_list *n1 = ft_lstnew("Abdallah 42");
-    printf("%s\n", (char *)n1->content);
-}*/

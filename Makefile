@@ -20,7 +20,8 @@ COM_STRING   = "Compiling"
 CC = cc
 CFLAGS = -g3 -Wall -Werror -Wextra
 NAME = minishell
-SRC =			
+SRC =	main.c \
+	error.c
 
 OBJS = $(SRC:.c=.o)
 LIBFT_DIR = ./libft
@@ -29,7 +30,7 @@ LIBFT_A = $(LIBFT_DIR)/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_A)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) -o $(NAME)
+	@$(CC) $(CFLAGS) -lreadline $(OBJS) $(LIBFT_A) -o $(NAME)
 	@printf "$(OK_COLOR)$(OK_STRING) final minishell executable successfully created\n$(NO_COLOR)"
 
 $(LIBFT_A):

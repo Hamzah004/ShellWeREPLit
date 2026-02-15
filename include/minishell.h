@@ -33,9 +33,18 @@ typedef enum e_token_type
 	TOK_DOUBLE_QUOTE
 }					t_token_type;
 
+typedef struct s_redirection
+{
+	char	*infile;
+	char	*outfile;
+}	t_redirection;
+
 typedef struct s_cmd
 {
 	char			*cmd;
+	char	**argv;
+	int	pipin;
+	int	pipout;
 }					t_cmd;
 
 typedef struct s_token

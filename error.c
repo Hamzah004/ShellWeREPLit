@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "include/minishell.h"
-#include "libft/libft.h"
+#include "./libft/libft.h"
 
 void	print_error(t_error error)
 {

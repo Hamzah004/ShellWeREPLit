@@ -3,40 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/18 13:58:20 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/20 11:22:51 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/16 18:38:00 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/17 18:57:58 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-//char addOne(unsigned int i, char c) {return (i + c);}
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+char	*ft_strmapi(char const *s, char (*f)(unsigned int i, char c))
 {
+	char	*array;
 	size_t	i;
-	char	*temp;
 
-	if (!s || !f)
-		return (NULL);
 	i = 0;
-	temp = malloc((ft_strlen(s) + 1) * sizeof(char));
-	if (!temp)
+	array = (char *)malloc(ft_strlen(s) + 1);
+	if (!array)
 		return (NULL);
-	while (s[i])
+	while (s[i] != '\0')
 	{
-		temp[i] = f(i, s[i]);
+		array[i] = f(i, s[i]);
 		i++;
 	}
-	temp[i] = '\0';
-	return (temp);
+	array[i] = '\0';
+	return (array);
 }
-/*int main()
+/*
+int	main(void)
 {
-	char *str = "1234";
-	char *new = ft_strmapi(str, addOne);
-
-	printf("%s\n", str);
-	printf("%s\n", new);
+	printf("%s",ft_strmapi("abc", f));
 }*/

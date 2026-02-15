@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 10:19:20 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/09 10:22:40 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/07 14:22:08 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/07 14:22:09 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	ft_isdigit(int c)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
+	return (c >= '0' && c <= '9');
 }
-/*int main()
+/*
+int	main(void)
 {
-	printf("%d",ft_isdigit('d'));
+	printf("me: %d\n",ft_isdigit('1'));
+	printf("original: %d\n",isdigit('1'));
 }*/

@@ -3,57 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/20 10:45:15 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/23 12:14:39 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/25 14:24:02 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/27 17:13:36 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*void print(void *str)
-{
-	printf("%s\n",(char *) str);
-}*/
-/*void *do_something(void *data)
-{
-    char *str = (char *)data;
-    char *new_str = malloc(ft_strlen(str) + 1);
-    if (!new_str)
-        return (NULL);
-    ft_strlcpy(new_str, str,ft_strlen(str));
-    new_str[0] = new_str[0] - 32;
-    return (new_str);
-}*/
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*temp;
-	t_list	*node;
+	t_list	*new_node;
+	t_list	*new_list;
+	void	*node_content;
 
-	if (!lst || !f || !del)
+	if (!lst || !del || !f)
 		return (NULL);
-	temp = NULL;
+	new_list = NULL;
 	while (lst)
 	{
-		node = ft_lstnew(f(lst -> content));
-		if (!node)
+		node_content = f(lst->content);
+		new_node = ft_lstnew(node_content);
+		if (!new_node)
 		{
-			ft_lstclear(&temp, del);
+			del(node_content);
+			ft_lstclear(&new_list, del);
 			return (NULL);
 		}
-		ft_lstadd_back(&temp, node);
-		lst = lst ->next;
+		ft_lstadd_back(&new_list, new_node);
+		lst = lst->next;
 	}
-	return (temp);
+	return (new_list);
 }
-/*int	main()
-{
-	t_list *a = ft_lstnew("abdallah");
-	t_list *b = ft_lstnew("42");
-	t_list *c = ft_lstnew("amman");
-	ft_lstadd_back(&a, b);
-	ft_lstadd_back(&a, c);
-	t_list *new_lst = ft_lstmap(a, do_something, free);
-	ft_lstiter(new_lst,print);
-}*/

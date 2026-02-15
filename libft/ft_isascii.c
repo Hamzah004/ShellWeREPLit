@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 10:36:57 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/16 14:17:16 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/07 15:02:41 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/07 15:02:43 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	ft_isascii(int c)
 {
-	if (c >= 0 && c <= 127)
-		return (1);
-	return (0);
+	return (c >= 0 && c <= 127);
 }
-/*int main()
+/*
+int	main(void)
 {
-	printf("%d",ft_isascii('w'));
+	printf("Me: %d\n",ft_isascii('1'));
+	printf("Original: %d\n",isascii('a'));
 }*/

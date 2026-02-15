@@ -3,49 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 11:24:03 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/18 16:34:35 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/07 19:13:23 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/09 20:05:30 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <bsd/string.h>
 
-size_t	ft_strlcat(char *dst, const char *src, size_t size)
+size_t	ft_strlen(const char *s);
+
+size_t	ft_strlcat(char *dest, const char *src, size_t size)
 {
 	size_t	i;
-	size_t	u;
-	size_t	len;
+	size_t	dest_length;
+	size_t	src_length;
 
 	i = 0;
-	while (dst[i] && i < size)
+	dest_length = ft_strlen(dest);
+	src_length = ft_strlen(src);
+	if (size <= dest_length)
+		return (size + src_length);
+	while (src[i] != '\0' && (dest_length + i) < (size - 1))
 	{
+		dest[dest_length + i] = src[i];
 		i++;
 	}
-	len = i;
-	u = 0;
-	while (i + 1 < size && src[u])
-	{
-		dst[i] = src[u];
-		i++;
-		u++;
-	}
-	while (src[u])
-	{
-		u++;
-	}
-	if (len < size)
-		dst[i] = '\0';
-	return (len + u);
+	dest[dest_length + i] = '\0';
+	return (dest_length + src_length);
 }
-
-/*#include <bsd/string.h>
-int main()
+/*
+int	main(void)
 {
-    char src[] = "abdallah 42";
-    char dest[20] = "000";
-    //size_t x = ft_strlcat(dest, src, 3);
-	printf("%zu",ft_strlcat("12345","123",4));
-    //printf("%zu\n", x);
+	char	src[] = "is";
+	char	dest[] = "hello";
+
+	printf("Me: %zu\n", ft_strlcat(dest, src, sizeof(dest)));
+	printf("Original: %zu\n", strlcat(dest, src, sizeof(dest)));
+	printf("dest: %s", dest);
 }*/

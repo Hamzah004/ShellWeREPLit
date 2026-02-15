@@ -3,26 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 14:48:43 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/18 15:42:49 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/09 18:28:26 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/09 20:53:23 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
+#include <stdio.h>
 
 void	ft_bzero(void *s, size_t n)
 {
-	unsigned char	*t;
-
-	t = (unsigned char *)s;
-	while (n--)
-		*t++ = '\0';
+	ft_memset(s, 0, n);
 }
-// int main()
-// {
-// 	char *str = "Abdallah";
-// 	ft_bzero(str, 7);
-// 	printf("%zu",ft_strlen(str));
-// }

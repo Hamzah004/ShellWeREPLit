@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/20 10:46:27 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/20 10:46:38 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/24 17:34:05 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/25 11:53:53 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,13 @@
 
 int	ft_lstsize(t_list *lst)
 {
-	int	i;
+	int	count;
 
-	i = 0;
-	while (lst)
+	count = 0;
+	while (lst != NULL)
 	{
-		i++;
-		lst = lst -> next;
+		count++;
+		lst = lst->next;
 	}
-	return (i);
+	return (count);
 }
-/*int main()
-{
-    t_list *head;
-    t_list *node1;
-    t_list *node2;
-    t_list *node3;
-
-    head =  ft_lstnew("0");
-    node1 = ft_lstnew("1");
-    node2 = ft_lstnew("2");
-    node3 = ft_lstnew("3");
-
-    ft_lstadd_front(&head, node1);
-    ft_lstadd_front(&head, node2);
-    ft_lstadd_front(&head, node3);
-
-    printf("%d\n", ft_lstsize(head));
-    return 0;
-}*/

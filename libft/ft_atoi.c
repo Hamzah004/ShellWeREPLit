@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hbani-at <hbani-at@student.42amman.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/10 14:48:32 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/16 12:11:38 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/21 19:25:53 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/11/01 19:22:56 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,24 @@
 int	ft_atoi(const char *nptr)
 {
 	int	i;
-	int	si;
-	int	num;
+	int	sign;
+	int	number;
 
+	number = 0;
 	i = 0;
-	si = 1;
-	num = 0;
+	sign = 1;
 	while (nptr[i] == ' ' || (nptr[i] >= 9 && nptr[i] <= 13))
 		i++;
-	if (nptr[i] == '-' || nptr[i] == '+')
+	if (nptr[i] == '+' || nptr[i] == '-')
 	{
 		if (nptr[i] == '-')
-			si = -1;
+			sign *= -1;
 		i++;
 	}
-	while (nptr[i] >= '0' && nptr[i] <= '9')
+	while (ft_isdigit(nptr[i]))
 	{
-		num = num * 10 + (nptr[i] - '0');
+		number = number * 10 + (nptr[i] - '0');
 		i++;
 	}
-	return (num * si);
+	return (number * sign);
 }
-/*int main()
-{
-	char *str = "    -1 234567";
-	printf("%d\n",ft_atoi(str));
-	printf("%d",atoi(str));
-}*/

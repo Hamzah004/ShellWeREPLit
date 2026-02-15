@@ -3,62 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 14:48:09 by amufleh           #+#    #+#             */
-/*   Updated: 2025/08/16 19:16:21 by amufleh          ###   ########.fr       */
+/*   Created: 2025/08/11 19:00:20 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/08/17 19:13:04 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	size_int(long n)
+static int	get_number_length(long n)
 {
-	int	count;
+	int	len;
 
-	count = 0;
-	if (n < 0)
+	len = 1;
+	while (n >= 10)
 	{
-		n *= -1;
-		count++;
-	}
-	while (n > 0)
-	{
-		count++;
 		n /= 10;
+		len++;
 	}
-	return (count);
+	return (len);
+}
+
+void	no_space(char *s, int sign, int len, long number)
+{
+	if (sign)
+		s[0] = '-';
+	s[len + sign] = '\0';
+	while (number > 0)
+	{
+		s[(len--) + sign - 1] = number % 10 + '0';
+		number /= 10;
+	}
 }
 
 char	*ft_itoa(int n)
 {
-	int		i;
+	int		sign;
+	long	number;
+	char	*s;
 	int		len;
-	char	*num;
 
+	sign = 0;
+	number = n;
 	if (n == 0)
 		return (ft_strdup("0"));
-	if (n == -2147483648)
-		return (ft_strdup("-2147483648"));
-	i = 0;
-	len = size_int(n);
-	num = (char *)malloc((len + 1));
-	if (!num)
+	if (number < 0)
+		sign = 1;
+	if (sign)
+		number = -number;
+	len = get_number_length(number);
+	s = (char *)malloc(len + sign + 1);
+	if (!s)
 		return (NULL);
-	if (n < 0)
-	{
-		n *= -1;
-		num[0] = '-';
-	}
-	while (n > 0)
-	{
-		num[(len - 1) - i++] = (n % 10) + '0';
-		n /= 10;
-	}
-	num[len] = '\0';
-	return (num);
+	no_space(s, sign, len, number);
+	return (s);
 }
-/*int main()
-{
-	printf("%s", ft_itoa(-632));
-}*/
+/*
+ int	main(void)
+ {
+		printf("%s", 	ft_itoa(134));
+ }*/
