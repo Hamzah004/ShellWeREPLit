@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:20:22 by amufleh           #+#    #+#             */
-/*   Updated: 2026/02/12 10:01:45 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/02/14 13:55:06 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ t_tokens	*new_token(char *value, t_token_type type)
 		return (NULL);
 	token->type = type;
 	token->value = value;
+	token->prev = NULL;
 	token->next = NULL;
 	return (token);
 }
