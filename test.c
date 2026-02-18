@@ -18,9 +18,9 @@
 int	main(void)
 {
 	pid_t	pid;
-		char *args[] = {"/bin/echo", "Hello from child", NULL};
+	char	*args[] = {"/bin/echo", "Hello from child", NULL};
 
-	pid = fork();
+	pid = fork(); // created a child process
 	if (pid == 0)
 	{
 		// Child process

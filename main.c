@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "include/minishell.h"
+#include "libft/libft.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdlib.h>
@@ -39,9 +40,16 @@ int	main(int argc, char **argv, char **env)
 	}
 	while ((line = readline("minishell$")) != NULL)
 	{
-		if (strlen(line) > 0)
-			add_history(line);
-		free(line);
+		if (ft_strlen(line) > 0)
+		{
+			if (line && *line)
+				add_history(line);
+		}
+		if (line)
+		{
+			free(line);
+			line = (char *)NULL;
+		}
 	}
 	return (0);
 }
