@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/10 23:03:03 by hbani-at          #+#    #+#             */
-/*   Updated: 2025/08/17 18:46:24 by hbani-at         ###   ########.fr       */
+/*   Created: 2025/08/10 16:51:00 by amufleh           #+#    #+#             */
+/*   Updated: 2025/08/19 10:23:16 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,24 @@
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	size_t			i;
-	unsigned char	*s1_temp;
-	unsigned char	*s2_temp;
+	const unsigned char	*p1;
+	const unsigned char	*p2;
+	size_t				i;
 
-	if (!s1 && !s2)
-		return (0);
 	i = 0;
-	s1_temp = (unsigned char *)s1;
-	s2_temp = (unsigned char *)s2;
+	p1 = (const unsigned char *)s1;
+	p2 = (const unsigned char *)s2;
 	while (i < n)
 	{
-		if (s1_temp[i] != s2_temp[i])
-			return (s1_temp[i] - s2_temp[i]);
+		if ((unsigned char)p1[i] != (unsigned char)p2[i])
+			return ((unsigned char)p1[i] - (unsigned char)p2[i]);
 		i++;
 	}
 	return (0);
 }
+/*int main()
+{
+	const char *str ="Abdallah";
+	const char *str2="Abda\0llah";
+	printf("%d",ft_memcmp(str,str2, 8));
+}*/

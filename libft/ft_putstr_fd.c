@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/17 21:47:52 by hbani-at          #+#    #+#             */
-/*   Updated: 2025/08/17 21:50:11 by hbani-at         ###   ########.fr       */
+/*   Created: 2025/08/11 14:28:56 by amufleh           #+#    #+#             */
+/*   Updated: 2025/08/18 15:36:54 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,18 @@
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	size_t	i;
+	int	i;
 
+	if (!s)
+		return ;
 	i = 0;
-	if (s)
+	while (s[i])
 	{
-		while (s[i] != '\0')
-		{
-			ft_putchar_fd(s[i], fd);
-			i++;
-		}
+		write(fd, &s[i], 1);
+		i++;
 	}
 }
+/*int main()
+{
+	ft_putstr_fd("abdallah",1);
+}*/

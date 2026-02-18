@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 20:52:20 by hbani-at          #+#    #+#             */
-/*   Updated: 2025/08/25 17:10:27 by hbani-at         ###   ########.fr       */
+/*   Created: 2025/08/11 11:12:15 by amufleh           #+#    #+#             */
+/*   Updated: 2025/08/20 17:18:26 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,11 @@
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	unsigned char	*array;
+	void	*temp;
 
-	if (size == 0 || nmemb == 0)
-		return (malloc(1));
-	array = malloc(size * nmemb);
-	if (!array)
-		return (NULL);
-	ft_bzero(array, size * nmemb);
-	return (array);
+	temp = (void *)malloc(nmemb * size);
+	if (!temp)
+		return (temp);
+	ft_bzero(temp, size * nmemb);
+	return ((void *)temp);
 }
-/*
-int	main(void)
-{
-	int	*arr;
-	int	n;
-
-	n = 5;
-	arr = (int *)ft_calloc(n, sizeof(int));
-	// Print the initialized values (all will be 0)
-	printf("Initial values: ");
-	for (int i = 0; i < n; i++)
-	{
-		printf("%d ", arr[i]);
-	}
-	// Use the array
-	for (int i = 0; i < n; i++)
-	{
-		arr[i] = i + 1;
-	}
-	printf("\nAfter assignment: ");
-	for (int i = 0; i < n; i++)
-	{
-		printf("%d ", arr[i]);
-	}
-}*/
