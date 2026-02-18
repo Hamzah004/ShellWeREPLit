@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/07 14:52:11 by hbani-at          #+#    #+#             */
-/*   Updated: 2025/08/07 14:57:26 by hbani-at         ###   ########.fr       */
+/*   Created: 2025/08/09 10:28:57 by amufleh           #+#    #+#             */
+/*   Updated: 2025/08/14 14:31:22 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 int	ft_isprint(int c)
 {
-	return (c >= 32 && c <= 126);
+	if (! (c >= 32 && c < 127))
+		return (0);
+	return (1);
 }
-/*
-int	main(void)
+/*int	main()
 {
-	printf("Me: %d\n",ft_isprint('a'));
-	printf("Original: %d",isprint('a'));
+	printf("%d", ft_isprint('~'));
+	return 0;
 }*/

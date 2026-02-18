@@ -1,63 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/24 21:15:00 by hbani-at          #+#    #+#             */
-/*   Updated: 2025/08/25 16:19:22 by hbani-at         ###   ########.fr       */
+/*   Created: 2025/08/20 10:52:43 by amufleh           #+#    #+#             */
+/*   Updated: 2025/08/20 10:53:10 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void *))
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
 {
-	if (!del)
+	if (!lst || !del)
 		return ;
-	if (lst)
-	{
-		del(lst->content);
-		free(lst);
-	}
+	del(lst -> content);
+	free(lst);
 }
-/*
-void	del(void *con)
+/*int main()
 {
-	free(con);
-}*/
-/*
-int	main(void)
-{
-	t_list	*node1 = ft_lstnew(ft_strdup("hello"));
-	t_list	*lst = node1;
-	t_list	*node2 = ft_lstnew(ft_strdup("world"));
-	t_list	*node3 = ft_lstnew(ft_strdup("hamzah"));
-	t_list	*node4 = ft_lstnew(ft_strdup("yazan"));
-	t_list	*node5 = ft_lstnew(ft_strdup("mohammad"));
-	node1->next = node2;
-	node2->next = node3;
-	node3->next = node4;
-	node4->next = node5;
-	node5->next = NULL;
+    t_list *head = ft_lstnew(strdup("0"));
+    t_list *node1 = ft_lstnew(strdup("1"));
+    t_list *node2 = ft_lstnew(strdup("2"));
 
-	printf("before deletion\n");
-	while (lst)
-	{
-		printf("%s\n",(char *)lst->content);
-		lst = lst->next;
-	}
-	node1->next = node5;
-	ft_lstdelone(node2, del);
-	ft_lstdelone(node3, del);
-	ft_lstdelone(node4, del);
+    ft_lstadd_front(&head, node1);
+    ft_lstadd_front(&head, node2);
 
-	lst = node1;
-	printf("after deletion\n");
-	while (lst)
-	{
-		printf("%s\n",(char *)lst->content);
-		lst = lst->next;
-	}
+    printf("%d\n", ft_lstsize(head));
+
+    t_list *tmp = head;
+    head = head->next;
+    ft_lstdelone(tmp, free);         
+
+    printf("%d\n", ft_lstsize(head));
 }*/

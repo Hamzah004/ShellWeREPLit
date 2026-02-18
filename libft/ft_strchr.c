@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/07 22:46:05 by hbani-at          #+#    #+#             */
-/*   Updated: 2025/08/17 19:21:53 by hbani-at         ###   ########.fr       */
+/*   Created: 2025/08/09 12:06:38 by amufleh           #+#    #+#             */
+/*   Updated: 2025/08/16 18:47:46 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,19 @@ char	*ft_strchr(const char *s, int c)
 	int	i;
 
 	i = 0;
-	while (s[i] != '\0')
+	while (s[i])
 	{
-		if (s[i] == (unsigned char)c)
-			return ((char *)&s[i]);
+		if (s[i] == (char) c)
+			return ((char *)(s + i));
 		i++;
 	}
-	if ((unsigned char)c == '\0')
-		return ((char *)&s[i]);
+	if (s[i] == (char) c)
+		return ((char *)(s + i));
 	return (NULL);
 }
-/*
-int	main(void)
+/*int main()
 {
-	printf("%s\n", ft_strchr("this", 'r'));
+	char s[] = "tripouille";
+	printf("%s\n",ft_strchr(s,'e' + 256));
+	printf("%s",strchr(s, 'e' + 256));
 }*/

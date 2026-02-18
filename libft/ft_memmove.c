@@ -3,37 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/10 02:15:48 by hbani-at          #+#    #+#             */
-/*   Updated: 2025/08/27 17:50:48 by hbani-at         ###   ########.fr       */
+/*   Created: 2025/08/10 16:31:31 by amufleh           #+#    #+#             */
+/*   Updated: 2025/08/19 10:25:15 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
-void	*ft_memmove(void *dest, void const *src, size_t n)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	unsigned char	*src_temp;
-	unsigned char	*dest_temp;
+	unsigned char		*d;
+	const unsigned char	*s;
 
-	if (dest < src)
-		return (ft_memcpy(dest, src, n));
-	src_temp = (unsigned char *)src;
-	dest_temp = (unsigned char *)dest;
-	while (n > 0)
+	if (!dest && !src)
+		return (NULL);
+	d = (unsigned char *)dest;
+	s = (const unsigned char *)src;
+	if (d < s)
 	{
-		dest_temp[n - 1] = src_temp[n - 1];
-		n--;
+		while (n--)
+			*d++ = *s++;
 	}
-	return (dest_temp);
+	else if (d > s)
+	{
+		d += n;
+		s += n;
+		while (n--)
+			*(--d) = *(--s);
+	}
+	return (dest);
 }
-/*
-int	main(void)
+/*int main()
 {
-		char	array[] = "1";
-		char	*dest;
+    char str1[] = "Abdallah";
 
-	memmove(NULL, NULL, 1);
+    ft_memmove(str1 + 2, str1, sizeof(str1));
+    printf("%s",str1);
+
+    return 0;
 }*/

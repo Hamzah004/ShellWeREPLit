@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/08 00:35:41 by hbani-at          #+#    #+#             */
-/*   Updated: 2025/08/08 00:44:34 by hbani-at         ###   ########.fr       */
+/*   Created: 2025/08/09 12:41:28 by amufleh           #+#    #+#             */
+/*   Updated: 2025/08/18 15:36:10 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,26 @@
 
 char	*ft_strrchr(const char *s, int c)
 {
-	int	i;
+	int		i;
+	int		p;
 
-	i = ft_strlen(s);
-	while (i >= 0)
+	i = 0;
+	p = -1;
+	while (s[i])
 	{
-		if (s[i] == (char)c)
-			return ((char *)&s[i]);
-		i--;
+		if (s[i] == (char) c)
+			p = i;
+		i++;
 	}
-	if (c == '\0')
-		return ((char *)&s[i]);
+	if (s[i] == (char)c)
+		return ((char *)(s + i));
+	if (p != -1)
+		return ((char *)(s + p));
 	return (NULL);
 }
-/*
-int	main(void)
+/*int main()
 {
-	printf("Me: %s\n",ft_strrchr("this is good", 'i'));
-	printf("Original: %s\n",strrchr("this is good", 'i'));
+	char *str = "abdallah";
+	printf("%s\n",ft_strrchr(str,108));
+	printf("%s", strrchr(str,108));
 }*/

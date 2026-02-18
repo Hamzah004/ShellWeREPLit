@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_validatio.c                                 :+:      :+:    :+:   */
+/*   syntax_validation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/14 15:30:47 by amufleh           #+#    #+#             */
-/*   Updated: 2026/02/14 15:37:07 by amufleh          ###   ########.fr       */
+/*   Created: 2026/02/14 12:06:23 by amufleh           #+#    #+#             */
+/*   Updated: 2026/02/18 15:47:54 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenizer.h"
+#include "parsing.h"
 
 int	is_redirection (t_token_type type)
 {
@@ -46,15 +46,15 @@ int syntax_validation (t_tokens *my_tokens)
 	return (1);
 }
 
-int main()
-{
-	t_tokens *my_tokens = NULL;
-	//char *input = "<< \'l\'s -la | < grep a >> \"\'$HOME\'\" infile.txt echo \"abdallah\" -n";
-	char *test = "> infile ls | > infle";
-	token_analyser(test, &my_tokens);
-	printf("%d", syntax_valid(my_tokens));
-	print_tokens(my_tokens);
-	free_tokens(my_tokens);
-	return (0);
-}
+// int main()
+// {
+// 	t_tokens *my_tokens = NULL;
+// 	//char *input = "<< \'l\'s -la | < grep a >> \"\'$HOME\'\" infile.txt echo \"abdallah\" -n";
+// 	char *test = "> infile ls | > infle";
+// 	token_analyser(test, &my_tokens);
+// 	printf("%d", syntax_valid(my_tokens));
+// 	print_tokens(my_tokens);
+// 	free_tokens(my_tokens);
+// 	return (0);
+// }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amufleh <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/07 15:00:54 by hbani-at          #+#    #+#             */
-/*   Updated: 2025/08/07 15:02:31 by hbani-at         ###   ########.fr       */
+/*   Created: 2025/08/09 10:46:05 by amufleh           #+#    #+#             */
+/*   Updated: 2025/08/14 13:14:49 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 int	ft_toupper(int c)
 {
 	if (c >= 'a' && c <= 'z')
-		return (c - 32);
+	{
+		c = c - 32;
+	}
 	return (c);
 }
-/*
-int	main(void)
+/*int	main()
 {
-	printf("Me: %d\n",ft_toupper('+'));
-	printf("Original: %d\n",toupper('+'));
+	printf("%c",ft_toupper('a'));
 }*/
