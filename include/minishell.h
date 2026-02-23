@@ -23,8 +23,8 @@ typedef enum e_error
 
 typedef struct s_env
 {
-	char			*content;
-	struct s_env	*next;
+	char			*content; // which is the line we have
+	struct s_env	*next; // the next line we have
 }					t_env;
 
 void				print_error(t_error error);

@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/11 16:21:16 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/02/11 16:22:17 by hbani-at         ###   ########.fr       */
+/*   Created: 2025/09/20 19:19:25 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/09/23 18:37:48 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
-#include "libft/libft.h"
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 5
+# endif
 
-void	print_error(t_error error)
-{
-	if (error == ERROR_SUCCESS)
-		return ;
-	ft_putstr_fd("Error\n", 2);
-	if (error == ERROR_INVALID_ARGS)
-		ft_putstr_fd("Invalid number of arguments\n", 2);
-	if (error == ERROR_INVALID_PID)
-		ft_putstr_fd("Invalid PID\n", 2);
-	if (error == ERROR_INVALID_KILL)
-		ft_putstr_fd("Failed to send signal\n", 2);
-}
+# include <unistd.h>
+
+char	*get_next_line(int fd);
+char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlen(const char *s);
+char	*ft_strdup(const char *s);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+int		ft_strchr(const char *s, int c);
+#endif

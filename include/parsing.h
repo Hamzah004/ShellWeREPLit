@@ -73,18 +73,18 @@ int					is_redirection(t_token_type type);
 
 void				print_tokens(t_tokens *head);
 void				print_redirections(t_redir *redir);
-void				print_commands(t_commands *cmd);
+void				print_commands(t_cmd *cmd);
 
 //------------------------------------------------------------------
 
 t_redir				*new_redirection(t_token_type type, char *value);
-t_commands			*new_command(t_tokens *tokens);
-int					fill_command_options(t_commands *my_commands, int *size,
+t_cmd			*new_command(t_tokens *tokens);
+int					fill_command_options(t_cmd *my_commands, int *size,
 						char *tokens_value);
 int					add_redir(t_redir **redirection, t_tokens *token);
-int					add_command(t_commands **command, int *size,
+int					add_command(t_cmd **command, int *size,
 						t_tokens *tokens);
-int					the_parser(t_tokens *my_tokens, t_commands *my_commands);
+int					the_parser(t_tokens *my_tokens, t_cmd *my_commands);
 int					count_words(t_tokens *token);
 
 #endif
