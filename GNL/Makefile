@@ -10,33 +10,41 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME := gnl.a
-CC := cc
-CFLAGS := -Wall -Werror -Wextra
-SRC := get_next_line.c \
-	   get_next_line_utils.c
-OBJ := $(SRC:.c=.o)
+COM_COLOR   = \033[0;34m
+OK_COLOR    = \033[0;32m
+NO_COLOR    = \033[m
+
+OK_STRING    = "[OK]"
+COM_STRING   = "Compiling"
+
+NAME = gnl.a
+CC = cc
+CFLAGS = -Wall -Werror -Wextra
+SRC =	get_next_line.c \
+	get_next_line_utils.c \
+	get_next_line_bonus.c \
+	get_next_line_utils_bonus.c
+
+OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar rcs $(NAME) $(OBJ)
+	@ar rcs $(NAME) $(OBJ)
+	@printf "$(OK_COLOR)$(OK_STRING) GNL archive cerated\n$(NO_COLOR)"
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@ 
+	@printf "%b" "$(COM_COLOR)$(COM_STRING) $<\n$(NO_COLOR)"
 
 clean:
-	rm -f $(OBJ)
+	@rm -f $(OBJ)
+	@printf "%b" "$(OK_COLOR)$(OK_STRING) GNL Object files cleaned\n$(NO_COLOR)"
 
 fclean: clean
-	rm -f $(NAME) test
+	@rm -f $(NAME)
+	@printf "%b" "$(OK_COLOR)$(OK_STRING) GNL archive cleaned\n$(NO_COLOR)"
 
 re: fclean all
-
-test:
-	@touch test
-	@echo "this is first line" >> test
-	@echo "this is second line" >> test
-	@echo "test created"
 
 .PHONY: all clean fclean re

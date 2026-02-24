@@ -36,8 +36,6 @@ static char	*get_line(char *stash)
 	i = 0;
 	while (stash[i] != '\n' && stash[i] != '\0')
 		i++;
-	if (stash[i] == '\n')
-		i++;
 	line = ft_substr(stash, 0, i);
 	if (!line)
 		return (NULL);
@@ -71,7 +69,7 @@ static char	*read_file(int fd, char *stash, char *buffer)
 	ssize_t	bytes_read;
 
 	bytes_read = 1;
-	while (bytes_read > 0 && (!stash || !ft_strchr(stash, '\n')))
+	while (bytes_read > 0 && (!stash || !ft_contains_char(stash, '\n')))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)

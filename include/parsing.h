@@ -51,6 +51,7 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 }					t_cmd;
 
+
 int					free_tokens(t_tokens *head);
 int					is_separator(char c);
 int					is_operator(char c);

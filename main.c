@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
 #include "GNL/get_next_line.h"
+#include "include/minishell.h"
 #include "include/parsing.h"
 #include "libft/libft.h"
 #include <readline/history.h>
@@ -33,9 +33,16 @@ static t_error	validate_arguments(int argc)
 // 	execve(, char *const *argv, char *const *envp)
 // }
 
-void	get_env(char **env)
+void	get_env(t_program_info *info, char **env)
 {
+	int	i;
 
+	i = 0;
+	while (env[i] != NULL)
+	{
+		ft_strlcpy(info->envp[i], env[i], ft_strlen(env[i]));
+		i++;
+	}
 }
 
 void	read_from_prompt(void)
@@ -59,7 +66,9 @@ void	read_from_prompt(void)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_error	err;
+	t_program_info	info;
+	t_error			err;
+	int				i;
 
 	// t_cmd	cmd;
 	// int	pid;
@@ -70,12 +79,11 @@ int	main(int argc, char **argv, char **env)
 		print_error(err);
 		return (err);
 	}
-	get_env(env);
-	while (*env)
+	get_env(&info, env);
+	i = 0;
+	while (info.envp != NULL)
 	{
-		printf("%s\n", *env);
-		if (env++ == NULL)
-			break ;
+		printf("%s\n", info.envp[i++]);
 	}
 	// read_from_prompt();
 	// pid = fork();
