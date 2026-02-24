@@ -12,13 +12,3 @@
 
 #include "../include/minishell.h"
 
-void	get_env(char **env)
-{
-
-}
-
-t_error	singal_cmd()
-{
-	
-}
-

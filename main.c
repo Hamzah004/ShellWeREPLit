@@ -41,10 +41,61 @@ int	count_lines(char **env)
 	return (len);
 }
 
-// void	execute_single_cmd(void)
-// {
-// 	execve(, char *const *argv, char *const *envp)
-// }
+char	*get_path(char **envp)
+{
+	char	*path;
+	char	**path_vals;
+	int		i;
+
+	i = 0;
+	path = NULL;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		{
+			path = ft_strdup(envp[i] + 5);
+			if (!path)
+				return (NULL);
+			break ;
+		}
+		i++;
+	}
+	return (path);
+}
+
+char	*get_cmd_path(t_cmd *info)
+{
+	char	*str;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	if (!info->args || !info->args[0]
+		|| info->args[0][0] == '\0')
+		return (NULL);
+	if (info->args[0][0] == '/' &&
+		access(info->args[0], X_OK) == 0)
+		return (ft_strdup(info->args[0]));
+	while (info->command_folders[i])
+	{
+		tmp = ft_strjoin(info->command_folders[i], "/");
+		if (!tmp)
+			return (NULL);
+		str = ft_strjoin(tmp, info->args[0]);
+		free(tmp);
+		if (!access(str, X_OK))
+			return (str);
+		free(str);
+		i++;
+	}
+	return (NULL);
+}
+
+void	execute_single_cmd(t_program_info *info)
+{
+	// execve
+	// error handle
+}
 
 void	get_env(t_program_info *info, char **env)
 {
@@ -83,31 +134,20 @@ int	main(int argc, char **argv, char **env)
 {
 	t_program_info	info;
 	t_error			err;
-	int				i;
+	int				pid;
 
-	// t_cmd	cmd;
-	// int	pid;
 	(void)argv;
-	(void)env;
-
 	err = validate_arguments(argc);
 	if (err != ERROR_SUCCESS)
 	{
 		print_error(err);
 		return (err);
 	}
-	// printf("len of the env is: %d", count_lines(env));
 	get_env(&info, env);
-	i = 0;
-	while (info.envp[i] != NULL)
-	{
-		printf("%s\n", info.envp[i]);
-		i++;
-	}
-	// i = 0;
-	// read_from_prompt();
-	// pid = fork();
-	// if (pid == 0)
-	// 	execute_single_cmd();
+	read_from_prompt();
+	info.cmd = malloc(sizeof(*info.cmd));
+	pid = fork();
+	if (pid == 0)
+		execute_single_cmd(&info);
 	return (0);
 }

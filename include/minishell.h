@@ -23,12 +23,6 @@ typedef enum e_error
 	ERROR_INVALID_KILL = 3
 }			t_error;
 
-// typedef struct s_env
-// {
-// 	char			*content;
-// 	struct s_env	*next;
-// }					t_env;
-
 typedef struct s_program_info
 {
 	char	**envp;
@@ -36,5 +30,7 @@ typedef struct s_program_info
 }			t_program_info;
 
 void		print_error(t_error error);
+int			count_lines(char **env);
+void		get_env(t_program_info *info, char **env);
 
 #endif
