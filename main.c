@@ -14,6 +14,7 @@
 #include "include/minishell.h"
 #include "include/parsing.h"
 #include "libft/libft.h"
+#include <bits/types/struct_itimerspec.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdio.h>
@@ -28,6 +29,18 @@ static t_error	validate_arguments(int argc)
 	return (ERROR_SUCCESS);
 }
 
+int	count_lines(char **env)
+{
+	int	len;
+
+	len = 0;
+	while (env[len] != NULL)
+	{
+		len++;
+	}
+	return (len);
+}
+
 // void	execute_single_cmd(void)
 // {
 // 	execve(, char *const *argv, char *const *envp)
@@ -37,10 +50,12 @@ void	get_env(t_program_info *info, char **env)
 {
 	int	i;
 
+	i = count_lines(env);
+	info->envp = malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (env[i] != NULL)
 	{
-		ft_strlcpy(info->envp[i], env[i], ft_strlen(env[i]));
+		info->envp[i] = ft_strdup(env[i]);
 		i++;
 	}
 }
@@ -73,18 +88,23 @@ int	main(int argc, char **argv, char **env)
 	// t_cmd	cmd;
 	// int	pid;
 	(void)argv;
+	(void)env;
+
 	err = validate_arguments(argc);
 	if (err != ERROR_SUCCESS)
 	{
 		print_error(err);
 		return (err);
 	}
+	// printf("len of the env is: %d", count_lines(env));
 	get_env(&info, env);
 	i = 0;
-	while (info.envp != NULL)
+	while (info.envp[i] != NULL)
 	{
-		printf("%s\n", info.envp[i++]);
+		printf("%s\n", info.envp[i]);
+		i++;
 	}
+	// i = 0;
 	// read_from_prompt();
 	// pid = fork();
 	// if (pid == 0)
