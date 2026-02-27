@@ -15,18 +15,26 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
 	pid_t	pid;
-	char	*args[] = {"/bin/echo", "Hello from child", NULL};
+	char	*args[] = {"/bin/ls", "-la", NULL};
 
-	pid = fork(); // created a child process
+	(void)argc;
+	(void)argv;
+	pid = fork();
 	if (pid == 0)
 	{
-		// Child process
-		char *env[] = {NULL}; // Inherit parent's environment
-		execve("/bin/echo", args, env);
-		perror("execve failed");
+		// char *env[] = {NULL}; // Inherit parent's environment
+		if (!access("/bin/ls", X_OK))
+		{
+			execve("/bin/ls", args, env);
+			perror("execve failed");
+		}
+		else
+		{
+			printf("error\n");
+		}
 	}
 	else if (pid > 0)
 	{

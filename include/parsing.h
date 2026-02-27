@@ -51,7 +51,6 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 }					t_cmd;
 
-
 int					free_tokens(t_tokens *head);
 int					is_separator(char c);
 int					is_operator(char c);
@@ -79,12 +78,11 @@ void				print_commands(t_cmd *cmd);
 //------------------------------------------------------------------
 
 t_redir				*new_redirection(t_token_type type, char *value);
-t_cmd			*new_command(t_tokens *tokens);
+t_cmd				*new_command(t_tokens *tokens);
 int					fill_command_options(t_cmd *my_commands, int *size,
 						char *tokens_value);
 int					add_redir(t_redir **redirection, t_tokens *token);
-int					add_command(t_cmd **command, int *size,
-						t_tokens *tokens);
+int					add_command(t_cmd **command, int *size, t_tokens *tokens);
 int					the_parser(t_tokens *my_tokens, t_cmd *my_commands);
 int					count_words(t_tokens *token);
 

@@ -10,16 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GNL/get_next_line.h"
 #include "include/minishell.h"
 #include "include/parsing.h"
 #include "libft/libft.h"
 #include <bits/types/struct_itimerspec.h>
 #include <readline/history.h>
 #include <readline/readline.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 static t_error	validate_arguments(int argc)
@@ -29,87 +28,6 @@ static t_error	validate_arguments(int argc)
 	return (ERROR_SUCCESS);
 }
 
-int	count_lines(char **env)
-{
-	int	len;
-
-	len = 0;
-	while (env[len] != NULL)
-	{
-		len++;
-	}
-	return (len);
-}
-
-char	*get_path(char **envp)
-{
-	char	*path;
-	char	**path_vals;
-	int		i;
-
-	i = 0;
-	path = NULL;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			path = ft_strdup(envp[i] + 5);
-			if (!path)
-				return (NULL);
-			break ;
-		}
-		i++;
-	}
-	return (path);
-}
-
-char	*get_cmd_path(t_cmd *info)
-{
-	char	*str;
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	if (!info->args || !info->args[0]
-		|| info->args[0][0] == '\0')
-		return (NULL);
-	if (info->args[0][0] == '/' &&
-		access(info->args[0], X_OK) == 0)
-		return (ft_strdup(info->args[0]));
-	while (info->command_folders[i])
-	{
-		tmp = ft_strjoin(info->command_folders[i], "/");
-		if (!tmp)
-			return (NULL);
-		str = ft_strjoin(tmp, info->args[0]);
-		free(tmp);
-		if (!access(str, X_OK))
-			return (str);
-		free(str);
-		i++;
-	}
-	return (NULL);
-}
-
-void	execute_single_cmd(t_program_info *info)
-{
-	// execve
-	// error handle
-}
-
-void	get_env(t_program_info *info, char **env)
-{
-	int	i;
-
-	i = count_lines(env);
-	info->envp = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (env[i] != NULL)
-	{
-		info->envp[i] = ft_strdup(env[i]);
-		i++;
-	}
-}
 
 void	read_from_prompt(void)
 {
@@ -122,11 +40,8 @@ void	read_from_prompt(void)
 			if (line && *line)
 				add_history(line);
 		}
-		if (line)
-		{
-			free(line);
-			line = (char *)NULL;
-		}
+		free(line);
+		line = (char *)NULL;
 	}
 }
 
@@ -135,6 +50,7 @@ int	main(int argc, char **argv, char **env)
 	t_program_info	info;
 	t_error			err;
 	int				pid;
+	int				status;
 
 	(void)argv;
 	err = validate_arguments(argc);
@@ -144,10 +60,13 @@ int	main(int argc, char **argv, char **env)
 		return (err);
 	}
 	get_env(&info, env);
-	read_from_prompt();
-	info.cmd = malloc(sizeof(*info.cmd));
-	pid = fork();
+	// read_from_prompt();
+	// info.cmd = malloc(sizeof(*info.cmd));
 	if (pid == 0)
 		execute_single_cmd(&info);
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
+	}
 	return (0);
 }
