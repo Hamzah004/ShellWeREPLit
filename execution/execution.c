@@ -24,26 +24,27 @@ int	count_lines(char **env)
 	return (len);
 }
 
-char	*get_path(char **envp)
+t_error	get_path(t_program_info *info)
 {
 	char	*path;
-	char	**path_vals;
 	int		i;
 
 	i = 0;
 	path = NULL;
-	while (envp[i])
+	while (info->envp[i])
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		if (ft_strncmp(info->envp[i], "PATH=", 5) == 0)
 		{
-			path = ft_strdup(envp[i] + 5);
+			path = ft_strdup(info->envp[i] + 5);
+			// TEST: make sure to test if the check is working
 			if (!path)
-				return (NULL);
+				return (ERROR_MEMORY);
 			break ;
 		}
 		i++;
 	}
-	return (path);
+	info->cmd_exec_dir = ft_split(path, ':');
+	return (ERROR_SUCCESS);
 }
 
 char	*get_cmd_path(t_cmd *cmd, t_program_info *prog_info)
@@ -60,6 +61,7 @@ char	*get_cmd_path(t_cmd *cmd, t_program_info *prog_info)
 	while (prog_info->cmd_exec_dir && prog_info->cmd_exec_dir[i])
 	{
 		tmp = ft_strjoin(prog_info->cmd_exec_dir[i], "/");
+		// TODO: see if there is a return message will be here
 		if (!tmp)
 			return (NULL);
 		str = ft_strjoin(tmp, cmd->args[0]);
@@ -73,6 +75,17 @@ char	*get_cmd_path(t_cmd *cmd, t_program_info *prog_info)
 	}
 	return (NULL);
 }
+
+void	split_path(char	*path, t_program_info *info)
+{
+	info->cmd_exec_dir = ft_split(path, ':');
+}
+
+// PATH
+// path1
+// path2
+// path3
+
 
 t_error	get_env(t_program_info *info, char **env)
 {
@@ -91,8 +104,8 @@ t_error	get_env(t_program_info *info, char **env)
 	return (ERROR_SUCCESS);
 }
 
-void	execute_single_cmd(t_program_info *info)
-{
-	// execve
-	// error handle
-}
+// void	execute_single_cmd(t_program_info *info)
+// {
+// 	// execve
+// 	// error handle
+// }

@@ -21,9 +21,11 @@ CC = cc
 CFLAGS = -g3 -Wall -Werror -Wextra
 NAME = minishell
 SRC =	main.c \
-	error.c
+	error.c \
+	$(EXECUTION_DIR)/execution.c
 
 OBJS = $(SRC:.c=.o)
+EXECUTION_DIR = ./execution
 LIBFT_DIR = ./libft
 LIBFT_A = $(LIBFT_DIR)/libft.a
 

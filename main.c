@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #include "include/minishell.h"
-#include "include/parsing.h"
 #include "libft/libft.h"
 #include <bits/types/struct_itimerspec.h>
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -49,8 +49,8 @@ int	main(int argc, char **argv, char **env)
 {
 	t_program_info	info;
 	t_error			err;
-	int				pid;
-	int				status;
+	// int				pid;
+	// int				status;
 
 	(void)argv;
 	err = validate_arguments(argc);
@@ -60,13 +60,22 @@ int	main(int argc, char **argv, char **env)
 		return (err);
 	}
 	get_env(&info, env);
+	get_path(&info);
+	int	i;
+
+	i = 0;
+	while (info.cmd_exec_dir[i] != NULL)
+	{
+		printf("%s\n", info.cmd_exec_dir[i]);
+		i++;
+	}
 	// read_from_prompt();
 	// info.cmd = malloc(sizeof(*info.cmd));
-	if (pid == 0)
-		execute_single_cmd(&info);
-	else if (pid > 0)
-	{
-		waitpid(pid, &status, 0);
-	}
+	// if (pid == 0)
+	// 	execute_single_cmd(&info);
+	// else if (pid > 0)
+	// {
+	// 	waitpid(pid, &status, 0);
+	// }
 	return (0);
 }
