@@ -35,5 +35,6 @@ void		print_error(t_error error);
 int			count_lines(char **env);
 t_error		get_env(t_program_info *info, char **env);
 t_error		get_path(t_program_info *info);
+void		execute_single_cmd(t_cmd *cmd, t_program_info *info);
 
 #endif

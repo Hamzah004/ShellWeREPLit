@@ -15,17 +15,15 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	main(int argc, char **argv, char **env)
+int	main(void)
 {
 	pid_t	pid;
 	char	*args[] = {"/bin/ls", "-la", NULL};
 
-	(void)argc;
-	(void)argv;
 	pid = fork();
 	if (pid == 0)
 	{
-		// char *env[] = {NULL}; // Inherit parent's environment
+		char *env[] = {NULL}; // Inherit parent's environment
 		if (!access("/bin/ls", X_OK))
 		{
 			execve("/bin/ls", args, env);

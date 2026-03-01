@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include <unistd.h>
 
 int	count_lines(char **env)
 {
@@ -49,7 +50,7 @@ t_error	get_path(t_program_info *info)
 
 char	*get_cmd_path(t_cmd *cmd, t_program_info *prog_info)
 {
-	char	*str;
+	char	*cmd_path;
 	char	*tmp;
 	int		i;
 
@@ -61,31 +62,20 @@ char	*get_cmd_path(t_cmd *cmd, t_program_info *prog_info)
 	while (prog_info->cmd_exec_dir && prog_info->cmd_exec_dir[i])
 	{
 		tmp = ft_strjoin(prog_info->cmd_exec_dir[i], "/");
-		// TODO: see if there is a return message will be here
+		// TODO: see if there is a return message will be here on the check
 		if (!tmp)
 			return (NULL);
-		str = ft_strjoin(tmp, cmd->args[0]);
+		cmd_path = ft_strjoin(tmp, cmd->args[0]);
 		free(tmp);
-		if (!str)
+		if (!cmd_path)
 			return (NULL);
-		if (!access(str, X_OK))
-			return (str);
-		free(str);
+		if (!access(cmd_path, X_OK))
+			return (cmd_path);
+		free(cmd_path);
 		i++;
 	}
 	return (NULL);
 }
-
-void	split_path(char	*path, t_program_info *info)
-{
-	info->cmd_exec_dir = ft_split(path, ':');
-}
-
-// PATH
-// path1
-// path2
-// path3
-
 
 t_error	get_env(t_program_info *info, char **env)
 {
@@ -104,8 +94,11 @@ t_error	get_env(t_program_info *info, char **env)
 	return (ERROR_SUCCESS);
 }
 
-// void	execute_single_cmd(t_program_info *info)
-// {
-// 	// execve
-// 	// error handle
-// }
+void	execute_single_cmd(t_cmd *cmd, t_program_info *info)
+{
+	char	*cmd_path;
+	cmd_path = get_cmd_path(cmd, info);
+	char	*args[] = {cmd_path, "-la", NULL};
+
+	execve(cmd_path, args, info->envp);
+}
