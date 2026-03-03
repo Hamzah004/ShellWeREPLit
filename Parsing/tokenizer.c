@@ -12,7 +12,7 @@
 
 #include "parsing.h"
 
-int add_token(t_tokens **tokens, char *value)
+int	add_token(t_tokens **tokens, char *value)
 {
 	t_tokens		*new;
 	t_tokens		*tmp;
@@ -45,7 +45,10 @@ int	extract_tokin(t_tokens **my_tokens, char *command, int start, int end)
 	if (!token)
 		return (0);
 	if (!add_token(my_tokens, token))
+	{
+		free(token);
 		return (0);
+	}
 	return (1);
 }
 
