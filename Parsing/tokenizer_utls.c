@@ -12,20 +12,6 @@
 
 #include "parsing.h"
 
-int	free_tokens(t_tokens *head)
-{
-	t_tokens	*tmp;
-
-	while (head)
-	{
-		tmp = head->next;
-		free(head->value);
-		free(head);
-		head = tmp;
-	}
-	return (0);
-}
-
 int	is_separator(char c)
 {
 	return (c == ' ' || c == '\t' || c == '|' || c == '<' || c == '>');

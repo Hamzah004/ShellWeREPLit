@@ -26,6 +26,7 @@ void	print_tokens(t_tokens *head)
 		printf("\n");
 		tmp = tmp->next;
 	}
+	printf("-----------------------------------------------------\n");
 }
 
 void print_redirections(t_redir *redir)
