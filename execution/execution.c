@@ -6,7 +6,7 @@
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:25:08 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/02/18 21:35:46 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/03/09 12:09:58 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	execute_single_cmd(t_cmd *cmd, t_program_info *info)
 {
 	char	*cmd_path;
 	cmd_path = get_cmd_path(cmd, info);
-	char	*args[] = {cmd_path, "-la", NULL};
+	// char	*args[] = {cmd_path, "-la", NULL};
 
-	execve(cmd_path, args, info->envp);
+	execve(cmd_path, cmd->args, info->envp);
 }

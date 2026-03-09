@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "../include/parsing.h"
+#include "../libft/libft.h"
 
 t_redir	*new_redirection(t_token_type type, char *value)
 {
@@ -40,17 +41,17 @@ int	count_words(t_tokens *token)
 	}
 	return (count);
 }
-t_commands	*new_command(t_tokens *tokens)
+t_cmd	*new_command(t_tokens *tokens)
 {
-	t_commands	*command;
+	t_cmd	*command;
 	int	size;
 
 	size = count_words(tokens);
-	command = malloc(sizeof(t_commands));
+	command = malloc(sizeof(t_cmd));
 	if (!command)
 		return (NULL);
-	command->argv =  malloc(sizeof(char *) * (size + 2));
-	if (!command->argv)
+	command->args =  malloc(sizeof(char *) * (size + 2));
+	if (!command->args)
 		return (NULL);
 	command->redirection = NULL;
 	command->next = NULL;
@@ -59,12 +60,42 @@ t_commands	*new_command(t_tokens *tokens)
 	return (command);
 }
 
-int	fill_command_options(t_commands *my_commands, int *size, char *tokens_value)
+int	fill_command_options(t_cmd *my_commands, int *size, char *tokens_value)
 {
 	if (!my_commands)
 		return (0);
-	my_commands->argv[*size] = ft_strdup(tokens_value);
+	my_commands->args[*size] = ft_strdup(tokens_value);
 	(*size)++;
-	my_commands->argv[*size] = NULL;
+	my_commands->args[*size] = NULL;
+	return (1);
+}
+
+int	free_commands(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+	t_redir	*redir_tmp;
+
+	while (cmd)
+	{
+		tmp = cmd->next;
+		if (cmd->args)
+		{
+			int i = 0;
+			while (cmd->args[i])
+			{
+				free(cmd->args[i]);
+				i++;
+			}
+			free(cmd->args);
+		}
+		while (cmd->redirection)
+		{
+			redir_tmp = cmd->redirection->next;
+			free(cmd->redirection);
+			cmd->redirection = redir_tmp;
+		}
+		free(cmd);
+		cmd = tmp;
+	}
 	return (1);
 }

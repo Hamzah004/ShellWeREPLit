@@ -6,7 +6,7 @@
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:43:25 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/02/11 16:44:13 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/03/09 08:59:25 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static t_error	validate_arguments(int argc)
 		return (ERROR_INVALID_ARGS);
 	return (ERROR_SUCCESS);
 }
-
 
 void	read_from_prompt(void)
 {
@@ -61,7 +60,6 @@ int	main(int argc, char **argv, char **env)
 	}
 	get_env(&info, env);
 	get_path(&info);
-
 	// read_from_prompt();
 	// info.cmd = malloc(sizeof(*info.cmd));
 	pid = fork();

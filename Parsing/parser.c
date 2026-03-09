@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "../include/parsing.h"
 
 int	add_redir(t_redir **redirection, t_tokens *token)
 {
@@ -27,14 +27,14 @@ int	add_redir(t_redir **redirection, t_tokens *token)
 	}
 	tmp = *redirection;
 	while (tmp->next)
-	tmp = tmp->next;
+		tmp = tmp->next;
 	tmp->next = redir;
 	return (1);
 }
 
-int	add_command(t_commands **command, int *size, t_tokens *tokens)
+int	add_command(t_cmd **command, int *size, t_tokens *tokens)
 {
-	t_commands *new_cmd;
+	t_cmd	*new_cmd;
 
 	if (!command || !*command)
 		return (0);
@@ -48,7 +48,7 @@ int	add_command(t_commands **command, int *size, t_tokens *tokens)
 	return (1);
 }
 
-int the_parser(t_tokens *my_tokens, t_commands *my_commands)
+int	the_parser(t_tokens *my_tokens, t_cmd *my_commands)
 {
 	t_tokens	*tokens;
 	int			size;
@@ -63,7 +63,7 @@ int the_parser(t_tokens *my_tokens, t_commands *my_commands)
 	{
 		if (tokens->type == TOK_WORD)
 		{
-			if(!fill_command_options(my_commands, &size, tokens->value))
+			if (!fill_command_options(my_commands, &size, tokens->value))
 				return (0);
 		}
 		else if (is_redirection(tokens->type))
@@ -71,14 +71,14 @@ int the_parser(t_tokens *my_tokens, t_commands *my_commands)
 			if (!add_redir(&my_commands->redirection, tokens))
 				return (free_tokens(my_tokens));
 			tokens = tokens->next->next;
-			continue;
+			continue ;
 		}
 		else if (tokens->type == TOK_PIPE)
 		{
 			if (!add_command(&my_commands, &size, tokens))
 				return (0);
 			tokens = tokens->next;
-			continue;
+			continue ;
 		}
 		tokens = tokens->next;
 	}

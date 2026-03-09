@@ -13,7 +13,7 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-# include "../libft/libft.h"
+#include "../libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -63,6 +63,7 @@ int					handle_word(t_tokens **my_tokens, char *command, int *i);
 int					token_analyser(char *command, t_tokens **my_tokens);
 t_token_type		set_token_type(char *str);
 t_tokens			*new_token(char *value, t_token_type type);
+char				*remove_quotes(char *str);
 
 //------------- ---------------------------------------------------
 
@@ -85,5 +86,6 @@ int					add_redir(t_redir **redirection, t_tokens *token);
 int					add_command(t_cmd **command, int *size, t_tokens *tokens);
 int					the_parser(t_tokens *my_tokens, t_cmd *my_commands);
 int					count_words(t_tokens *token);
+int					free_commands(t_cmd *cmd);
 
 #endif

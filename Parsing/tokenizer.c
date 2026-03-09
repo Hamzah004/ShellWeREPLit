@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "../include/parsing.h"
 
 int add_token(t_tokens **tokens, char *value)
 {
@@ -19,6 +19,7 @@ int add_token(t_tokens **tokens, char *value)
 	t_token_type	type;
 
 	type = set_token_type(value);
+	value = remove_quotes(value);
 	new = new_token(value, type);
 	if (!new)
 		return (0);

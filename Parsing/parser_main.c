@@ -10,20 +10,78 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "../include/parsing.h"
+#include <string.h>
 
 int main()
 {
-	t_tokens *my_tokens = NULL;
-	t_commands *my_commands;
-	char *input = "< infile1.txt < infile2.txt \'l\'s -l -a | grep a >> outfile.txt | echo \"\'$HOME\'\" > infile.txt | echo \"abdallah\" -n";
-	token_analyser(input, &my_tokens);
-	print_tokens(my_tokens);
-	printf("----------------------------------\n");
-	//printf("%d",count_words(my_tokens));
-	my_commands = new_command(my_tokens);
-	if (the_parser(my_tokens, my_commands))
-		print_commands(my_commands);
-	//free_tokens(my_tokens);
+	t_tokens *my_tokens;
+	t_cmd *my_commands;
+	char buffer[1024];
+
+	printf("Parser Test - Enter commands (or 'exit' to quit)\n");
+	printf("Example: echo hello | grep e > output.txt\n");
+	printf("========================================\n\n");
+
+	while (1)
+	{
+		printf("$ ");
+		if (!fgets(buffer, sizeof(buffer), stdin))
+			break;
+		
+		// Remove newline from input
+		int len = strlen(buffer);
+		if (len > 0 && buffer[len - 1] == '\n')
+			buffer[len - 1] = '\0';
+		
+		// Check for exit command
+		if (strcmp(buffer, "exit") == 0)
+			break;
+		
+		// Skip empty input
+		if (strlen(buffer) == 0)
+			continue;
+		
+		my_tokens = NULL;
+		
+		// Tokenize input
+		if (!token_analyser(buffer, &my_tokens))
+		{
+			printf("Error: Tokenizer failed\n\n");
+			continue;
+		}
+		
+		printf("\nTokens:\n");
+		print_tokens(my_tokens);
+		printf("----------------------------------\n");
+		
+		// Create command structure
+		my_commands = new_command(my_tokens);
+		if (!my_commands)
+		{
+			printf("Error: Failed to create command\n");
+			free_tokens(my_tokens);
+			printf("\n");
+			continue;
+		}
+		
+		// Parse tokens into commands
+		if (the_parser(my_tokens, my_commands))
+		{
+			printf("\nParsed Commands:\n");
+			print_commands(my_commands);
+			free_commands(my_commands);
+		}
+		else
+		{
+			printf("Error: Syntax validation failed\n");
+			free_commands(my_commands);
+		}
+		
+		free_tokens(my_tokens);
+		printf("\n");
+	}
+
+	printf("\nExiting parser test...\n");
 	return (0);
 }
