@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:25:30 by amufleh           #+#    #+#             */
-/*   Updated: 2026/03/03 11:52:04 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/03/10 14:00:59 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,7 @@ int				free_parser(t_commands *my_commands,
 					t_tokens *my_tokens, int flag);
 void			free_redirections(t_redir *redir_list);
 void			*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+
+int	command_expansion(t_commands *my_commands);
 
 #endif
