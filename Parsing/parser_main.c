@@ -6,82 +6,72 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 09:41:13 by amufleh           #+#    #+#             */
-/*   Updated: 2026/02/18 16:26:02 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/03/10 15:23:04 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
-#include <string.h>
+#include "parsing.h"
 
-int main()
+int	input_validation(char *input)
 {
-	t_tokens *my_tokens;
-	t_cmd *my_commands;
-	char buffer[1024];
+	int		i;
+	char	c;
 
-	printf("Parser Test - Enter commands (or 'exit' to quit)\n");
-	printf("Example: echo hello | grep e > output.txt\n");
-	printf("========================================\n\n");
-
-	while (1)
+	if (!input || !input[0])
+		return (0);
+	i = 0;
+	c = 0;
+	while (input[i])
 	{
-		printf("$ ");
-		if (!fgets(buffer, sizeof(buffer), stdin))
-			break;
-		
-		// Remove newline from input
-		int len = strlen(buffer);
-		if (len > 0 && buffer[len - 1] == '\n')
-			buffer[len - 1] = '\0';
-		
-		// Check for exit command
-		if (strcmp(buffer, "exit") == 0)
-			break;
-		
-		// Skip empty input
-		if (strlen(buffer) == 0)
-			continue;
-		
-		my_tokens = NULL;
-		
-		// Tokenize input
-		if (!token_analyser(buffer, &my_tokens))
+		if ((input[i] == '\'' || input[i] == '\"'))
 		{
-			printf("Error: Tokenizer failed\n\n");
-			continue;
+			if (c == 0)
+				c = input[i];
+			else if (c == input[i])
+				c = 0;
 		}
-		
-		printf("\nTokens:\n");
-		print_tokens(my_tokens);
-		printf("----------------------------------\n");
-		
-		// Create command structure
-		my_commands = new_command(my_tokens);
-		if (!my_commands)
-		{
-			printf("Error: Failed to create command\n");
-			free_tokens(my_tokens);
-			printf("\n");
-			continue;
-		}
-		
-		// Parse tokens into commands
-		if (the_parser(my_tokens, my_commands))
-		{
-			printf("\nParsed Commands:\n");
-			print_commands(my_commands);
-			free_commands(my_commands);
-		}
-		else
-		{
-			printf("Error: Syntax validation failed\n");
-			free_commands(my_commands);
-		}
-		
-		free_tokens(my_tokens);
-		printf("\n");
+		i++;
 	}
+	if (c != 0)
+		return (0);
+	return (1);
+}
 
-	printf("\nExiting parser test...\n");
+int	fill_command_struct(char *input)
+{
+	t_tokens	*my_tokens;
+	t_commands	*my_commands;
+
+	if (!input_validation(input))
+		return (0);
+	my_tokens = NULL;
+	my_commands = new_command();
+	if (!my_commands)
+		return (0);
+	token_analyser(input, &my_tokens);
+	if (!syntax_validation(my_tokens))
+		return (free_parser(my_commands, my_tokens, 1));
+	print_tokens(my_tokens);
+	if (the_parser(my_tokens, my_commands))
+		print_commands(my_commands);
+	//command_expansion(my_commands);
+	free_parser(my_commands, my_tokens, 1);
+	return (1);
+}
+ #include <readline/readline.h>
+
+ int main()
+{
+	// char *input = "echo \"$HOME\" | grep a >file2 | echo \"abdallah\" | echo \'\"abdallah\"\' | echo \"$HOME\" | echo \"\'$HOME\'\" | echo \' \'$HOME\' \'";
+	// char *input = "echo \"$HOME\"";
+	char    *line;
+    while ((line = readline("minishell$")) != NULL)
+    {
+        if (ft_strlen(line) > 0)
+		fill_command_struct(line);
+        free(line);
+        line = (char *)NULL;
+    }
+	// fill_command_struct(input);
 	return (0);
 }

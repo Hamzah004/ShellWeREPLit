@@ -1,16 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   debugging_functions.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/09 09:46:05 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/03/09 09:46:52 by hbani-at         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include "parsing.h"
 
 void	print_tokens(t_tokens *head)
 {
@@ -37,6 +26,7 @@ void	print_tokens(t_tokens *head)
 		printf("\n");
 		tmp = tmp->next;
 	}
+	printf("-----------------------------------------------------\n");
 }
 
 void print_redirections(t_redir *redir)
@@ -63,16 +53,16 @@ void print_redirections(t_redir *redir)
 	}
 }
 
-void print_commands(t_cmd *cmd)
+void print_commands(t_commands *cmd)
 {
 	while (cmd)
 	{
 
-		if (cmd->args)
+		if (cmd->argv)
 		{
 			printf(" Arguments: ");
-			for (int i = 0; cmd->args[i]; i++)
-				printf("%s, ", cmd->args[i]);
+			for (int i = 0; cmd->argv[i]; i++)
+				printf("%s, ", cmd->argv[i]);
 			printf("\n");
 		}
 		else

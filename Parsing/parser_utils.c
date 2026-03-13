@@ -6,12 +6,36 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:13:38 by amufleh           #+#    #+#             */
-/*   Updated: 2026/02/18 16:25:28 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/03/03 11:43:54 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
-#include "../libft/libft.h"
+#include "parsing.h"
+
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
+{
+	void	*new_ptr;
+	size_t	copy_size;
+
+	if (old_size < new_size)
+		copy_size = old_size;
+	else
+		copy_size = new_size;
+	if (new_size == 0)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	new_ptr = malloc(new_size);
+	if (!new_ptr)
+		return (NULL);
+	if (ptr)
+	{
+		ft_memcpy(new_ptr, ptr, copy_size);
+		free(ptr);
+	}
+	return (new_ptr);
+}
 
 t_redir	*new_redirection(t_token_type type, char *value)
 {
@@ -21,81 +45,32 @@ t_redir	*new_redirection(t_token_type type, char *value)
 	if (!redir)
 		return (NULL);
 	redir->type = type;
-	redir->file = value;
+	redir->file = ft_strdup(value);
+	if (!redir->file)
+	{
+		free(redir);
+		return (NULL);
+	}
 	redir->next = NULL;
 	return (redir);
 }
 
-int	count_words(t_tokens *token)
+t_commands	*new_command(void)
 {
-	t_tokens *tmp;
-	int	count;
+	t_commands	*command;
 
-	count = 0;
-	tmp = token;
-	while(tmp && tmp->type != TOK_PIPE)
-	{
-		if (tmp->type == TOK_WORD)
-			count++;
-		tmp = tmp -> next;
-	}
-	return (count);
-}
-t_cmd	*new_command(t_tokens *tokens)
-{
-	t_cmd	*command;
-	int	size;
-
-	size = count_words(tokens);
-	command = malloc(sizeof(t_cmd));
+	command = malloc(sizeof(t_commands));
 	if (!command)
 		return (NULL);
-	command->args =  malloc(sizeof(char *) * (size + 2));
-	if (!command->args)
+	command->argv = malloc(sizeof(char *) * 1);
+	if (!command->argv)
+	{
+		free(command);
 		return (NULL);
+	}
+	command->argv[0] = NULL;
 	command->redirection = NULL;
 	command->next = NULL;
 	command->prev = NULL;
-
 	return (command);
-}
-
-int	fill_command_options(t_cmd *my_commands, int *size, char *tokens_value)
-{
-	if (!my_commands)
-		return (0);
-	my_commands->args[*size] = ft_strdup(tokens_value);
-	(*size)++;
-	my_commands->args[*size] = NULL;
-	return (1);
-}
-
-int	free_commands(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-	t_redir	*redir_tmp;
-
-	while (cmd)
-	{
-		tmp = cmd->next;
-		if (cmd->args)
-		{
-			int i = 0;
-			while (cmd->args[i])
-			{
-				free(cmd->args[i]);
-				i++;
-			}
-			free(cmd->args);
-		}
-		while (cmd->redirection)
-		{
-			redir_tmp = cmd->redirection->next;
-			free(cmd->redirection);
-			cmd->redirection = redir_tmp;
-		}
-		free(cmd);
-		cmd = tmp;
-	}
-	return (1);
 }
