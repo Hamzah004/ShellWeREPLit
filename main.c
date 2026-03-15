@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "include/parsing.h"
+#include "include/execution.h"
 #include "libft/libft.h"
 #include <bits/types/struct_itimerspec.h>
 #include <readline/history.h>
 #include <readline/readline.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -28,7 +28,7 @@ static t_error	validate_arguments(int argc)
 	return (ERROR_SUCCESS);
 }
 
-void	read_from_prompt(void)
+void	read_from_prompt(t_commands *cmd, t_tokens *token)
 {
 	char	*line;
 
@@ -38,6 +38,7 @@ void	read_from_prompt(void)
 		{
 			if (line && *line)
 				add_history(line);
+			fill_command_struct(line, token, cmd);
 		}
 		free(line);
 		line = (char *)NULL;
@@ -47,27 +48,22 @@ void	read_from_prompt(void)
 int	main(int argc, char **argv, char **env)
 {
 	t_program_info	info;
+	t_commands		cmd;
+	t_tokens		token;
 	t_error			err;
 	int				pid;
-	int				status;
 
 	(void)argv;
+	(void)env;
+	(void)info;
+	(void)pid;
 	err = validate_arguments(argc);
 	if (err != ERROR_SUCCESS)
 	{
 		print_error(err);
 		return (err);
 	}
-	get_env(&info, env);
-	get_path(&info);
-	// read_from_prompt();
-	// info.cmd = malloc(sizeof(*info.cmd));
-	pid = fork();
-	if (pid == 0)
-		execute_single_cmd(info.cmd, &info);
-	else if (pid > 0)
-	{
-		waitpid(pid, &status, 0);
-	}
+	read_from_prompt(&cmd, &token);
+	print_commands(&cmd);
 	return (0);
 }

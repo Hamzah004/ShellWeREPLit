@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "../include/parsing.h"
 
 int	fill_command_options(t_commands *my_commands, int *size, char *token_value)
 {

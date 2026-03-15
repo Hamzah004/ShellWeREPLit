@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../include/execution.h"
+#include "../libft/libft.h"
 #include <unistd.h>
 
 int	count_lines(char **env)
@@ -48,24 +49,24 @@ t_error	get_path(t_program_info *info)
 	return (ERROR_SUCCESS);
 }
 
-char	*get_cmd_path(t_cmd *cmd, t_program_info *prog_info)
+char	*get_cmd_path(t_commands *cmd, t_program_info *prog_info)
 {
 	char	*cmd_path;
 	char	*tmp;
 	int		i;
 
 	i = 0;
-	if (!cmd->args || !cmd->args[0] || cmd->args[0][0] == '\0')
+	if (!cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
 		return (NULL);
-	if (cmd->args[0][0] == '/' && access(cmd->args[0], X_OK) == 0)
-		return (ft_strdup(cmd->args[0]));
+	if (cmd->argv[0][0] == '/' && access(cmd->argv[0], X_OK) == 0)
+		return (ft_strdup(cmd->argv[0]));
 	while (prog_info->cmd_exec_dir && prog_info->cmd_exec_dir[i])
 	{
 		tmp = ft_strjoin(prog_info->cmd_exec_dir[i], "/");
 		// TODO: see if there is a return message will be here on the check
 		if (!tmp)
 			return (NULL);
-		cmd_path = ft_strjoin(tmp, cmd->args[0]);
+		cmd_path = ft_strjoin(tmp, cmd->argv[0]);
 		free(tmp);
 		if (!cmd_path)
 			return (NULL);
@@ -94,11 +95,10 @@ t_error	get_env(t_program_info *info, char **env)
 	return (ERROR_SUCCESS);
 }
 
-void	execute_single_cmd(t_cmd *cmd, t_program_info *info)
+void	execute_single_cmd(t_commands *cmd, t_program_info *info)
 {
 	char	*cmd_path;
 	cmd_path = get_cmd_path(cmd, info);
-	// char	*args[] = {cmd_path, "-la", NULL};
 
-	execve(cmd_path, cmd->args, info->envp);
+	execve(cmd_path, cmd->argv, info->envp);
 }

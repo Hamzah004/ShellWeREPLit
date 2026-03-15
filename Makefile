@@ -18,14 +18,27 @@ OK_STRING    = "[OK]"
 COM_STRING   = "Compiling"
 
 CC = cc
-CFLAGS = -g3 -Wall -Werror -Wextra
+CFLAGS = -g3 -Wall -Werror -Wextra -I./include
 NAME = minishell
 SRC =	main.c \
 	error.c \
-	$(EXECUTION_DIR)/execution.c
+	$(EXECUTION_DIR)/execution.c \
+	$(EXECUTION_DIR)/builtin_functions.c \
+	$(EXECUTION_DIR)/execution_utils.c \
+	$(PARSING_DIR)/tokenizer.c \
+	$(PARSING_DIR)/tokenizer_utls.c \
+	$(PARSING_DIR)/command_expansion.c \
+	$(PARSING_DIR)/command_expansion_utils.c \
+	$(PARSING_DIR)/debugging_functions.c \
+	$(PARSING_DIR)/free_parser.c \
+	$(PARSING_DIR)/parser.c \
+	$(PARSING_DIR)/parser_utils.c \
+	$(PARSING_DIR)/syntax_validation.c \
+	$(PARSING_DIR)/fill_command.c
 
 OBJS = $(SRC:.c=.o)
 EXECUTION_DIR = ./execution
+PARSING_DIR = ./Parsing
 LIBFT_DIR = ./libft
 LIBFT_A = $(LIBFT_DIR)/libft.a
 
