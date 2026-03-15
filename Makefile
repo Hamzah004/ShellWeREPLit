@@ -38,7 +38,7 @@ SRC =	main.c \
 
 OBJS = $(SRC:.c=.o)
 EXECUTION_DIR = ./execution
-PARSING_DIR = ./parsing
+PARSING_DIR = ./Parsing
 LIBFT_DIR = ./libft
 LIBFT_A = $(LIBFT_DIR)/libft.a
 
