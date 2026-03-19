@@ -77,10 +77,8 @@ int	free_tokens(t_tokens *head)
 	return (0);
 }
 
-int	free_parser(t_commands *my_commands, t_tokens *my_tokens, int flag)
+int	free_parser(t_commands *my_commands)
 {
-	if (flag)
-		free_commands(my_commands);
-	free_tokens(my_tokens);
+	free_commands(my_commands);
 	return (0);
 }

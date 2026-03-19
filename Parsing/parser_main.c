@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 09:41:13 by amufleh           #+#    #+#             */
-/*   Updated: 2026/03/10 15:23:04 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/03/19 14:21:47 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,41 +37,42 @@ int	input_validation(char *input)
 	return (1);
 }
 
-int	fill_command_struct(char *input)
+t_commands	*fill_command_struct(char *input)
 {
 	t_tokens	*my_tokens;
 	t_commands	*my_commands;
 
 	if (!input_validation(input))
-		return (0);
+		return (NULL);
 	my_tokens = NULL;
 	my_commands = new_command();
 	if (!my_commands)
-		return (0);
+		return (NULL);
 	token_analyser(input, &my_tokens);
 	if (!syntax_validation(my_tokens))
-		return (free_parser(my_commands, my_tokens, 1));
+	{
+		free_tokens(my_tokens);
+		free_parser(my_commands);
+		return (NULL);
+	}
 	print_tokens(my_tokens);
-	if (the_parser(my_tokens, my_commands))
-		print_commands(my_commands);
+	if (! the_parser(my_tokens, my_commands))
+		return (NULL);
 	//command_expansion(my_commands);
-	free_parser(my_commands, my_tokens, 1);
-	return (1);
+	free_tokens(my_tokens);
+	return (my_commands);
 }
  #include <readline/readline.h>
 
  int main()
 {
-	// char *input = "echo \"$HOME\" | grep a >file2 | echo \"abdallah\" | echo \'\"abdallah\"\' | echo \"$HOME\" | echo \"\'$HOME\'\" | echo \' \'$HOME\' \'";
-	// char *input = "echo \"$HOME\"";
-	char    *line;
-    while ((line = readline("minishell$")) != NULL)
-    {
-        if (ft_strlen(line) > 0)
-		fill_command_struct(line);
-        free(line);
-        line = (char *)NULL;
-    }
-	// fill_command_struct(input);
+	t_commands	*my_commands;
+
+	char *input = "echo \"$HOME\" | grep a >file2 | echo \"abdallah\" | echo \'\"abdallah\"\' | echo \"$HOME\" | echo \"\'$HOME\'\" | echo \' \'$HOME\' \'";
+	// char *input = "echo \" 	$HOME\"$PATH";
+	my_commands =  fill_command_struct(input);
+	if (my_commands)
+		print_commands(my_commands);
+	free_parser(my_commands);
 	return (0);
 }

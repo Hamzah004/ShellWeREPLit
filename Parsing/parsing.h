@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:25:30 by amufleh           #+#    #+#             */
-/*   Updated: 2026/03/10 14:00:59 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/03/19 14:20:44 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ int				the_parser(t_tokens *my_tokens, t_commands *my_commands);
 int				parse_token(t_commands **my_commands,
 					t_tokens **token, int *size);
 void			free_commands(t_commands *my_commands);
-int				free_parser(t_commands *my_commands,
-					t_tokens *my_tokens, int flag);
+int				free_parser(t_commands *my_commands);
 void			free_redirections(t_redir *redir_list);
 void			*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
