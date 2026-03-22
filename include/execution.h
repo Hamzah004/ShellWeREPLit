@@ -27,7 +27,7 @@ typedef enum e_error
 typedef struct s_program_info
 {
 	char			**envp;
-	t_commands		*cmd;
+	t_commands		*my_commands;
 	char			**cmd_exec_dir;
 }					t_program_info;
 
@@ -41,6 +41,6 @@ void				print_error(t_error error);
 int					count_lines(char **env);
 t_error				get_env(t_program_info *info, char **env);
 t_error				get_path(t_program_info *info);
-void				execute_single_cmd(t_commands *cmd, t_program_info *info);
+void				execute_single_cmd(t_commands *my_commands, t_program_info *info);
 
 #endif

@@ -23,8 +23,8 @@ int	input_validation(char *input)
 	while (input[i])
 	{
 		c = input[i];
-		if ((c == '|' || c == '>' || c == '<') && (i == 0
-				|| input[i - 1] == ' '))
+		if ((c == '|' || c == '>' || c == '<') && (i == 0 || input[i
+				- 1] == ' '))
 			return (0);
 		if (c == '\'' || c == '\"')
 			return (1);
@@ -35,20 +35,28 @@ int	input_validation(char *input)
 	return (0);
 }
 
-int	fill_command_struct(char *input, t_tokens *my_token, t_commands *my_command)
+t_commands	*fill_command_struct(char *input)
 {
+	t_tokens	*my_tokens;
+	t_commands	*my_commands;
+
 	if (!input_validation(input))
-		return (0);
-	my_token = NULL;
-	my_command = new_command();
-	if (!my_command)
-		return (0);
-	token_analyser(input, &my_token);
-	if (!syntax_validation(my_token))
-		return (free_parser(my_command, my_token, 1));
-	// print_tokens(my_token);
-	if (the_parser(my_token, my_command))
-		print_commands(my_command);
-	free_parser(my_command, my_token, 1);
-	return (1);
+		return (NULL);
+	my_tokens = NULL;
+	my_commands = new_command();
+	if (!my_commands)
+		return (NULL);
+	token_analyser(input, &my_tokens);
+	if (!syntax_validation(my_tokens))
+	{
+		free_tokens(my_tokens);
+		// free_parser(my_commands);
+		return (NULL);
+	}
+	print_tokens(my_tokens);
+	if (!the_parser(my_tokens, my_commands))
+		return (NULL);
+	// command_expansion(my_commands);
+	free_tokens(my_tokens);
+	return (my_commands);
 }

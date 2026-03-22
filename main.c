@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/parsing.h"
 #include "include/execution.h"
+#include "include/parsing.h"
 #include "libft/libft.h"
 #include <bits/types/struct_itimerspec.h>
 #include <readline/history.h>
@@ -28,7 +28,7 @@ static t_error	validate_arguments(int argc)
 	return (ERROR_SUCCESS);
 }
 
-void	read_from_prompt(t_commands *cmd, t_tokens *token)
+t_commands	*read_from_prompt(void)
 {
 	char	*line;
 
@@ -38,24 +38,23 @@ void	read_from_prompt(t_commands *cmd, t_tokens *token)
 		{
 			if (line && *line)
 				add_history(line);
-			fill_command_struct(line, token, cmd);
+			return (fill_command_struct(line));
 		}
 		free(line);
 		line = (char *)NULL;
 	}
+	return (NULL);
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_program_info	info;
-	t_commands		cmd;
-	t_tokens		token;
 	t_error			err;
 	int				pid;
 
 	(void)argv;
 	(void)env;
-	(void)info;
+	// (void)info;
 	(void)pid;
 	err = validate_arguments(argc);
 	if (err != ERROR_SUCCESS)
@@ -63,7 +62,7 @@ int	main(int argc, char **argv, char **env)
 		print_error(err);
 		return (err);
 	}
-	read_from_prompt(&cmd, &token);
-	print_commands(&cmd);
+	info.my_commands = read_from_prompt();
+	print_commands(info.my_commands);
 	return (0);
 }

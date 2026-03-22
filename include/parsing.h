@@ -95,7 +95,6 @@ char				*remove_quotes(char *str);
 int					count_words(t_tokens *token);
 
 int					command_expansion(t_commands *my_commands);
-int					fill_command_struct(char *input, t_tokens *my_tokens,
-						t_commands *my_commands);
+t_commands			*fill_command_struct(char *input);
 
 #endif
