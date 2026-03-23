@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "../include/parsing.h"
 
 char	*push_char(char const *s1, char s2)
 {

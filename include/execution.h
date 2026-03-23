@@ -13,47 +13,34 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "parsing.h"
+
 typedef enum e_error
 {
 	ERROR_SUCCESS = 0,
 	ERROR_INVALID_ARGS = 1,
 	ERROR_INVALID_PID = 2,
-	ERROR_INVALID_KILL = 3
+	ERROR_INVALID_KILL = 3,
+	ERROR_MEMORY = 4
 }					t_error;
 
-typedef enum e_token_type
+typedef struct s_program_info
 {
-	TOK_WORD,
-	TOK_PIPE,
-	TOK_REDIR_IN,
-	TOK_REDIR_OUT,
-	TOK_APPEND,
-	TOK_HEREDOC,
-	TOK_SINGLE_QUOTE,
-	TOK_DOUBLE_QUOTE
-}					t_token_type;
+	char			**envp;
+	t_commands		*my_commands;
+	char			**cmd_exec_dir;
+}					t_program_info;
 
-typedef struct s_redirection
+typedef struct s_env
 {
-	char	*infile;
-	char	*outfile;
-}	t_redirection;
-
-typedef struct s_cmd
-{
-	char			*cmd;
-	char	**argv;
-	int	pipin;
-	int	pipout;
-}					t_cmd;
-
-typedef struct s_token
-{
-	t_token_type	type;
-	char			*value;
-	struct s_token	*next;
-}					t_tokens;
+	char			*content;
+	struct s_env	*next;
+}					t_env;
 
 void				print_error(t_error error);
+int					count_lines(char **env);
+t_error				get_env(t_program_info *info, char **env);
+t_error				get_path(t_program_info *info);
+void				execute_single_cmd(t_commands *my_commands, t_program_info *info);
 
 #endif

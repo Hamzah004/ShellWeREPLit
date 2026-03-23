@@ -6,7 +6,7 @@
 #    By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/11 16:28:02 by hbani-at          #+#    #+#              #
-#    Updated: 2026/02/11 16:28:11 by hbani-at         ###   ########.fr        #
+#    Updated: 2026/03/09 08:56:56 by hbani-at         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,12 +18,27 @@ OK_STRING    = "[OK]"
 COM_STRING   = "Compiling"
 
 CC = cc
-CFLAGS = -g3 -Wall -Werror -Wextra
+CFLAGS = -g3 -Wall -Werror -Wextra -I./include
 NAME = minishell
 SRC =	main.c \
-	error.c
+	error.c \
+	$(EXECUTION_DIR)/execution.c \
+	$(EXECUTION_DIR)/builtin_functions.c \
+	$(EXECUTION_DIR)/execution_utils.c \
+	$(PARSING_DIR)/tokenizer.c \
+	$(PARSING_DIR)/tokenizer_utls.c \
+	$(PARSING_DIR)/command_expansion.c \
+	$(PARSING_DIR)/command_expansion_utils.c \
+	$(PARSING_DIR)/debugging_functions.c \
+	$(PARSING_DIR)/free_parser.c \
+	$(PARSING_DIR)/parser.c \
+	$(PARSING_DIR)/parser_utils.c \
+	$(PARSING_DIR)/syntax_validation.c \
+	$(PARSING_DIR)/fill_command.c
 
 OBJS = $(SRC:.c=.o)
+EXECUTION_DIR = ./execution
+PARSING_DIR = ./parsing
 LIBFT_DIR = ./libft
 LIBFT_A = $(LIBFT_DIR)/libft.a
 

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "../include/parsing.h"
 
 int	input_validation(char *input)
 {
@@ -52,7 +52,7 @@ t_commands	*fill_command_struct(char *input)
 	if (!syntax_validation(my_tokens))
 	{
 		free_tokens(my_tokens);
-		free_parser(my_commands);
+		// free_parser(my_commands);
 		return (NULL);
 	}
 	print_tokens(my_tokens);
@@ -73,6 +73,6 @@ t_commands	*fill_command_struct(char *input)
 	my_commands =  fill_command_struct(input);
 	if (my_commands)
 		print_commands(my_commands);
-	free_parser(my_commands);
+	// free_parser(my_commands);
 	return (0);
 }

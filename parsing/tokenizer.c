@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "../include/parsing.h"
 
 int	add_token(t_tokens **tokens, char *value)
 {

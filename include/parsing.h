@@ -6,27 +6,28 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:25:30 by amufleh           #+#    #+#             */
-/*   Updated: 2026/02/18 16:28:20 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/03/10 14:00:59 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-# include <unistd.h>
+# include "../libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
-# include "../libft/libft.h"
+# include <string.h>
+# include <unistd.h>
 
-typedef enum token_type
+typedef enum e_token_type
 {
 	TOK_WORD,
 	TOK_PIPE,
 	TOK_REDIR_IN,
 	TOK_REDIR_OUT,
 	TOK_APPEND,
-	TOK_HEREDOC,
-}	t_token_type;
+	TOK_HEREDOC
+}					t_token_type;
 
 typedef struct s_token
 {
@@ -34,55 +35,66 @@ typedef struct s_token
 	char			*value;
 	struct s_token	*next;
 	struct s_token	*prev;
-}	t_tokens;
+}					t_tokens;
 
 typedef struct s_redir
 {
-	t_token_type type;
-	char *file;
-	struct s_redir *next;
-} t_redir;
+	t_token_type	type;
+	char			*file;
+	struct s_redir	*next;
+}					t_redir;
 
 typedef struct s_cmd
 {
-	char **argv;
-	t_redir *redirection;
-	struct s_cmd *next;
-	struct s_cmd *prev;
-} t_commands;
+	char			**argv;
+	t_redir			*redirection;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+}					t_commands;
 
-int				free_tokens(t_tokens *head);
-int				is_separator(char c);
-int				is_operator(char c);
-int				add_token(t_tokens **tokens, char *value);
-int				extract_tokin(t_tokens **my_tokens, char *command,
-					int start, int end);
-int				handel_operators(t_tokens **my_tokens, char *command, int *i);
-int				handle_word(t_tokens **my_tokens, char *command, int *i);
-int				token_analyser(char *command, t_tokens **my_tokens);
-t_token_type	set_token_type(char *str);
-t_tokens		*new_token(char *value, t_token_type type);
+// TOKENIZER
 
-//------------- ---------------------------------------------------
+int					free_tokens(t_tokens *head);
+int					is_separator(char c);
+int					is_operator(char c);
+int					add_token(t_tokens **tokens, char *value);
+int					extract_tokin(t_tokens **my_tokens, char *command,
+						int start, int end);
+int					handel_operators(t_tokens **my_tokens, char *command,
+						int *i);
+int					handle_word(t_tokens **my_tokens, char *command, int *i);
+int					token_analyser(char *command, t_tokens **my_tokens);
+t_token_type		set_token_type(char *str);
+t_tokens			*new_token(char *value, t_token_type type);
+int					syntax_validation(t_tokens *my_tokens);
+int					is_redirection(t_token_type type);
 
-int syntax_validation (t_tokens *my_tokens);
-int	is_redirection (t_token_type type);
+// DEBUG
 
-//------------------------------------------------------------------
+void				print_tokens(t_tokens *head);
+void				print_redirections(t_redir *redir);
+void				print_commands(t_commands *cmd);
 
-void	print_tokens(t_tokens *head);
-void print_redirections(t_redir *redir);
-void print_commands(t_commands *cmd);
+// PARSER
 
-//------------------------------------------------------------------
+t_redir				*new_redirection(t_token_type type, char *value);
+t_commands			*new_command(void);
+int					fill_command_options(t_commands *my_commands, int *size,
+						char *token_value);
+int					add_redir(t_redir **redirection, t_tokens *token);
+int					add_command(t_commands **command, int *size);
+int					the_parser(t_tokens *my_tokens, t_commands *my_commands);
+int					parse_token(t_commands **my_commands, t_tokens **token,
+						int *size);
+void				free_commands(t_commands *my_commands);
+int					free_parser(t_commands *my_commands, t_tokens *my_tokens,
+						int flag);
+void				free_redirections(t_redir *redir_list);
+void				*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+char				*remove_quotes(char *str);
+int					count_words(t_tokens *token);
 
-t_redir	*new_redirection(t_token_type type, char *value);
-t_commands	*new_command(t_tokens *tokens);
-int	fill_command_options(t_commands *my_commands,
-	int *size, char *tokens_value);
-int	add_redir(t_redir **redirection, t_tokens *token);
-int	add_command(t_commands **command, int *size, t_tokens *tokens);
-int the_parser(t_tokens *my_tokens, t_commands *my_commands);
-int	count_words(t_tokens *token);
+int					command_expansion(t_commands *my_commands);
+t_commands			*fill_command_struct(char *input);
 
 #endif

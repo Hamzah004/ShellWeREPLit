@@ -6,27 +6,20 @@
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:43:25 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/02/11 16:44:13 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/03/09 08:59:25 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "include/execution.h"
+#include "include/parsing.h"
 #include "libft/libft.h"
+#include <bits/types/struct_itimerspec.h>
 #include <readline/history.h>
 #include <readline/readline.h>
-#include <signal.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
-
-void	handle_ctrl_c(int signal)
-{
-	(void)signal;
-	// if (signal == SIGINT)
-	// {
-	//
-	// }
-}
 
 static t_error	validate_arguments(int argc)
 {
@@ -35,29 +28,39 @@ static t_error	validate_arguments(int argc)
 	return (ERROR_SUCCESS);
 }
 
+void	read_from_prompt(t_program_info *info)
+{
+	char	*line;
+
+	while ((line = readline("minishell$")) != NULL)
+	{
+		if (ft_strlen(line) > 0)
+		{
+			add_history(line);
+			info->my_commands = fill_command_struct(line);
+			// NOTE: testing only
+			print_commands(info->my_commands);
+		}
+		free(line);
+		line = (char *)NULL;
+	}
+}
+
 int	main(int argc, char **argv, char **env)
 {
-	char				*line;
-	struct sigaction	sa;
-	t_error				err;
+	t_program_info	info;
+	t_error			err;
+	int				pid;
 
-	sa.sa_handler = &handle_ctrl_c;
+	(void)argv;
+	(void)env;
+	(void)pid;
 	err = validate_arguments(argc);
-	sigaction(SIGINT, &sa, NULL);
 	if (err != ERROR_SUCCESS)
 	{
 		print_error(err);
 		return (err);
 	}
-	while ((line = readline("minishell$")) != NULL)
-	{
-		if (strlen(line) > 0)
-			add_history(line);
-		if (!ft_strncmp(line, "clear", ft_strlen(line)))
-		{
-			execve("/usr/bin/clear", argv, env);
-		}
-		free(line);
-	}
+	read_from_prompt(&info);
 	return (0);
 }

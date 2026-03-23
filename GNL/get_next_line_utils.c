@@ -1,14 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_expansion_utils.c                          :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/03 13:05:42 by amufleh           #+#    #+#             */
-/*   Updated: 2026/03/03 13:05:50 by amufleh          ###   ########.fr       */
+/*   Created: 2025/09/13 13:33:21 by hbani-at          #+#    #+#             */
+/*   Updated: 2025/09/21 21:15:55 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
+#include <stdlib.h>
 
-#include "parsing.h"
+int	ft_contains_char(const char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i] != '\0')
+	{
+		if (s[i] == (unsigned char)c)
+			return (1);
+		i++;
+	}
+	return (0);
+}

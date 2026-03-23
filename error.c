@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
-#include "./libft/libft.h"
+#include "include/execution.h"
+#include "libft/libft.h"
 
 void	print_error(t_error error)
 {
@@ -24,4 +24,6 @@ void	print_error(t_error error)
 		ft_putstr_fd("Invalid PID\n", 2);
 	if (error == ERROR_INVALID_KILL)
 		ft_putstr_fd("Failed to send signal\n", 2);
+	if (error == ERROR_MEMORY)
+		ft_putstr_fd("Memory allocation failed\n", 2);
 }

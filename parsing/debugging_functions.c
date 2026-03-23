@@ -1,5 +1,5 @@
 
-#include "parsing.h"
+#include "../include/parsing.h"
 
 void	print_tokens(t_tokens *head)
 {
