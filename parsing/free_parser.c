@@ -29,7 +29,7 @@ void	free_argv(char **argv)
 
 void	free_redirections(t_redir *redir_list)
 {
-	t_redir	*tmp;
+	t_redir *tmp;
 
 	while (redir_list)
 	{
@@ -43,7 +43,7 @@ void	free_redirections(t_redir *redir_list)
 
 void	free_commands(t_commands *my_commands)
 {
-	t_commands	*tmp;
+	t_commands *tmp;
 
 	if (my_commands)
 	{
@@ -64,7 +64,7 @@ void	free_commands(t_commands *my_commands)
 
 int	free_tokens(t_tokens *head)
 {
-	t_tokens	*tmp;
+	t_tokens *tmp;
 
 	while (head)
 	{

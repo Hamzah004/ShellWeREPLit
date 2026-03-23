@@ -39,7 +39,7 @@ void	read_from_prompt(t_program_info *info)
 			add_history(line);
 			info->my_commands = fill_command_struct(line);
 			// NOTE: testing only
-			// print_commands(info->my_commands);
+			print_commands(info->my_commands);
 		}
 		free(line);
 		line = (char *)NULL;
