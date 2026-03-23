@@ -10,3 +10,4 @@ a custom, lightweight Unix shell interpreter developed in C, designed to emulate
 - [Building a Parser from scratch](https://www.youtube.com/watch?v=4m7ubrdbWQU&t=38s)
 - [Heredoc: A Deep Dive](https://medium.com/@oduwoledare/heredoc-a-deep-dive-23c82992e522)
 - [How to distinguish between builtin and external util?](https://unix.stackexchange.com/questions/371722/how-to-distinguish-between-builtin-and-external-util-e-g-echo)
+- [42-minishell explained github](https://github.com/multitudes/42-minishell?tab=readme-ov-file)
