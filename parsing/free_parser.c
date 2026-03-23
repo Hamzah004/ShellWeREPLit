@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   free_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/23 17:42:57 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/03/23 17:43:16 by hbani-at         ###   ########.fr       */
+/*   Created: 2026/03/03 10:08:58 by amufleh           #+#    #+#             */
+/*   Updated: 2026/03/03 10:08:58 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 
-
 void	free_argv(char **argv)
 {
-	int i;
+	int	i;
 
 	if (!argv)
 		return ;
