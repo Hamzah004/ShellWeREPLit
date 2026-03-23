@@ -28,7 +28,7 @@ static t_error	validate_arguments(int argc)
 	return (ERROR_SUCCESS);
 }
 
-t_commands	*read_from_prompt(void)
+void	read_from_prompt(t_program_info *info)
 {
 	char	*line;
 
@@ -36,14 +36,14 @@ t_commands	*read_from_prompt(void)
 	{
 		if (ft_strlen(line) > 0)
 		{
-			if (line && *line)
-				add_history(line);
-			return (fill_command_struct(line));
+			add_history(line);
+			info->my_commands = fill_command_struct(line);
+			// NOTE: testing only
+			// print_commands(info->my_commands);
 		}
 		free(line);
 		line = (char *)NULL;
 	}
-	return (NULL);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -54,7 +54,6 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argv;
 	(void)env;
-	// (void)info;
 	(void)pid;
 	err = validate_arguments(argc);
 	if (err != ERROR_SUCCESS)
@@ -62,7 +61,6 @@ int	main(int argc, char **argv, char **env)
 		print_error(err);
 		return (err);
 	}
-	info.my_commands = read_from_prompt();
-	print_commands(info.my_commands);
+	read_from_prompt(&info);
 	return (0);
 }
