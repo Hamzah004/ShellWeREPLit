@@ -95,10 +95,18 @@ t_error	get_env(t_program_info *info, char **env)
 	return (ERROR_SUCCESS);
 }
 
-// void	execute_single_cmd(t_commands *cmd, t_program_info *info)
-// {
-// 	char	*cmd_path;
-// 	cmd_path = get_cmd_path(cmd, info);
-//
-// 	execve(cmd_path, cmd->argv, info->envp);
-// }
+void	execute_single_cmd(t_commands *cmd, t_program_info *info)
+{
+	char	*cmd_path;
+	cmd_path = get_cmd_path(cmd, info);
+
+	execve(cmd_path, cmd->argv, info->envp);
+}
+
+int execution(t_program_info *info)
+{
+	info->old_stdin = dup(STDIN_FILENO);
+	info->old_stdout = dup(STDOUT_FILENO);
+
+	if ()
+}

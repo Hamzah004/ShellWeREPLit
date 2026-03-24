@@ -38,8 +38,7 @@ void	read_from_prompt(t_program_info *info)
 		{
 			add_history(line);
 			info->my_commands = fill_command_struct(line);
-			// NOTE: testing only
-			print_commands(info->my_commands);
+			execution(info);
 		}
 		free(line);
 		line = (char *)NULL;
@@ -61,6 +60,8 @@ int	main(int argc, char **argv, char **env)
 		print_error(err);
 		return (err);
 	}
+	info.old_stdin = -1;
+	info.old_stdout = -1;
 	read_from_prompt(&info);
 	return (0);
 }
