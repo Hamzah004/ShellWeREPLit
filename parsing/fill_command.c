@@ -53,7 +53,7 @@ t_commands	*fill_command_struct(char *input)
 		// free_parser(my_commands);
 		return (NULL);
 	}
-	print_tokens(my_tokens);
+	// print_tokens(my_tokens);
 	if (!the_parser(my_tokens, my_commands))
 		return (NULL);
 	// command_expansion(my_commands);

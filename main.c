@@ -6,7 +6,7 @@
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:43:25 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/03/09 08:59:25 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/03/29 19:07:27 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,8 @@ int	main(int argc, char **argv, char **env)
 {
 	t_program_info	info;
 	t_error			err;
-	int				pid;
 
 	(void)argv;
-	(void)env;
-	(void)pid;
 	err = validate_arguments(argc);
 	if (err != ERROR_SUCCESS)
 	{
@@ -62,6 +59,9 @@ int	main(int argc, char **argv, char **env)
 	}
 	info.old_stdin = -1;
 	info.old_stdout = -1;
+	info.cmd_exec_dir = NULL;
+	get_env(&info, env);
+	get_path(&info);
 	read_from_prompt(&info);
 	return (0);
 }

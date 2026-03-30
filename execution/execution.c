@@ -6,12 +6,14 @@
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:25:08 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/03/09 12:09:58 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/03/29 19:26:20 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include "../libft/libft.h"
+#include <stdio.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 int	count_lines(char **env)
@@ -92,21 +94,37 @@ t_error	get_env(t_program_info *info, char **env)
 		info->envp[i] = ft_strdup(env[i]);
 		i++;
 	}
+	info->envp[i] = NULL;
 	return (ERROR_SUCCESS);
 }
 
-void	execute_single_cmd(t_commands *cmd, t_program_info *info)
+void	execute_single_cmd(t_program_info *info)
 {
 	char	*cmd_path;
-	cmd_path = get_cmd_path(cmd, info);
 
-	execve(cmd_path, cmd->argv, info->envp);
+	cmd_path = get_cmd_path(info->my_commands, info);
+	if (cmd_path == NULL)
+	{
+		perror("command not found");
+		exit(127);
+	}
+	execve(cmd_path, info->my_commands->argv, info->envp);
+	perror("execve");
 }
 
-int execution(t_program_info *info)
+int	execution(t_program_info *info)
 {
+	int	pid;
+
 	info->old_stdin = dup(STDIN_FILENO);
 	info->old_stdout = dup(STDOUT_FILENO);
-
-	if ()
+	pid = fork();
+	if (pid == 0)
+	{
+		apply_redir(info->my_commands);
+		execute_single_cmd(info);
+	}
+	waitpid(-1, NULL, 0);
+	// parent process
+	return (0);
 }
