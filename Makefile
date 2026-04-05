@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+         #
+#    By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/11 16:28:02 by hbani-at          #+#    #+#              #
-#    Updated: 2026/03/09 08:56:56 by hbani-at         ###   ########.fr        #
+#    Updated: 2026/04/05 13:35:33 by amufleh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRC =	main.c \
 	$(PARSING_DIR)/parser.c \
 	$(PARSING_DIR)/parser_utils.c \
 	$(PARSING_DIR)/syntax_validation.c \
+	$(PARSING_DIR)/command_expansion_utils2.c \
 	$(PARSING_DIR)/fill_command.c
 
 OBJS = $(SRC:.c=.o)
@@ -46,11 +47,11 @@ LIBFT_A = $(LIBFT_DIR)/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_A)
-	@$(CC) $(CFLAGS) -lreadline $(OBJS) $(LIBFT_A) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) -lreadline -o $(NAME)
 	@printf "$(OK_COLOR)$(OK_STRING) final minishell executable successfully created\n$(NO_COLOR)"
 
 $(LIBFT_A):
-	@make --no-print-directory -C $(LIBFT_DIR) bonus
+	@make --no-print-directory -C $(LIBFT_DIR) all bonus
 	@printf "$(OK_COLOR)$(OK_STRING) libft archive cerated\n$(NO_COLOR)"
 
 %.o : %.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:43:25 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/03/29 19:07:27 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/04/05 13:37:10 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_error	validate_arguments(int argc)
 	return (ERROR_SUCCESS);
 }
 
-void	read_from_prompt(t_program_info *info)
+void	read_from_prompt(t_program_info *info, char **env)
 {
 	char	*line;
 
@@ -37,9 +37,10 @@ void	read_from_prompt(t_program_info *info)
 		if (ft_strlen(line) > 0)
 		{
 			add_history(line);
-			info->my_commands = fill_command_struct(line);
-			execution(info);
+			info->my_commands = fill_command_struct(line, env);
+			print_commands(info->my_commands);
 		}
+		execution(info);
 		free(line);
 		line = (char *)NULL;
 	}
@@ -62,6 +63,6 @@ int	main(int argc, char **argv, char **env)
 	info.cmd_exec_dir = NULL;
 	get_env(&info, env);
 	get_path(&info);
-	read_from_prompt(&info);
+	read_from_prompt(&info, env);
 	return (0);
 }

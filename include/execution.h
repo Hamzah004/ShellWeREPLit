@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:18:49 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/03/29 19:06:08 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/04/05 13:37:32 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int					count_lines(char **env);
 t_error				get_env(t_program_info *info, char **env);
 t_error				get_path(t_program_info *info);
 void				execute_single_cmd(t_program_info *info);
+void				read_from_prompt(t_program_info *info, char **env);
 int					apply_redir(t_commands *my_commands);
 
 #endif
