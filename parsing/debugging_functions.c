@@ -62,7 +62,7 @@ void print_commands(t_commands *cmd)
 		{
 			printf(" Arguments: ");
 			for (int i = 0; cmd->argv[i]; i++)
-				printf("%s, ", cmd->argv[i]);
+				printf("[%s], ", cmd->argv[i]);
 			printf("\n");
 		}
 		else

@@ -6,101 +6,118 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 13:04:59 by amufleh           #+#    #+#             */
-/*   Updated: 2026/03/10 15:26:35 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/04/05 13:38:40 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 
-char	*push_char(char const *s1, char s2)
-{
-	char	*new_str;
-	size_t	i;
-
-	if (!s1 || !s2)
-		return (NULL);
-	i = 0;
-	new_str = malloc((ft_strlen(s1) + 2) * sizeof(char));
-	if (!new_str)
-		return (NULL);
-	while (i < ft_strlen(s1))
-	{
-		new_str[i] = s1[i];
-		i++;
-	}
-	new_str[i] = s2;
-	i++;
-	new_str[i] = '\0';
-	return (new_str);
-}
-
-int	get_vname(char *str, int start)
-{
-	int	i;
-
-	i = start;
-	while (str[i])
-	{
-		if (str[i] == '$' || str[i] == '\'' || str[i] == '\'')
-			break ;
-		i++;
-	}
-	return (i);
-}
-
-void	double_quotes(char *str, int start)
+char	*handel_double_quote(char *input, int *i, char *result, char **env)
 {
 	char	*tmp;
-	int		i;
-	int		j;
-	int		size;
+	char	*new_result;
 
-	i = start;
-	while(str[i] != '\"' && str[i])
+	if (!input)
+		return (NULL);
+	tmp = handle_var(input, i, env);
+	if (!tmp)
 	{
-		if (str[i] == '$')
-		{
-			j = get_vname(str, i);
-			tmp = ft_substr(str, i, j);
-			size = ft_strlen(str);
-			if ((i + j) < size)
-				i += j;
-			else
-				break ;
-		}
-		i++;
+		free(result);
+		return (NULL);
 	}
-	printf("%s ", tmp);
+	new_result = ft_strjoin(result, tmp);
+	free(tmp);
+	if (!new_result)
+	{
+		free(result);
+		return (NULL);
+	}
+	free(result);
+	return (new_result);
 }
 
-int	command_expansion(t_commands *my_commands)
+char	*handel_single_quote(char *input, int *i, char *result)
+{
+	if (!input)
+		return (NULL);
+	result = append(result, input[*i]);
+	if (!result)
+		return (NULL);
+	(*i)++;
+	return (result);
+}
+
+char	*quote_tracker(t_track_quote *tracker, char *input,
+	char *result, char **env)
+{
+	if (input[tracker->i] == '\'' && !tracker->d_quote)
+	{
+		tracker->s_quote = !tracker->s_quote;
+		tracker->i++;
+	}
+	else if (input[tracker->i] == '\"' && !tracker->s_quote)
+	{
+		tracker->d_quote = !tracker->d_quote;
+		tracker->i++;
+	}
+	if (input[tracker->i] == '$' && !tracker->s_quote)
+	{
+		result = handel_double_quote(input, &tracker->i, result, env);
+		if (!result)
+			return (NULL);
+	}
+	else if (input[tracker->i])
+	{
+		result = handel_single_quote(input, &tracker->i, result);
+		if (!result)
+			return (NULL);
+	}
+	return (result);
+}
+
+char	*expand_argv(char *input, char **env)
+{
+	char			*result;
+	t_track_quote	tracker;
+
+	tracker.i = 0;
+	tracker.d_quote = 0;
+	tracker.s_quote = 0;
+	result = ft_strdup("");
+	if (!result)
+		return (NULL);
+	while (input[tracker.i])
+	{
+		result = quote_tracker(&tracker, input, result, env);
+		if (!result)
+			return (NULL);
+	}
+	return (result);
+}
+
+int	yokotenkai(t_commands *my_commands, char **env)
 {
 	int		i;
-	int		j;
+	char	*tmp;
 
-	i = 0;
-	j = 0;
-	while (my_commands->argv[i])
+	while (my_commands)
 	{
-		j = 0;
-		while (my_commands->argv[i][j])
+		i = 0;
+		while (my_commands->argv && my_commands->argv[i])
 		{
-			if (my_commands->argv[i][j] == '\"')
-			{
-				j++;
-				double_quotes(my_commands->argv[i], j);
-				break ;
-			}
+			tmp = expand_argv(my_commands->argv[i], env);
+			if (!tmp)
+				return (0);
+			free(my_commands->argv[i]);
+			my_commands->argv[i] = tmp;
+			i++;
 		}
-		// printf("%s  ", tmp);
-		// tmp = ft_strdup("\0");
-		i++;
+		if (my_commands->redirection && my_commands->redirection->file)
+		{
+			my_commands->redirection->file
+				= replace_str(my_commands->redirection->file);
+		}
+		my_commands = my_commands->next;
 	}
-	return (0);
+	return (1);
 }
-// if not virabel
-// 	remove '' and ""
-// else
-// 	cheak if it must be replaced or not
-// 	and modfay it
-
