@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:43:25 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/03/09 08:59:25 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/04/05 13:37:10 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_error	validate_arguments(int argc)
 	return (ERROR_SUCCESS);
 }
 
-void	read_from_prompt(t_program_info *info)
+void	read_from_prompt(t_program_info *info, char **env)
 {
 	char	*line;
 
@@ -37,7 +37,7 @@ void	read_from_prompt(t_program_info *info)
 		if (ft_strlen(line) > 0)
 		{
 			add_history(line);
-			info->my_commands = fill_command_struct(line);
+			info->my_commands = fill_command_struct(line, env);
 			// NOTE: testing only
 			/*if (!info -> my_commands)
 				free_parser(info->my_commands)*/
@@ -55,7 +55,6 @@ int	main(int argc, char **argv, char **env)
 	int				pid;
 
 	(void)argv;
-	(void)env;
 	(void)pid;
 	err = validate_arguments(argc);
 	if (err != ERROR_SUCCESS)
@@ -63,6 +62,6 @@ int	main(int argc, char **argv, char **env)
 		print_error(err);
 		return (err);
 	}
-	read_from_prompt(&info);
+	read_from_prompt(&info, env);
 	return (0);
 }

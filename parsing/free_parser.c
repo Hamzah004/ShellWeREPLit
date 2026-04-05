@@ -29,7 +29,7 @@ void	free_argv(char **argv)
 
 void	free_redirections(t_redir *redir_list)
 {
-	t_redir *tmp;
+	t_redir	*tmp;
 
 	while (redir_list)
 	{
@@ -43,7 +43,7 @@ void	free_redirections(t_redir *redir_list)
 
 void	free_commands(t_commands *my_commands)
 {
-	t_commands *tmp;
+	t_commands	*tmp;
 
 	if (my_commands)
 	{
@@ -64,7 +64,7 @@ void	free_commands(t_commands *my_commands)
 
 int	free_tokens(t_tokens *head)
 {
-	t_tokens *tmp;
+	t_tokens	*tmp;
 
 	while (head)
 	{
@@ -77,10 +77,9 @@ int	free_tokens(t_tokens *head)
 	return (0);
 }
 
-int	free_parser(t_commands *my_commands, t_tokens *my_tokens, int flag)
+t_commands	*free_parser(t_commands *my_commands, t_tokens *my_tokens)
 {
-	if (flag)
-		free_commands(my_commands);
 	free_tokens(my_tokens);
-	return (0);
+	free_commands(my_commands);
+	return (NULL);
 }
