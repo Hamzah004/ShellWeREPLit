@@ -6,14 +6,13 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:43:25 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/05 13:37:10 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/04/09 20:41:43 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/execution.h"
 #include "include/parsing.h"
 #include "libft/libft.h"
-#include <bits/types/struct_itimerspec.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdlib.h>
@@ -61,8 +60,10 @@ int	main(int argc, char **argv, char **env)
 	info.old_stdin = -1;
 	info.old_stdout = -1;
 	info.cmd_exec_dir = NULL;
+	volatile sig_atomic_t g_sig = 0;
+	info.exit_status = 0;
 	get_env(&info, env);
 	get_path(&info);
-	read_from_prompt(&info, env);
+	read_from_prompt(&info, info.envp);
 	return (0);
 }

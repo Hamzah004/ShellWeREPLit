@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:25:30 by amufleh           #+#    #+#             */
-/*   Updated: 2026/04/05 13:38:23 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/04/09 20:36:59 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_token
 
 typedef struct s_redir
 {
+	int	heredoc_fd;
 	t_token_type	type;
 	char			*file;
 	struct s_redir	*next;

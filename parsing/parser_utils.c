@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 12:13:38 by amufleh           #+#    #+#             */
-/*   Updated: 2026/04/05 13:28:44 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/04/09 20:41:44 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_redir	*new_redirection(t_token_type type, char *value)
 		return (NULL);
 	}
 	redir->next = NULL;
+	redir->heredoc_fd = -1;
 	return (redir);
 }
 

@@ -11,3 +11,12 @@ a custom, lightweight Unix shell interpreter developed in C, designed to emulate
 - [Heredoc: A Deep Dive](https://medium.com/@oduwoledare/heredoc-a-deep-dive-23c82992e522)
 - [How to distinguish between builtin and external util?](https://unix.stackexchange.com/questions/371722/how-to-distinguish-between-builtin-and-external-util-e-g-echo)
 - [42-minishell explained github](https://github.com/multitudes/42-minishell?tab=readme-ov-file)
+- [dup() and dup2() Linux system call](https://www.geeksforgeeks.org/c/dup-dup2-linux-system-call/)
+
+
+## Explain
+
+
+what is a heredoc
+A heredoc (here-document) is a way to pass multi-line input to a command.
+
