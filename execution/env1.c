@@ -14,16 +14,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-int		create_env_linkedlist(char **env, t_program_info *info);
-t_env	*create_new_env_node(char *content);
-int		set_env_var(t_env **list, char *name, char *value);
-int		unset_env_var(t_env **list, char *name);
-t_env	*find_env_node(t_env *list, char *name);
-char	*get_env_var(t_env *list, char *name);
-int		is_valid_identifier(char *str);
-void	free_env_list(t_env *list);
+// int		create_env_linkedlist(char **env, t_program_info *info);
+// t_env	*create_new_env_node(char *content);
+// int		set_env_var(t_env **list, char *name, char *value);
+// int		unset_env_var(t_env **list, char *name);
+// t_env	*find_env_node(t_env *list, char *name);
+// char	*get_env_var(t_env *list, char *name);
+// int		is_valid_identifier(char *str);
+// void	free_env_list(t_env *list);
 void	free_str_array(char **cmd_exec_dir);
-
 
 int	count_lines(char **env)
 {
@@ -58,7 +57,7 @@ const char	*get_envp_value(char **envp, const char *name)
 
 char	*get_cmd_bin(t_program_info *info)
 {
-	char	*cmd_path;
+	char	*cmd_bin;
 	char	*tmp;
 	int		i;
 
@@ -75,13 +74,13 @@ char	*get_cmd_bin(t_program_info *info)
 		// TODO: see if there is a return message will be here on the check
 		if (!tmp)
 			return (NULL);
-		cmd_path = ft_strjoin(tmp, info->my_commands->argv[0]);
+		cmd_bin = ft_strjoin(tmp, info->my_commands->argv[0]);
 		free(tmp);
-		if (!cmd_path)
+		if (!cmd_bin)
 			return (NULL);
-		if (!access(cmd_path, X_OK))
-			return (cmd_path);
-		free(cmd_path);
+		if (!access(cmd_bin, X_OK))
+			return (cmd_bin);
+		free(cmd_bin);
 		i++;
 	}
 	return (NULL);
