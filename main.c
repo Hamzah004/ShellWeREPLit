@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:43:25 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/09 20:41:43 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/04/13 03:43:48 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,18 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+
+int	init_program_info(t_program_info *info, char **env)
+{
+	info->exit_status = 0;
+	info->original_stdin = -1;
+	info->original_stdout = -1;
+	info->cmd_exec_dir = NULL;
+	get_envp(info, env);
+	get_and_update_path(info);
+	return (0);
+}
+
 static t_error	validate_arguments(int argc)
 {
 	if (argc > 1)
@@ -27,7 +39,7 @@ static t_error	validate_arguments(int argc)
 	return (ERROR_SUCCESS);
 }
 
-void	read_from_prompt(t_program_info *info, char **env)
+void	read_from_prompt(t_program_info *info)
 {
 	char	*line;
 
@@ -36,10 +48,13 @@ void	read_from_prompt(t_program_info *info, char **env)
 		if (ft_strlen(line) > 0)
 		{
 			add_history(line);
-			info->my_commands = fill_command_struct(line, env);
-			print_commands(info->my_commands);
+			info->my_commands = fill_command_struct(line, info->envp);
+			if (!info->my_commands)
+				continue ;
+			// print_commands(info->my_commands);
+			execution(info);
 		}
-		execution(info);
+		free_commands(info->my_commands);
 		free(line);
 		line = (char *)NULL;
 	}
@@ -57,13 +72,7 @@ int	main(int argc, char **argv, char **env)
 		print_error(err);
 		return (err);
 	}
-	info.old_stdin = -1;
-	info.old_stdout = -1;
-	info.cmd_exec_dir = NULL;
-	volatile sig_atomic_t g_sig = 0;
-	info.exit_status = 0;
-	get_env(&info, env);
-	get_path(&info);
-	read_from_prompt(&info, info.envp);
+	init_program_info(&info, env);
+	read_from_prompt(&info);
 	return (0);
 }

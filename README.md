@@ -2,6 +2,7 @@ a custom, lightweight Unix shell interpreter developed in C, designed to emulate
 
 ## Resources
 
+- [bash reference](https://www.gnu.org/software/bash/manual/bash.html)
 - [shell wiki](https://en.wikipedia.org/wiki/Shell_(computing))
 - [shell builtin](https://en.wikipedia.org/wiki/Shell_builtin)
 - [process wiki](https://en.wikipedia.org/wiki/Process_(computing))
@@ -16,7 +17,5 @@ a custom, lightweight Unix shell interpreter developed in C, designed to emulate
 
 ## Explain
 
-
-what is a heredoc
+What is a heredoc
 A heredoc (here-document) is a way to pass multi-line input to a command.
-

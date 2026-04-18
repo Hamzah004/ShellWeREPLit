@@ -30,11 +30,11 @@ typedef enum e_error
 typedef struct s_program_info
 {
 	int							exit_status;
-	int							old_stdin;
-	int							old_stdout;
+	int							original_stdin;
+	int							original_stdout;
 	char						**envp;
-	t_commands					*my_commands;
 	char						**cmd_exec_dir;
+	t_commands					*my_commands;
 }								t_program_info;
 
 typedef struct s_env
@@ -46,19 +46,22 @@ typedef struct s_env
 int								execution(t_program_info *info);
 void							print_error(t_error error);
 int								count_lines(char **env);
-t_error							get_env(t_program_info *info, char **env);
-t_error							get_path(t_program_info *info);
+t_error							get_envp(t_program_info *info, char **env);
+const char						*get_envp_value(char **envp, const char *name);
+char							*get_cmd_bin(t_program_info *info);
 void							execute_single_cmd(t_program_info *info);
-void							read_from_prompt(t_program_info *info,
-									char **env);
+void							read_from_prompt(t_program_info *info);
 int								apply_redir(t_commands *my_commands);
-int								set_envp_var(t_program_info *info, char *name,
-									char *value);
-int								set_envp_var(t_program_info *info, char *name,
-									char *value);
-int								unset_envp_var(t_program_info *info,
-									char *name);
-int								envp_index(char **envp, char *name);
-int								is_valid_identifier(char *str);
+
+/* main loop */
+int								init_program_info(t_program_info *info,
+									char **env);
+void							destroy_program_info(t_program_info *info);
+int								shell_loop(t_program_info *info);
+int								is_blank_line(const char *line);
+
+/* env */
+
+int								get_and_update_path(t_program_info *info);
 
 #endif

@@ -26,6 +26,7 @@ SRC =	main.c \
 	$(EXECUTION_DIR)/builtin_functions.c \
 	$(EXECUTION_DIR)/execution_utils.c \
 	$(EXECUTION_DIR)/handle_redir.c \
+	$(EXECUTION_DIR)/env1.c \
 	$(PARSING_DIR)/tokenizer.c \
 	$(PARSING_DIR)/tokenizer_utls.c \
 	$(PARSING_DIR)/command_expansion.c \

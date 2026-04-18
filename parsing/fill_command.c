@@ -51,7 +51,7 @@ t_commands	*fill_command_struct(char *input, char **env)
 	token_analyser(input, &my_tokens);
 	if (!syntax_validation(my_tokens))
 		return (free_parser(my_commands, my_tokens));
-	print_tokens(my_tokens);
+	// print_tokens(my_tokens);
 	if (!the_parser(my_tokens, my_commands))
 		return (free_parser(my_commands, my_tokens));
 	if (!yokotenkai(my_commands, env))

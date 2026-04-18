@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils2.c                                       :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 20:39:04 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/09 20:41:36 by hbani-at         ###   ########.fr       */
+/*   Created: 2026/04/13 01:57:23 by hbani-at          #+#    #+#             */
+/*   Updated: 2026/04/13 03:43:43 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/execution.h"
+#include <signal.h>
 
-void update_path(t_program_info *info)
-{
-	
-}
+volatile sig_atomic_t g_sig = 0;
+
