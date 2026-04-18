@@ -13,7 +13,8 @@ a custom, lightweight Unix shell interpreter developed in C, designed to emulate
 - [How to distinguish between builtin and external util?](https://unix.stackexchange.com/questions/371722/how-to-distinguish-between-builtin-and-external-util-e-g-echo)
 - [42-minishell explained github](https://github.com/multitudes/42-minishell?tab=readme-ov-file)
 - [dup() and dup2() Linux system call](https://www.geeksforgeeks.org/c/dup-dup2-linux-system-call/)
-
+- [ctrl d is line enter](https://hackarcana.com/article/ctrl-d-is-like-enter)
+- [What does Ctrl D hmean on Unix Linux systems](https://www.quora.com/What-does-Ctrl-D-mean-on-Unix-Linux-systems)
 
 ## Explain
 

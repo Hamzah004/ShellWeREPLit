@@ -22,6 +22,7 @@
 // char	*get_env_var(t_env *list, char *name);
 // int		is_valid_identifier(char *str);
 // void	free_env_list(t_env *list);
+
 void	free_str_array(char **cmd_exec_dir);
 
 int	count_lines(char **env)

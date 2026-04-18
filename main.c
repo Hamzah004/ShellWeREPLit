@@ -12,8 +12,6 @@
 
 #include "include/execution.h"
 #include "include/parsing.h"
-#include "libft/libft.h"
-#include <readline/chardefs.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdio.h>
@@ -24,6 +22,7 @@
 
 int	init_program_info(t_program_info *info, char **env)
 {
+	setup_signals_interactive();
 	info->my_commands = NULL;
 	info->exit_status = 0;
 	info->original_stdin = -1;
@@ -47,7 +46,7 @@ void	read_from_prompt(t_program_info *info)
 
 	while (1)
 	{
-		line = readline("minishell$");
+		line = readline("minishell$ ");
 		if (!line)
 		{
 			printf("exit\n");
@@ -58,18 +57,14 @@ void	read_from_prompt(t_program_info *info)
 			free(line);
 			continue ;
 		}
-		info->my_commands = NULL;
-		if (ft_strlen(line) > 0)
+		add_history(line);
+		info->my_commands = fill_command_struct(line, info->envp);
+		if (!info->my_commands)
 		{
-			add_history(line);
-			info->my_commands = fill_command_struct(line, info->envp);
-			if (!info->my_commands)
-			{
-				free(line);
-				continue ;
-			}
-			execution(info);
+			free(line);
+			continue ;
 		}
+		execution(info);
 		free_commands(info->my_commands);
 		free(line);
 		info->my_commands = NULL;
@@ -91,5 +86,6 @@ int	main(int argc, char **argv, char **env)
 	}
 	init_program_info(&info, env);
 	read_from_prompt(&info);
+	rl_clear_history();
 	return (0);
 }

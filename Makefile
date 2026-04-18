@@ -27,6 +27,7 @@ SRC =	main.c \
 	$(EXECUTION_DIR)/execution_utils.c \
 	$(EXECUTION_DIR)/handle_redir.c \
 	$(EXECUTION_DIR)/env1.c \
+	$(SIGNAL_HANDLE_DIR)/signal.c \
 	$(PARSING_DIR)/tokenizer.c \
 	$(PARSING_DIR)/tokenizer_utls.c \
 	$(PARSING_DIR)/command_expansion.c \
@@ -42,6 +43,7 @@ SRC =	main.c \
 OBJS = $(SRC:.c=.o)
 EXECUTION_DIR = ./execution
 PARSING_DIR = ./parsing
+SIGNAL_HANDLE_DIR = ./signal_handling/
 LIBFT_DIR = ./libft
 LIBFT_A = $(LIBFT_DIR)/libft.a
 

@@ -18,15 +18,6 @@
 
 extern volatile sig_atomic_t	g_sig;
 
-typedef enum e_error
-{
-	ERROR_SUCCESS = 0,
-	ERROR_INVALID_ARGS = 1,
-	ERROR_INVALID_PID = 2,
-	ERROR_INVALID_KILL = 3,
-	ERROR_MEMORY = 4
-}								t_error;
-
 typedef struct s_program_info
 {
 	int							exit_status;
@@ -37,11 +28,27 @@ typedef struct s_program_info
 	t_commands					*my_commands;
 }								t_program_info;
 
-typedef struct s_env
+typedef struct s_envp
 {
-	char						*content;
-	struct s_env				*next;
-}								t_env;
+	char						*key;
+	char						*val;
+	struct s_envp				*next;
+}								t_envp;
+
+typedef enum e_error
+{
+	ERROR_SUCCESS = 0,
+	ERROR_INVALID_ARGS = 1,
+	ERROR_INVALID_PID = 2,
+	ERROR_INVALID_KILL = 3,
+	ERROR_MEMORY = 4
+}								t_error;
+
+// typedef struct s_env
+// {
+// 	char						*content;
+// 	struct s_env				*next;
+// }								t_env;
 
 int								execution(t_program_info *info);
 void							print_error(t_error error);
@@ -63,5 +70,10 @@ int								is_blank_line(const char *line);
 /* env */
 
 int								get_and_update_path(t_program_info *info);
+
+/* Signals */
+
+void setup_signals_interactive(void);
+
 
 #endif
