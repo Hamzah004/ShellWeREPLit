@@ -75,5 +75,4 @@ int								get_and_update_path(t_program_info *info);
 
 void setup_signals_interactive(void);
 
-
 #endif

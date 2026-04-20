@@ -20,16 +20,23 @@ static void	sigint_interactive_handler(int signo)
 {
 	(void)signo;
 	g_sig = SIGINT;
-	rl_done = 1;
 	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 void	setup_signals_interactive(void)
 {
-	struct sigaction	sa;rl_replace_line,
-	// rl_catch_signals = 0;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = sigint_interactive_handler;
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
-	// signal(SIGQUIT, SIG_IGN);
+	struct sigaction	sig_handler;
+	sigemptyset(&sig_handler.sa_mask);
+	sig_handler.sa_handler = sigint_interactive_handler;
+	sig_handler.sa_flags = 0;
+	sigaction(SIGINT, &sig_handler, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
+
+// void  restore_sig(void)
+// {
+// 	signal(SIGINT, SIG_DFL);
+// 	signal(SIGQUIT, SIG_DFL);
+// }

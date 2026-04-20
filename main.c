@@ -52,9 +52,6 @@ void	read_from_prompt(t_program_info *info)
 		{
 			info->exit_status = 130;
 			g_sig = 0;
-			if (line)
-				free(line);
-			continue ;
 		}
 		if (!line)
 		{

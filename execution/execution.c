@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include "../libft/libft.h"
 #include <stdio.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -22,7 +21,6 @@ void	execute_single_cmd(t_program_info *info)
 	char	*cmd_path;
 
 	cmd_path = get_cmd_bin(info);
-	printf("%s", cmd_path);
 	if (cmd_path == NULL)
 	{
 		perror("command not found");
