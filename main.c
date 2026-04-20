@@ -12,8 +12,10 @@
 
 #include "include/execution.h"
 #include "include/parsing.h"
+#include <readline/chardefs.h>
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -43,10 +45,17 @@ static t_error	validate_arguments(int argc)
 void	read_from_prompt(t_program_info *info)
 {
 	char	*line;
-
 	while (1)
 	{
 		line = readline("minishell$ ");
+		if (g_sig == SIGINT)
+		{
+			info->exit_status = 130;
+			g_sig = 0;
+			if (line)
+				free(line);
+			continue ;
+		}
 		if (!line)
 		{
 			printf("exit\n");
@@ -68,7 +77,6 @@ void	read_from_prompt(t_program_info *info)
 		free_commands(info->my_commands);
 		free(line);
 		info->my_commands = NULL;
-		line = NULL;
 	}
 }
 
