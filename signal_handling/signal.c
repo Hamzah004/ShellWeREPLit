@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 01:57:23 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/13 03:43:43 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/04/20 16:57:44 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,5 @@ void	setup_signals_interactive(void)
 	sig_handler.sa_handler = sigint_interactive_handler;
 	sig_handler.sa_flags = 0;
 	sigaction(SIGINT, &sig_handler, NULL);
-	signal(SIGQUIT, SIG_IGN);
+	// signal(SIGQUIT, SIG_IGN);
 }
-
-// void  restore_sig(void)
-// {
-// 	signal(SIGINT, SIG_DFL);
-// 	signal(SIGQUIT, SIG_DFL);
-// }

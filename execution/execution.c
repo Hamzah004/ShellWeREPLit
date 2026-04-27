@@ -15,7 +15,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-
 void	execute_single_cmd(t_program_info *info)
 {
 	char	*cmd_path;
@@ -30,19 +29,60 @@ void	execute_single_cmd(t_program_info *info)
 	perror("execve");
 }
 
+// int	execution(t_program_info *info)
+// {
+// 	int	pid;
+//
+// 	info->original_stdin = dup(STDIN_FILENO);
+// 	info->original_stdout = dup(STDOUT_FILENO);
+// 	pid = fork();
+// 	if (pid == 0)
+// 	{
+// 		apply_redir(info->my_commands);
+// 		execute_single_cmd(info);
+// 	}
+// 	waitpid(-1, NULL, 0);
+// 	// parent process
+// 	return (0);
+// }
+
+static int	isbuiltin(char *command)
+{
+	if (!ft_strcmp(command, "cd") || !ft_strcmp(command, "pwd")
+		|| !ft_strcmp(command, "env") || !ft_strcmp(command, "export")
+		|| !ft_strcmp(command, "echo") || !ft_strcmp(command, "unset")
+		|| !ft_strcmp(command, "exit"))
+		return (1);
+	return (0);
+}
+
+static int	execute_builtin(t_program_info *info)
+{
+	if (!ft_strcmp(info->my_commands->argv[0], "cd"))
+		execute_cd_builtin(info);
+	return (1);
+}
+
 int	execution(t_program_info *info)
 {
-	int	pid;
+	int			pid;
+	t_commands	*my_commands;
 
 	info->original_stdin = dup(STDIN_FILENO);
 	info->original_stdout = dup(STDOUT_FILENO);
+	my_commands = info->my_commands;
 	pid = fork();
-	if (pid == 0)
+	while (my_commands)
 	{
-		apply_redir(info->my_commands);
-		execute_single_cmd(info);
+		if (isbuiltin(my_commands->argv[0]))
+			execute_builtin(info);
+		else if (pid == 0)
+		{
+			// apply_redir(info->my_commands);
+			execute_single_cmd(info);
+		}
+		waitpid(-1, NULL, 0);
+		my_commands = my_commands->next;
 	}
-	waitpid(-1, NULL, 0);
-	// parent process
 	return (0);
 }

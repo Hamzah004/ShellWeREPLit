@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:18:49 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/09 20:38:55 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/04/20 16:57:45 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,6 @@ typedef enum e_error
 	ERROR_MEMORY = 4
 }								t_error;
 
-// typedef struct s_env
-// {
-// 	char						*content;
-// 	struct s_env				*next;
-// }								t_env;
-
 int								execution(t_program_info *info);
 void							print_error(t_error error);
 int								count_lines(char **env);
@@ -70,9 +64,17 @@ int								is_blank_line(const char *line);
 /* env */
 
 int								get_and_update_path(t_program_info *info);
+int								setup_env_list(char **env,
+									t_program_info *info);
 
 /* Signals */
 
-void setup_signals_interactive(void);
+void							setup_signals_interactive(void);
+
+/* builtins */
+
+int	execute_cd_builtin(t_program_info *info);
+int	set_envp_value(char **envp, const char *name, const char *new_value);
+
 
 #endif

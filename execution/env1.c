@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   env1.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:36:24 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/09 21:11:53 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/04/20 16:57:41 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// int		create_env_linkedlist(char **env, t_program_info *info);
 // t_env	*create_new_env_node(char *content);
 // int		set_env_var(t_env **list, char *name, char *value);
 // int		unset_env_var(t_env **list, char *name);
@@ -22,6 +21,13 @@
 // char	*get_env_var(t_env *list, char *name);
 // int		is_valid_identifier(char *str);
 // void	free_env_list(t_env *list);
+
+
+// int		setup_env_list(char **env, t_program_info *info)
+// {
+//
+// 	return (0);
+// }
 
 void	free_str_array(char **cmd_exec_dir);
 
@@ -54,6 +60,28 @@ const char	*get_envp_value(char **envp, const char *name)
 		i++;
 	}
 	return (NULL);
+}
+
+int	set_envp_value(char **envp, const char *name, const char *new_value)
+{
+	int	i;
+	int	name_len;
+
+	if (!name || !*name || !envp)
+		return (1);
+	i = 0;
+	name_len = ft_strlen(name);
+	while (envp[i] != NULL)
+	{
+		if ((ft_strncmp(envp[i], name, name_len)) == 0
+			&& envp[i][name_len] == '=')
+		{
+			envp[i] = ft_strjoin(envp[i] + name_len + 1, new_value);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
 }
 
 char	*get_cmd_bin(t_program_info *info)
