@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:18:49 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/20 16:57:45 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/04/30 23:51:55 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@
 
 extern volatile sig_atomic_t	g_sig;
 
+typedef struct s_envp
+{
+	char						*key;
+	char						*value;
+	struct s_envp				*next;
+}								t_envp;
+
 typedef struct s_program_info
 {
 	int							exit_status;
@@ -26,14 +33,8 @@ typedef struct s_program_info
 	char						**envp;
 	char						**cmd_exec_dir;
 	t_commands					*my_commands;
+	t_envp						*env;
 }								t_program_info;
-
-typedef struct s_envp
-{
-	char						*key;
-	char						*val;
-	struct s_envp				*next;
-}								t_envp;
 
 typedef enum e_error
 {
@@ -64,8 +65,7 @@ int								is_blank_line(const char *line);
 /* env */
 
 int								get_and_update_path(t_program_info *info);
-int								setup_env_list(char **env,
-									t_program_info *info);
+t_envp							*init_env(char **env);
 
 /* Signals */
 
@@ -73,8 +73,8 @@ void							setup_signals_interactive(void);
 
 /* builtins */
 
-int	execute_cd_builtin(t_program_info *info);
-int	set_envp_value(char **envp, const char *name, const char *new_value);
-
+int								execute_cd_builtin(t_program_info *info);
+int								set_envp_value(char **envp, const char *name,
+									const char *new_value);
 
 #endif

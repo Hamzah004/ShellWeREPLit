@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:43:25 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/20 16:57:47 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/04/30 23:54:24 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,7 @@ int	init_program_info(t_program_info *info, char **env)
 	info->original_stdin = -1;
 	info->original_stdout = -1;
 	info->cmd_exec_dir = NULL;
-	get_envp(info, env);
-	// set_envp_value(info->envp, "USER", "/home/");
-	// int	i = 0;
-	// while (info->envp[i])
-	// {
-	// 	printf("%s\n", info->envp[i]);
-	// 	i++;
-	// }
+	init_env(env);
 	get_and_update_path(info);
 	return (0);
 }

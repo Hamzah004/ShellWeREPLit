@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 20:36:24 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/20 16:57:41 by hbani-at         ###   ########.fr       */
+/*   Created: 2026/04/28 21:34:01 by hbani-at          #+#    #+#             */
+/*   Updated: 2026/04/28 21:34:28 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,6 @@
 // char	*get_env_var(t_env *list, char *name);
 // int		is_valid_identifier(char *str);
 // void	free_env_list(t_env *list);
-
-
-// int		setup_env_list(char **env, t_program_info *info)
-// {
-//
-// 	return (0);
-// }
 
 void	free_str_array(char **cmd_exec_dir);
 

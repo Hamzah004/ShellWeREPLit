@@ -6,7 +6,7 @@
 #    By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/11 16:28:02 by hbani-at          #+#    #+#              #
-#    Updated: 2026/04/05 13:35:33 by amufleh          ###   ########.fr        #
+#    Updated: 2026/04/30 23:51:53 by hbani-at         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ NAME = minishell
 SRC =	main.c \
 	error.c \
 	$(EXECUTION_DIR)/execution.c \
+	$(EXECUTION_DIR)/env.c \
 	$(EXECUTION_DIR)/builtin_functions.c \
 	$(EXECUTION_DIR)/execution_utils.c \
 	$(EXECUTION_DIR)/handle_redir.c \
