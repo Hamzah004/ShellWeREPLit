@@ -66,6 +66,9 @@ int								is_blank_line(const char *line);
 
 int								get_and_update_path(t_program_info *info);
 t_envp							*init_env(char **env);
+void							env_add_back(t_envp **head, t_envp *new_node);
+void							free_env(t_envp *head);
+t_envp							*create_new_env_node(char *key, char *value);
 
 /* Signals */
 

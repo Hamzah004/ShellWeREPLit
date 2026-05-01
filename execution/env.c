@@ -13,7 +13,7 @@
 #include "../include/execution.h"
 #include <stdlib.h>
 
-static void	env_add_back(t_envp **head, t_envp *new_node)
+void	env_add_back(t_envp **head, t_envp *new_node)
 {
 	t_envp	*current_node;
 
@@ -30,7 +30,7 @@ static void	env_add_back(t_envp **head, t_envp *new_node)
 	current_node->next = new_node;
 }
 
-static void	free_env(t_envp *head)
+void	free_env(t_envp *head)
 {
 	t_envp	*next;
 
@@ -44,7 +44,7 @@ static void	free_env(t_envp *head)
 	}
 }
 
-static t_envp	*create_new_env_node(char *key, char *value)
+t_envp	*create_new_env_node(char *key, char *value)
 {
 	t_envp	*new_node;
 
