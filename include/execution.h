@@ -42,7 +42,9 @@ typedef enum e_error
 	ERROR_INVALID_ARGS = 1,
 	ERROR_INVALID_PID = 2,
 	ERROR_INVALID_KILL = 3,
-	ERROR_MEMORY = 4
+	ERROR_MEMORY = 4,
+	INVALID_UNSET_ARG = 5
+
 }								t_error;
 
 int								execution(t_program_info *info);
@@ -69,6 +71,8 @@ t_envp							*init_env(char **env);
 void							env_add_back(t_envp **head, t_envp *new_node);
 void							free_env(t_envp *head);
 t_envp							*create_new_env_node(char *key, char *value);
+int								env_unset(t_envp **head, const char *key);
+t_envp							*env_find_node(t_envp *head, const char *key);
 
 /* Signals */
 
@@ -76,8 +80,8 @@ void							setup_signals_interactive(void);
 
 /* builtins */
 
-int								execute_cd_builtin(t_program_info *info);
-int								set_envp_value(char **envp, const char *name,
-									const char *new_value);
+int								builtin_cd(t_program_info *info);
+int								builtin_unset(t_program_info *info,
+									char **argv);
 
 #endif

@@ -59,7 +59,9 @@ static int	isbuiltin(char *command)
 static int	execute_builtin(t_program_info *info)
 {
 	if (!ft_strcmp(info->my_commands->argv[0], "cd"))
-		execute_cd_builtin(info);
+		builtin_cd(info);
+	if (!ft_strcmp(info->my_commands->argv[0], "unset"))
+		builtin_unset(info, info->my_commands->argv);
 	return (1);
 }
 

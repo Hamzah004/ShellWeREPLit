@@ -34,7 +34,7 @@ const char	*get_path(t_program_info *info)
 //
 // }
 
-int	execute_cd_builtin(t_program_info *info)
+int	builtin_cd(t_program_info *info)
 {
 	const char	*path;
 

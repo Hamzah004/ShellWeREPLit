@@ -24,12 +24,14 @@ SRC =	main.c \
 	error.c \
 	$(EXECUTION_DIR)/execution.c \
 	$(EXECUTION_DIR)/env.c \
+	$(EXECUTION_DIR)/env_helper.c \
 	$(EXECUTION_DIR)/builtin_functions.c \
 	$(EXECUTION_DIR)/execution_utils.c \
 	$(EXECUTION_DIR)/handle_redir.c \
 	$(EXECUTION_DIR)/env1.c \
 	$(SIGNAL_HANDLE_DIR)/signal.c \
 	$(BUILTIN_DIR)/cd_builtin.c \
+	$(BUILTIN_DIR)/unset_builtin.c \
 	$(PARSING_DIR)/tokenizer.c \
 	$(PARSING_DIR)/tokenizer_utls.c \
 	$(PARSING_DIR)/command_expansion.c \
