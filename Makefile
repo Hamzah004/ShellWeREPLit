@@ -32,6 +32,7 @@ SRC =	main.c \
 	$(SIGNAL_HANDLE_DIR)/signal.c \
 	$(BUILTIN_DIR)/cd_builtin.c \
 	$(BUILTIN_DIR)/unset_builtin.c \
+	$(BUILTIN_DIR)/export_builtin.c \
 	$(PARSING_DIR)/tokenizer.c \
 	$(PARSING_DIR)/tokenizer_utls.c \
 	$(PARSING_DIR)/command_expansion.c \

@@ -30,7 +30,7 @@ int	init_program_info(t_program_info *info, char **env)
 	info->original_stdin = -1;
 	info->original_stdout = -1;
 	info->cmd_exec_dir = NULL;
-	init_env(env);
+	info->env = init_env(env);
 	get_and_update_path(info);
 	return (0);
 }

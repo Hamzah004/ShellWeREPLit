@@ -73,6 +73,8 @@ void							free_env(t_envp *head);
 t_envp							*create_new_env_node(char *key, char *value);
 int								env_unset(t_envp **head, const char *key);
 t_envp							*env_find_node(t_envp *head, const char *key);
+char							*env_find_value(t_envp *head, const char *key);
+void							print_env(t_envp *head);
 
 /* Signals */
 
@@ -82,6 +84,8 @@ void							setup_signals_interactive(void);
 
 int								builtin_cd(t_program_info *info);
 int								builtin_unset(t_program_info *info,
+									char **argv);
+int								builtin_export(t_program_info *info,
 									char **argv);
 
 #endif

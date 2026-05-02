@@ -77,6 +77,7 @@ int	set_envp_value(char **envp, const char *name, const char *new_value)
 	return (1);
 }
 
+// TODO: Update this function to take both absolute and rilative path
 char	*get_cmd_bin(t_program_info *info)
 {
 	char	*cmd_bin;
@@ -111,10 +112,12 @@ char	*get_cmd_bin(t_program_info *info)
 int	get_and_update_path(t_program_info *info)
 {
 	const char	*path_value;
+	if (!info)
+		return (1);
 	if (info->cmd_exec_dir)
 		free_str_array(info->cmd_exec_dir);
 	info->cmd_exec_dir = NULL;
-	path_value = get_envp_value(info->envp, "PATH");
+	path_value = env_find_value(info->env, "PATH");
 	if (!path_value || !*path_value)
 		return (0);
 	info->cmd_exec_dir = ft_split(path_value, ':');

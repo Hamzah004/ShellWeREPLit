@@ -36,25 +36,25 @@ static int print_unset_error(char *arg)
 	return (1);
 }
 
-int	builtin_unset(t_program_info *info, char **arg)
+int	builtin_unset(t_program_info *info, char **argv)
 {
 	int	status;
-	if (!info || !arg)
+	if (!info || !argv)
 		return (1);
-	arg++;
-	if (!*arg)
+	argv++;
+	if (!*argv)
 		return (0);
 	status = 0;
-	while (*arg)
+	while (*argv)
 	{
-		if (is_valid_identifier(*arg))
-			env_unset(&info->env, *arg);
+		if (is_valid_identifier(*argv))
+			env_unset(&info->env, *argv);
 		else
 		{
 			status = 1;
-			print_unset_error(*arg);
+			print_unset_error(*argv);
 		}
-		arg++;
+		argv++;
 	}
 	info->exit_status = status;
 	return (status);

@@ -25,6 +25,7 @@ char	*env_find_value(t_envp *head, const char *key)
 	}
 	return (NULL);
 }
+
 t_envp	*env_find_node(t_envp *head, const char *key)
 {
 	if (!head || !key)

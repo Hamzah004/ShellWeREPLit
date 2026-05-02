@@ -62,29 +62,35 @@ static int	execute_builtin(t_program_info *info)
 		builtin_cd(info);
 	if (!ft_strcmp(info->my_commands->argv[0], "unset"))
 		builtin_unset(info, info->my_commands->argv);
+	if (!ft_strcmp(info->my_commands->argv[0], "export"))
+		builtin_export(info, info->my_commands->argv);
 	return (1);
 }
 
-int	execution(t_program_info *info)
+int execution(t_program_info *info)
 {
-	int			pid;
-	t_commands	*my_commands;
+    t_commands *my_commands = info->my_commands;
+    pid_t pid;
 
-	info->original_stdin = dup(STDIN_FILENO);
-	info->original_stdout = dup(STDOUT_FILENO);
-	my_commands = info->my_commands;
-	pid = fork();
-	while (my_commands)
-	{
-		if (isbuiltin(my_commands->argv[0]))
-			execute_builtin(info);
-		else if (pid == 0)
-		{
-			// apply_redir(info->my_commands);
-			execute_single_cmd(info);
-		}
-		waitpid(-1, NULL, 0);
-		my_commands = my_commands->next;
-	}
-	return (0);
+    info->original_stdin = dup(STDIN_FILENO);
+    info->original_stdout = dup(STDOUT_FILENO);
+
+    while (my_commands)
+    {
+        if (isbuiltin(my_commands->argv[0]))
+            execute_builtin(info);
+        else
+        {
+            pid = fork();
+            if (pid == 0)
+            {
+                execute_single_cmd(info);
+                exit(0);
+            }
+            else
+                waitpid(pid, NULL, 0);
+        }
+        my_commands = my_commands->next;
+    }
+    return (0);
 }
