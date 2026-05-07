@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:18:49 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/30 23:51:55 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/05/08 02:04:28 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,18 @@ int								env_unset(t_envp **head, const char *key);
 t_envp							*env_find_node(t_envp *head, const char *key);
 char							*env_find_value(t_envp *head, const char *key);
 void							print_env(t_envp *head);
+int								env_set(t_envp **head, const char *key,
+									const char *value, int overwrite);
 
 /* Signals */
-
 void							setup_signals_interactive(void);
 
 /* builtins */
-
 int								builtin_cd(t_program_info *info);
 int								builtin_unset(t_program_info *info,
 									char **argv);
 int								builtin_export(t_program_info *info,
 									char **argv);
+int								is_valid_identifier(const char *s);
 
 #endif

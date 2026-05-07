@@ -72,7 +72,7 @@ void	read_from_prompt(t_program_info *info)
 			free(line);
 			continue ;
 		}
-		// printf("command: %s\noptions: %s\nop: %s\n", info->my_commands->argv[0], info->my_commands->argv[1], info->my_commands->argv[2]);
+		printf("command: %s\noptions: %s\nop: %s\n", info->my_commands->argv[0], info->my_commands->argv[1], info->my_commands->argv[2]);
 		execution(info);
 		free_commands(info->my_commands);
 		free(line);
