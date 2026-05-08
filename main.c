@@ -45,13 +45,13 @@ static t_error	validate_arguments(int argc)
 
 void	read_from_prompt(t_program_info *info)
 {
-	char	buf[1024];
+	// char	buf[1024];
 	char	*line;
 
 	while (1)
 	{
-		getcwd(buf, sizeof(buf));
-		line = readline(ft_strjoin(buf, "$ "));
+		// getcwd(buf, sizeof(buf));
+		line = readline("minishell$ ");
 		if (g_sig == SIGINT)
 		{
 			info->exit_status = 130;
