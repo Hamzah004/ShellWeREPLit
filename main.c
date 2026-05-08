@@ -12,6 +12,7 @@
 
 #include "include/execution.h"
 #include "include/parsing.h"
+#include "libft/libft.h"
 #include <readline/chardefs.h>
 #include <readline/history.h>
 #include <readline/readline.h>
@@ -46,10 +47,11 @@ void	read_from_prompt(t_program_info *info)
 {
 	char	buf[1024];
 	char	*line;
+
 	while (1)
 	{
 		getcwd(buf, sizeof(buf));
-		line = readline(buf);
+		line = readline(ft_strjoin(buf, "$"));
 		if (g_sig == SIGINT)
 		{
 			info->exit_status = 130;
@@ -72,11 +74,13 @@ void	read_from_prompt(t_program_info *info)
 			free(line);
 			continue ;
 		}
-		// printf("command: %s\noptions: %s\nop: %s\n", info->my_commands->argv[0], info->my_commands->argv[1], info->my_commands->argv[2]);
-		execution(info);
-		free_commands(info->my_commands);
-		free(line);
-		info->my_commands = NULL;
+		// printf("command: %s\noptions: %s\nop: %s\n",
+			// info->my_commands->argv[0], info->my_commands->argv[1],
+			// info->my_commands->argv[2]);
+			execution(info);
+			free_commands(info->my_commands);
+			free(line);
+			info->my_commands = NULL;
 	}
 }
 
