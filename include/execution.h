@@ -77,6 +77,8 @@ char							*env_find_value(t_envp *head, const char *key);
 void							print_env(t_envp *head);
 int								env_set(t_envp **head, const char *key,
 									const char *value, int overwrite);
+void							free_str_array(char **str);
+char							**struct_to_arr(t_envp *env);
 
 /* Signals */
 void							setup_signals_interactive(void);

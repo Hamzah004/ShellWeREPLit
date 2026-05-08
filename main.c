@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:43:25 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/05/01 19:24:17 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/05/08 02:18:57 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	read_from_prompt(t_program_info *info)
 			free(line);
 			continue ;
 		}
-		printf("command: %s\noptions: %s\nop: %s\n", info->my_commands->argv[0], info->my_commands->argv[1], info->my_commands->argv[2]);
+		// printf("command: %s\noptions: %s\nop: %s\n", info->my_commands->argv[0], info->my_commands->argv[1], info->my_commands->argv[2]);
 		execution(info);
 		free_commands(info->my_commands);
 		free(line);

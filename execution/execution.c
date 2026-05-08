@@ -6,7 +6,7 @@
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:25:08 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/05 14:36:49 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/05/08 02:17:47 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ void	execute_single_cmd(t_program_info *info)
 {
 	char	*cmd_path;
 
+	if (info->envp)
+		free_str_array(info->envp);
+	info->envp = struct_to_arr(info->env);
+	if (!info->envp)
+	{
+		perror("env allocation failed");
+		exit(1);
+	}
 	cmd_path = get_cmd_bin(info);
 	if (cmd_path == NULL)
 	{
@@ -28,23 +36,6 @@ void	execute_single_cmd(t_program_info *info)
 	execve(cmd_path, info->my_commands->argv, info->envp);
 	perror("execve");
 }
-
-// int	execution(t_program_info *info)
-// {
-// 	int	pid;
-//
-// 	info->original_stdin = dup(STDIN_FILENO);
-// 	info->original_stdout = dup(STDOUT_FILENO);
-// 	pid = fork();
-// 	if (pid == 0)
-// 	{
-// 		apply_redir(info->my_commands);
-// 		execute_single_cmd(info);
-// 	}
-// 	waitpid(-1, NULL, 0);
-// 	// parent process
-// 	return (0);
-// }
 
 static int	isbuiltin(char *command)
 {

@@ -126,22 +126,19 @@ int	get_and_update_path(t_program_info *info)
 	return (0);
 }
 
-void	free_str_array(char **cmd_exec_dir)
+void	free_str_array(char **str)
 {
 	int	i;
-	int	lines_count;
-
+	if (!str)
+		return;
 	i = 0;
-	lines_count = count_lines(cmd_exec_dir);
-	while (i < lines_count)
+	while (str[i])
 	{
-		if (cmd_exec_dir[i])
-			free(cmd_exec_dir[i]);
+		free(str[i]);
 		i++;
 	}
-	free(cmd_exec_dir);
+	free(str);
 }
-
 
 t_error	get_envp(t_program_info *info, char **env)
 {
