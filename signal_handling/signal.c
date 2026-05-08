@@ -32,5 +32,5 @@ void	setup_signals_interactive(void)
 	sig_handler.sa_handler = sigint_interactive_handler;
 	sig_handler.sa_flags = 0;
 	sigaction(SIGINT, &sig_handler, NULL);
-	// signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }

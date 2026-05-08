@@ -12,7 +12,6 @@
 
 #include "include/execution.h"
 #include "include/parsing.h"
-#include "libft/libft.h"
 #include <readline/chardefs.h>
 #include <readline/history.h>
 #include <readline/readline.h>
