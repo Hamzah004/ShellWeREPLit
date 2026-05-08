@@ -11,10 +11,18 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
+#include <stdio.h>
+#include <unistd.h>
 
-int	builtin_pwd(t_program_info *info)
+int	builtin_pwd(void)
 {
-	if (!info)
+	char	buffer[1024];
+
+	if (!getcwd(buffer, sizeof(buffer)))
+	{
+		perror("minishell: pwd");
 		return (1);
+	}
+  	ft_putendl_fd(buffer, 1);
 	return (0);
 }

@@ -56,6 +56,5 @@ int	builtin_unset(t_program_info *info, char **argv)
 		}
 		argv++;
 	}
-	info->exit_status = status;
 	return (status);
 }

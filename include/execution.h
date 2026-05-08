@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:18:49 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/05/08 17:13:42 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/05/08 17:41:55 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ int								builtin_unset(t_program_info *info,
 									char **argv);
 int								builtin_export(t_program_info *info,
 									char **argv);
-int								builtin_echo(t_program_info *info, char **argv);
-int								builtin_pwd(t_program_info *info);
-int								builtin_env(t_program_info *info, char **argv);
+int								builtin_echo(char **argv);
+int								builtin_pwd(void);
+int								builtin_env(t_program_info *info);
 int								builtin_exit(t_program_info *info, char **argv);
 int								is_valid_identifier(const char *s);
 

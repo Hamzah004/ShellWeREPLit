@@ -6,7 +6,7 @@
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 21:25:08 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/05/08 04:16:27 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/05/08 17:42:01 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ static int	execute_builtin(t_program_info *info)
 	else if (!ft_strcmp(info->my_commands->argv[0], "export"))
 		return (builtin_export(info, info->my_commands->argv));
 	else if (!ft_strcmp(info->my_commands->argv[0], "echo"))
-		return (builtin_echo(info, info->my_commands->argv));
+		return (builtin_echo(info->my_commands->argv));
 	else if (!ft_strcmp(info->my_commands->argv[0], "pwd"))
-		return (builtin_pwd(info));
+		return (builtin_pwd());
 	else if (!ft_strcmp(info->my_commands->argv[0], "env"))
-		return (builtin_env(info, info->my_commands->argv));
+		return (builtin_env(info));
 	else if (!ft_strcmp(info->my_commands->argv[0], "exit"))
 		return (builtin_exit(info, info->my_commands->argv));
 	return (0);
@@ -77,7 +77,7 @@ int	execution(t_program_info *info)
 	while (my_commands)
 	{
 		if (isbuiltin(my_commands->argv[0]))
-			execute_builtin(info);
+			info->exit_status = execute_builtin(info);
 		else
 		{
 			pid = fork();

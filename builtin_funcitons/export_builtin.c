@@ -52,7 +52,6 @@ int	builtin_export(t_program_info *info, char **argv)
 	if (!*argv)
 	{
 		print_export_no_arg(info->env);
-		info->exit_status = 0;
 		return (0);
 	}
 	while (*argv)
@@ -66,7 +65,6 @@ int	builtin_export(t_program_info *info, char **argv)
 			{
 				free(key);
 				free(value);
-				info->exit_status = 1;
 				return (1);
 			}
 			if (!is_valid_identifier(key))
@@ -95,6 +93,5 @@ int	builtin_export(t_program_info *info, char **argv)
 		}
 		argv++;
 	}
-	info->exit_status = status;
 	return (status);
 }
