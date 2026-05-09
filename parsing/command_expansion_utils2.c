@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 11:49:19 by amufleh           #+#    #+#             */
-/*   Updated: 2026/04/05 13:28:26 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/05/09 16:45:40 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ char	*replace_str(char *old)
 	char	*tmp_file;
 
 	tmp_file = expand_files(old);
-	if (!tmp_file)
-		return (0);
 	free(old);
 	return (tmp_file);
 }
@@ -68,8 +66,12 @@ int	remove_empty_arg(t_commands *my_commands)
 	{
 		if (!only_space(my_commands->argv[i]))
 		{
-			my_commands->argv[n] = my_commands->argv[i];
-			n++;
+			if (my_commands->argv[i][0] == '\0')
+			{
+				free(my_commands->argv[i]);
+				continue ;
+			}
+			my_commands->argv[n++] = my_commands->argv[i];
 		}
 		else
 		{
@@ -79,4 +81,27 @@ int	remove_empty_arg(t_commands *my_commands)
 	}
 	my_commands->argv[n] = NULL;
 	return (1);
+}
+
+char	*push_char(char *s1, char s2)
+{
+	char	*new_str;
+	size_t	i;
+
+	if (!s1)
+		return (NULL);
+	i = 0;
+	new_str = malloc((ft_strlen(s1) + 2) * sizeof(char));
+	if (!new_str)
+		return (NULL);
+	while (i < ft_strlen(s1))
+	{
+		new_str[i] = s1[i];
+		i++;
+	}
+	new_str[i] = s2;
+	i++;
+	new_str[i] = '\0';
+	free(s1);
+	return (new_str);
 }

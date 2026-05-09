@@ -12,12 +12,12 @@
 
 #include "../include/parsing.h"
 
-void	free_argv(char **argv)
+char	**free_argv(char **argv)
 {
 	int	i;
 
 	if (!argv)
-		return ;
+		return (NULL);
 	i = 0;
 	while (argv[i])
 	{
@@ -25,6 +25,7 @@ void	free_argv(char **argv)
 		i++;
 	}
 	free(argv);
+	return (NULL);
 }
 
 void	free_redirections(t_redir *redir_list)
