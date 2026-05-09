@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_main.c                                      :+:      :+:    :+:   */
+/*   fill_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 09:41:13 by amufleh           #+#    #+#             */
-/*   Updated: 2026/04/05 13:30:30 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/05/09 16:45:21 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,35 @@ int	input_validation(char *input)
 	return (1);
 }
 
+int	yokotenkai(t_commands *cmd, char **env)
+{
+	int		i;
+	t_redir	*tmp;
+
+	while (cmd)
+	{
+		i = 0;
+		while (cmd->argv && cmd->argv[i])
+		{
+			if (!handle_expansion(cmd, env, &i))
+				return (0);
+		}
+		tmp = cmd->redirection;
+		while (tmp)
+		{
+			if (tmp->type != TOK_HEREDOC)
+			{
+				tmp->file = replace_str(tmp->file);
+				if (!tmp->file)
+					return (0);
+			}
+			tmp = tmp->next;
+		}
+		cmd = cmd->next;
+	}
+	return (1);
+}
+
 t_commands	*fill_command_struct(char *input, char **env)
 {
 	t_tokens	*my_tokens;
@@ -56,24 +85,34 @@ t_commands	*fill_command_struct(char *input, char **env)
 		return (free_parser(my_commands, my_tokens));
 	if (!yokotenkai(my_commands, env))
 		return (free_parser(my_commands, my_tokens));
-	remove_empty_arg(my_commands);
+	//remove_empty_arg(my_commands);
 	free_tokens(my_tokens);
 	return (my_commands);
 }
 
-// #include <readline/readline.h>
-// int	main(int argc, char **argv, char **env)
-// {
-// 	t_commands	*my_commands;
-// 	//char *input = "echo \"$HOME\" | grep a > \'file2\' | echo \"abdallah\" | echo \'\"abdallah\"\' | echo \"$HOME\" | echo \"\'$HOME\'\" | echo \' \'$HOME\' \'";
-// 	// char *input = "echo \"abdallah\"";
-// 	char *input = ">test" ;
-// 	my_commands =  fill_command_struct(input, env);
-// 	if (my_commands)
-// 	{
-// 		print_commands(my_commands);
-// 		free_commands(my_commands);
-// 	}
-// 	//printf("\n->%s", polish("       Abdallah        Almufleh     "));
-// 	return (0);
-// }
+#include <readline/readline.h>
+int	main(int argc, char **argv, char **env)
+{
+	argc = 0;
+	argv = NULL;
+	t_commands	*my_commands;
+	//char	*input = "echo \'\'$HOME\'\'";
+	char	*line;
+	while ((line = readline("minishell$")) != NULL)
+	{
+		if (ft_strlen(line) > 0)
+		{
+
+			my_commands = fill_command_struct(line, env);
+			if (my_commands)
+			{
+				print_commands(my_commands);
+				free_commands(my_commands);
+			}
+		}
+		free(line);
+		line = (char *)NULL;
+	}
+	//printf("\n->%s", polish("       Abdallah        Almufleh     "));
+	return (0);
+}

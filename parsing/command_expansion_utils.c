@@ -6,34 +6,11 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 13:05:42 by amufleh           #+#    #+#             */
-/*   Updated: 2026/04/05 13:28:18 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/05/09 16:45:43 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
-
-char	*push_char(char *s1, char s2)
-{
-	char	*new_str;
-	size_t	i;
-
-	if (!s1)
-		return (NULL);
-	i = 0;
-	new_str = malloc((ft_strlen(s1) + 2) * sizeof(char));
-	if (!new_str)
-		return (NULL);
-	while (i < ft_strlen(s1))
-	{
-		new_str[i] = s1[i];
-		i++;
-	}
-	new_str[i] = s2;
-	i++;
-	new_str[i] = '\0';
-	free(s1);
-	return (new_str);
-}
 
 char	*get_env_value(char *name, char **env)
 {
@@ -54,32 +31,45 @@ char	*get_env_value(char *name, char **env)
 	return (ft_strdup(""));
 }
 
-char	*handle_var(char *input, int *i, char **env)
+char	*handle_env_value(char *name, char **env)
 {
-	int		start;
-	char	*name;
 	char	*value;
 	char	*after_polish;
 
-	(*i)++;
-	start = *i;
-	while (input[*i] && (ft_isalnum(input[*i]) || input[*i] == '_'))
-		(*i)++;
-	name = ft_strndup(input + start, *i - start);
 	if (!name)
 		return (NULL);
 	value = get_env_value(name, env);
 	if (!value)
-	{
-		free(name);
-		return (NULL);
-	}
-	free(name);
+		return (ft_strdup(""));
 	after_polish = polish(value);
 	free(value);
 	if (!after_polish)
 		return (NULL);
 	return (after_polish);
+}
+
+char	*handle_var(char *input, t_track_quote *tracker, char **env)
+{
+	int		start;
+	char	*name;
+	char	*value;
+
+	if (input[tracker->i] == '$' && input[tracker->i + 1] == '?')
+	{
+		tracker->i += 2;
+		return (ft_strdup("$exit_state"));
+	}
+	tracker->i++;
+	start = tracker->i;
+	while (input[tracker->i] && (ft_isalnum(input[tracker->i])
+			|| input[tracker->i] == '_'))
+		tracker->i++;
+	name = ft_strndup(input + start, tracker->i - start);
+	value = handle_env_value(name, env);
+	free(name);
+	if (!value)
+		return (ft_strdup(""));
+	return (value);
 }
 
 char	*append(char *str, char c)
@@ -96,24 +86,21 @@ char	*append(char *str, char c)
 	return (tmp);
 }
 
-char	*expand_files(char *file)
+char	**handle_unquoted_var(char *tmp, char **result)
 {
-	int		i;
-	char	*result;
+	char	**words;
 
-	i = 0;
-	result = ft_strdup("");
-	if (!result)
-		return (NULL);
-	while (file[i])
+	words = ft_split(tmp, ' ');
+	free(tmp);
+	if (!words)
+		return (free_argv(result));
+	if (count_words(words) > 1)
+		result = insert_argv(result, words);
+	else
 	{
-		if (file[i] != '\'' && file[i] != '\"')
-		{
-			result = append(result, file[i]);
-			if (!result)
-				return (NULL);
-		}
-		i++;
+		if (words[0])
+			result[0] = strjoin_free(result[0], words[0]);
+		free_argv(words);
 	}
 	return (result);
 }
