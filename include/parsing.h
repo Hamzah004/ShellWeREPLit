@@ -6,17 +6,19 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:25:30 by amufleh           #+#    #+#             */
-/*   Updated: 2026/04/05 13:38:23 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/05/09 17:31:30 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
+
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include "../libft/libft.h"
+# include <readline/readline.h>
 
 typedef enum e_token_type
 {
@@ -56,6 +58,7 @@ typedef struct s_track_quote
 	int	i;
 	int	s_quote;
 	int	d_quote;
+	int	was_quoted;
 }	t_track_quote;
 
 // TOKENIZER
@@ -82,7 +85,6 @@ void			print_commands(t_commands *cmd);
 
 // PARSER
 
-t_commands		*fill_command_struct(char *input, char **env);
 t_redir			*new_redirection(t_token_type type, char *value);
 t_commands		*new_command(void);
 int				fill_command_options(t_commands *my_commands,
@@ -96,21 +98,39 @@ void			free_commands(t_commands *my_commands);
 t_commands		*free_parser(t_commands *my_commands, t_tokens *my_tokens);
 void			free_redirections(t_redir *redir_list);
 void			*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-
+t_commands		*fill_command_struct(char *input, char **env);
 // EXPANSION
 
-char			*expand_argv(char *input, char **env);
-char			*handle_var(char *input, int *i, char **env);
+char			**expand_argv(char *input, char **env);
+int				handle_expansion(t_commands *cmd, char **env, int *i);
+char			**handel_double_quote(t_track_quote *tracker, char *input,
+					char **result, char **env);
+char			**handel_single_quote(char *input, int *i, char **result);
+char			*handle_var(char *input, t_track_quote *tracker, char **env);
 char			*ft_strndup(const char *s, size_t n);
 char			*get_env_value(char *name, char **env);
 char			*append(char *str, char c);
 int				yokotenkai(t_commands *my_commands, char **env);
-char			*quote_tracker(t_track_quote *tracker, char *input,
-					char *result, char **env);
+char			**quote_tracker(t_track_quote *tracker, char *input,
+					char **result, char **env);
 char			*expand_files(char *file);
 char			*replace_str(char *old);
 char			*polish(char *value);
 int				remove_empty_arg(t_commands *my_commands);
 int				only_space(char *str);
+int				count_words(char **arr);
+char			**insert_argv(char **argv, char **words);
+char			**insert_words(char **argv, int index, char **words);
+char			*strjoin_free(char	*old, char	*new);
+char			**handle_unquoted_var(char *tmp, char **result);
+char			*handle_env_value(char *name, char **env);
+
+//FREE
+
+t_commands		*free_parser(t_commands *my_commands, t_tokens *my_tokens);
+int				free_tokens(t_tokens *head);
+void			free_commands(t_commands *my_commands);
+void			free_redirections(t_redir *redir_list);
+char			**free_argv(char **argv);
 
 #endif

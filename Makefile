@@ -6,7 +6,7 @@
 #    By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/11 16:28:02 by hbani-at          #+#    #+#              #
-#    Updated: 2026/04/05 13:35:33 by amufleh          ###   ########.fr        #
+#    Updated: 2026/05/09 17:40:13 by amufleh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,12 @@ COM_STRING   = "Compiling"
 CC = cc
 CFLAGS = -g3 -Wall -Werror -Wextra -I./include
 NAME = minishell
+
+EXECUTION_DIR = ./execution
+PARSING_DIR = ./parsing
+LIBFT_DIR = ./libft
+LIBFT_A = $(LIBFT_DIR)/libft.a
+
 SRC =	main.c \
 	error.c \
 	$(EXECUTION_DIR)/execution.c \
@@ -35,13 +41,10 @@ SRC =	main.c \
 	$(PARSING_DIR)/parser_utils.c \
 	$(PARSING_DIR)/syntax_validation.c \
 	$(PARSING_DIR)/command_expansion_utils2.c \
+	$(PARSING_DIR)/command_expansion_utils3.c \
 	$(PARSING_DIR)/fill_command.c
 
 OBJS = $(SRC:.c=.o)
-EXECUTION_DIR = ./execution
-PARSING_DIR = ./parsing
-LIBFT_DIR = ./libft
-LIBFT_A = $(LIBFT_DIR)/libft.a
 
 all: $(NAME)
 
@@ -50,7 +53,7 @@ $(NAME): $(OBJS) $(LIBFT_A)
 	@printf "$(OK_COLOR)$(OK_STRING) final minishell executable successfully created\n$(NO_COLOR)"
 
 $(LIBFT_A):
-	@make --no-print-directory -C $(LIBFT_DIR) bonus
+	@make --no-print-directory -C $(LIBFT_DIR)
 	@printf "$(OK_COLOR)$(OK_STRING) libft archive cerated\n$(NO_COLOR)"
 
 %.o : %.c

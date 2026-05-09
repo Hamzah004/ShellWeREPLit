@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 09:41:13 by amufleh           #+#    #+#             */
-/*   Updated: 2026/05/09 16:45:21 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/05/09 17:31:40 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,29 +90,29 @@ t_commands	*fill_command_struct(char *input, char **env)
 	return (my_commands);
 }
 
-#include <readline/readline.h>
-int	main(int argc, char **argv, char **env)
-{
-	argc = 0;
-	argv = NULL;
-	t_commands	*my_commands;
-	//char	*input = "echo \'\'$HOME\'\'";
-	char	*line;
-	while ((line = readline("minishell$")) != NULL)
-	{
-		if (ft_strlen(line) > 0)
-		{
+// #include <readline/readline.h>
+// int	main(int argc, char **argv, char **env)
+// {
+// 	argc = 0;
+// 	argv = NULL;
+// 	t_commands	*my_commands;
+// 	//char	*input = "echo \'\'$HOME\'\'";
+// 	char	*line;
+// 	while ((line = readline("minishell$")) != NULL)
+// 	{
+// 		if (ft_strlen(line) > 0)
+// 		{
 
-			my_commands = fill_command_struct(line, env);
-			if (my_commands)
-			{
-				print_commands(my_commands);
-				free_commands(my_commands);
-			}
-		}
-		free(line);
-		line = (char *)NULL;
-	}
-	//printf("\n->%s", polish("       Abdallah        Almufleh     "));
-	return (0);
-}
+// 			my_commands = fill_command_struct(line, env);
+// 			if (my_commands)
+// 			{
+// 				print_commands(my_commands);
+// 				free_commands(my_commands);
+// 			}
+// 		}
+// 		free(line);
+// 		line = (char *)NULL;
+// 	}
+// 	//printf("\n->%s", polish("       Abdallah        Almufleh     "));
+// 	return (0);
+// }
