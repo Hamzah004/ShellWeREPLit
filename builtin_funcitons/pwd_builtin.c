@@ -6,7 +6,7 @@
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 15:50:10 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/05/08 15:54:13 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/05/09 14:31:31 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ int	builtin_pwd(void)
 		perror("minishell: pwd");
 		return (1);
 	}
-  	ft_putendl_fd(buffer, 1);
+	ft_putendl_fd(buffer, 1);
 	return (0);
 }

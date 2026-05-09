@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit_builtin.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/09 14:27:38 by hbani-at          #+#    #+#             */
+/*   Updated: 2026/05/09 14:58:43 by hbani-at         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/execution.h"
 #include <readline/readline.h>
 #include <limits.h>
@@ -72,19 +84,16 @@ int	builtin_exit(t_program_info *info, char **argv)
 	}
 	if (!validate_arg(argv[1], &ll))
 	{
-		ft_putstr_fd("minishell$ exit: ", 2);
+		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(argv[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
-		// TODO: check what the status code will be
-		return (2);
-		// TODO: check if this should be cleaned and exit or cont with the session
-		// kill_this_mada_faka(info, 2);
+		kill_this_mada_faka(info, 2);
 	}
 	if (argv[2])
 	{
-		ft_putendl_fd("minishell: exit: too many arguments", 2);
-		// TODO: check the status code and if you kill or not
-		return (2);
+		ft_putendl_fd("minishell$ exit: too many arguments", 2);
+		// TODO: check the status code and if you kill or not in campus
+		return (1);
 	}
 	kill_this_mada_faka(info, (unsigned char)ll);
 	return (0);
