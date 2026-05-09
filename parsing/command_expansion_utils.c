@@ -12,26 +12,22 @@
 
 #include "../include/parsing.h"
 
-char	*get_env_value(char *name, char **env)
+char	*get_env_value(char *name, t_envp *env)
 {
-	int		i;
-	int		size;
-
-	i = 0;
-	size = ft_strlen(name);
-	while (env[i])
+	while (env)
 	{
-		if (ft_strncmp(env[i], name, size) == 0
-			&& env[i][size] == '=')
+		if (ft_strcmp(env->key, name) == 0)
 		{
-			return (ft_strdup(env[i] + size + 1));
+			if (env->value)
+				return (ft_strdup(env->value));
+			return (ft_strdup(""));
 		}
-		i++;
+		env = env->next;
 	}
 	return (ft_strdup(""));
 }
 
-char	*handle_env_value(char *name, char **env)
+char	*handle_env_value(char *name, t_envp *env)
 {
 	char	*value;
 	char	*after_polish;
@@ -48,7 +44,8 @@ char	*handle_env_value(char *name, char **env)
 	return (after_polish);
 }
 
-char	*handle_var(char *input, t_track_quote *tracker, char **env)
+char	*handle_var(char *input, t_track_quote *tracker, t_envp *env,
+	int exit_status)
 {
 	int		start;
 	char	*name;
@@ -57,7 +54,7 @@ char	*handle_var(char *input, t_track_quote *tracker, char **env)
 	if (input[tracker->i] == '$' && input[tracker->i + 1] == '?')
 	{
 		tracker->i += 2;
-		return (ft_strdup("$exit_state"));
+		return (ft_itoa(exit_status));
 	}
 	tracker->i++;
 	start = tracker->i;

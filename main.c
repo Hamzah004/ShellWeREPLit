@@ -24,7 +24,7 @@
 
 int	init_program_info(t_program_info *info, char **env)
 {
-	setup_signals_interactive();
+	info->envp = NULL;
 	info->my_commands = NULL;
 	info->exit_status = 0;
 	info->original_stdin = -1;
@@ -32,6 +32,7 @@ int	init_program_info(t_program_info *info, char **env)
 	info->cmd_exec_dir = NULL;
 	info->env = init_env(env);
 	get_and_update_path(info);
+	setup_signals_interactive();
 	return (0);
 }
 
@@ -67,13 +68,14 @@ void	read_from_prompt(t_program_info *info)
 			continue ;
 		}
 		add_history(line);
-		info->my_commands = fill_command_struct(line, info->envp);
+		info->my_commands = fill_command_struct(line, info->env,
+				info->exit_status);
 		if (!info->my_commands)
 		{
 			free(line);
 			continue ;
 		}
-		printf("command: %s\nargv[1]:%s\n", info->my_commands->argv[0], info->my_commands->argv[1]);
+		// printf("command: %s\nargv[1]:%s\n", info->my_commands->argv[0], info->my_commands->argv[1]);
 			execution(info);
 			free_commands(info->my_commands);
 			free(line);

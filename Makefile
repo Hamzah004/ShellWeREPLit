@@ -6,7 +6,7 @@
 #    By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/11 16:28:02 by hbani-at          #+#    #+#              #
-#    Updated: 2026/05/08 04:05:59 by hbani-at         ###   ########.fr        #
+#    Updated: 2026/05/09 17:40:13 by amufleh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,12 @@ COM_STRING   = "Compiling"
 CC = cc
 CFLAGS = -g3 -Wall -Werror -Wextra -I./include
 NAME = minishell
+
+EXECUTION_DIR = ./execution
+PARSING_DIR = ./parsing
+LIBFT_DIR = ./libft
+LIBFT_A = $(LIBFT_DIR)/libft.a
+
 SRC =	main.c \
 	error.c \
 	$(EXECUTION_DIR)/execution.c \
@@ -47,15 +53,12 @@ SRC =	main.c \
 	$(PARSING_DIR)/parser_utils.c \
 	$(PARSING_DIR)/syntax_validation.c \
 	$(PARSING_DIR)/command_expansion_utils2.c \
+	$(PARSING_DIR)/command_expansion_utils3.c \
 	$(PARSING_DIR)/fill_command.c
 
 OBJS = $(SRC:.c=.o)
-EXECUTION_DIR = ./execution
 BUILTIN_DIR = ./builtin_funcitons/
-PARSING_DIR = ./parsing
 SIGNAL_HANDLE_DIR = ./signal_handling/
-LIBFT_DIR = ./libft
-LIBFT_A = $(LIBFT_DIR)/libft.a
 
 all: $(NAME)
 

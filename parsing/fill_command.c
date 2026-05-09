@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 09:41:13 by amufleh           #+#    #+#             */
-/*   Updated: 2026/05/09 16:45:21 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/05/09 17:31:40 by amufleh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	input_validation(char *input)
 	return (1);
 }
 
-int	yokotenkai(t_commands *cmd, char **env)
+int	yokotenkai(t_commands *cmd, t_envp *env, int exit_status)
 {
 	int		i;
 	t_redir	*tmp;
@@ -47,7 +47,7 @@ int	yokotenkai(t_commands *cmd, char **env)
 		i = 0;
 		while (cmd->argv && cmd->argv[i])
 		{
-			if (!handle_expansion(cmd, env, &i))
+			if (!handle_expansion(cmd, env, exit_status, &i))
 				return (0);
 		}
 		tmp = cmd->redirection;
@@ -66,7 +66,7 @@ int	yokotenkai(t_commands *cmd, char **env)
 	return (1);
 }
 
-t_commands	*fill_command_struct(char *input, char **env)
+t_commands	*fill_command_struct(char *input, t_envp *env, int exit_status)
 {
 	t_tokens	*my_tokens;
 	t_commands	*my_commands;
@@ -83,36 +83,36 @@ t_commands	*fill_command_struct(char *input, char **env)
 	// print_tokens(my_tokens);
 	if (!the_parser(my_tokens, my_commands))
 		return (free_parser(my_commands, my_tokens));
-	if (!yokotenkai(my_commands, env))
+	if (!yokotenkai(my_commands, env, exit_status))
 		return (free_parser(my_commands, my_tokens));
 	//remove_empty_arg(my_commands);
 	free_tokens(my_tokens);
 	return (my_commands);
 }
 
-#include <readline/readline.h>
-int	main(int argc, char **argv, char **env)
-{
-	argc = 0;
-	argv = NULL;
-	t_commands	*my_commands;
-	//char	*input = "echo \'\'$HOME\'\'";
-	char	*line;
-	while ((line = readline("minishell$")) != NULL)
-	{
-		if (ft_strlen(line) > 0)
-		{
+// #include <readline/readline.h>
+// int	main(int argc, char **argv, char **env)
+// {
+// 	argc = 0;
+// 	argv = NULL;
+// 	t_commands	*my_commands;
+// 	//char	*input = "echo \'\'$HOME\'\'";
+// 	char	*line;
+// 	while ((line = readline("minishell$")) != NULL)
+// 	{
+// 		if (ft_strlen(line) > 0)
+// 		{
 
-			my_commands = fill_command_struct(line, env);
-			if (my_commands)
-			{
-				print_commands(my_commands);
-				free_commands(my_commands);
-			}
-		}
-		free(line);
-		line = (char *)NULL;
-	}
-	//printf("\n->%s", polish("       Abdallah        Almufleh     "));
-	return (0);
-}
+// 			my_commands = fill_command_struct(line, env);
+// 			if (my_commands)
+// 			{
+// 				print_commands(my_commands);
+// 				free_commands(my_commands);
+// 			}
+// 		}
+// 		free(line);
+// 		line = (char *)NULL;
+// 	}
+// 	//printf("\n->%s", polish("       Abdallah        Almufleh     "));
+// 	return (0);
+// }

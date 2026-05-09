@@ -34,7 +34,7 @@ char	*handel_multyarg(char **tmp)
 	return (output);
 }
 
-char	*heredoc_expansion(char *input, char **env, int quoted)
+char	*heredoc_expansion(char *input, t_envp *env, int exit_status, int quoted)
 {
 	char	**tmp;
 	char	*final_output;
@@ -45,7 +45,7 @@ char	*heredoc_expansion(char *input, char **env, int quoted)
 		free (input);
 		return (final_output);
 	}
-	tmp = expand_argv(input, env);
+	tmp = expand_argv(input, env, exit_status);
 	free(input);
 	if (!tmp)
 		return (0);
@@ -70,7 +70,7 @@ void	add_free(char *after_exp, int fd)
 	free(after_exp);
 }
 
-int	handel_herdoc(char *drlimiter, char **env, int quoted)
+int	handel_herdoc(char *drlimiter, t_envp *env, int exit_status, int quoted)
 {
 	char	*input;
 	char	*after_exp;
@@ -83,7 +83,7 @@ int	handel_herdoc(char *drlimiter, char **env, int quoted)
 		input = readline("> ");
 		if (!input)
 			return (-1);
-		after_exp = heredoc_expansion(input, env, quoted);
+		after_exp = heredoc_expansion(input, env, exit_status, quoted);
 		if (!after_exp)
 			return (-1);
 		if (ft_strcmp(after_exp, drlimiter) == 0)

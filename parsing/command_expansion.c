@@ -29,11 +29,11 @@ char	**handel_single_quote(char *input, int *i, char **result)
 }
 
 char	**handel_double_quote(t_track_quote *tracker, char *input,
-		char **result, char **env)
+		char **result, t_envp *env, int exit_status)
 {
 	char	*tmp;
 
-	tmp = handle_var(input, tracker, env);
+	tmp = handle_var(input, tracker, env, exit_status);
 	if (!tmp)
 		return (free_argv(result));
 	if (tracker->d_quote)
@@ -48,7 +48,7 @@ char	**handel_double_quote(t_track_quote *tracker, char *input,
 }
 
 char	**quote_tracker(t_track_quote *tracker, char *input,
-	char **result, char **env)
+	char **result, t_envp *env, int exit_status)
 {
 	if (input[tracker->i] == '\'')
 	{
@@ -64,7 +64,7 @@ char	**quote_tracker(t_track_quote *tracker, char *input,
 	}
 	if (input[tracker->i] == '$' && !tracker->s_quote)
 	{
-		result = handel_double_quote(tracker, input, result, env);
+		result = handel_double_quote(tracker, input, result, env, exit_status);
 		if (!result)
 			return (NULL);
 	}
@@ -77,7 +77,7 @@ char	**quote_tracker(t_track_quote *tracker, char *input,
 	return (result);
 }
 
-char	**expand_argv(char *input, char **env)
+char	**expand_argv(char *input, t_envp *env, int exit_status)
 {
 	char			**result;
 	t_track_quote	tracker;
@@ -93,7 +93,7 @@ char	**expand_argv(char *input, char **env)
 	result[1] = NULL;
 	while (input[tracker.i])
 	{
-		result = quote_tracker(&tracker, input, result, env);
+		result = quote_tracker(&tracker, input, result, env, exit_status);
 		if (!result)
 			return (NULL);
 	}
@@ -105,12 +105,12 @@ char	**expand_argv(char *input, char **env)
 	return (result);
 }
 
-int	handle_expansion(t_commands *cmd, char **env, int *i)
+int	handle_expansion(t_commands *cmd, t_envp *env, int exit_status, int *i)
 {
 	char	**tmp;
 	int		added_words;
 
-	tmp = expand_argv(cmd->argv[*i], env);
+	tmp = expand_argv(cmd->argv[*i], env, exit_status);
 	if (!tmp)
 		return (0);
 	if (tmp[1])
