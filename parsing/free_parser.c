@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
+#include <unistd.h>
 
 char	**free_argv(char **argv)
 {
@@ -35,6 +36,8 @@ void	free_redirections(t_redir *redir_list)
 	while (redir_list)
 	{
 		tmp = redir_list->next;
+		if (redir_list->heredoc_fd != -1)
+			close(redir_list->heredoc_fd);
 		if (redir_list->file)
 			free(redir_list->file);
 		free(redir_list);

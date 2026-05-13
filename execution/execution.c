@@ -76,20 +76,38 @@ int	execution(t_program_info *info)
 	info->original_stdout = dup(STDOUT_FILENO);
 	while (my_commands)
 	{
-		if (isbuiltin(my_commands->argv[0]))
-			info->exit_status = execute_builtin(info);
+		if (!my_commands->argv || !my_commands->argv[0])
+		{
+			if (apply_redir(my_commands) < 0)
+				info->exit_status = 1;
+			else
+				info->exit_status = 0;
+		}
+		else if (isbuiltin(my_commands->argv[0]))
+		{
+			if (apply_redir(my_commands) < 0)
+				info->exit_status = 1;
+			else
+				info->exit_status = execute_builtin(info);
+		}
 		else
 		{
 			pid = fork();
 			if (pid == 0)
 			{
+				if (apply_redir(my_commands) < 0)
+					exit(1);
 				execute_single_cmd(info);
 				exit(0);
 			}
 			else
 				waitpid(pid, NULL, 0);
 		}
+		dup2(info->original_stdin, STDIN_FILENO);
+		dup2(info->original_stdout, STDOUT_FILENO);
 		my_commands = my_commands->next;
 	}
+	close(info->original_stdin);
+	close(info->original_stdout);
 	return (0);
 }

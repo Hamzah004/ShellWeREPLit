@@ -54,7 +54,8 @@ SRC =	main.c \
 	$(PARSING_DIR)/syntax_validation.c \
 	$(PARSING_DIR)/command_expansion_utils2.c \
 	$(PARSING_DIR)/command_expansion_utils3.c \
-	$(PARSING_DIR)/fill_command.c
+	$(PARSING_DIR)/fill_command.c \
+	$(PARSING_DIR)/heredoc.c
 
 OBJS = $(SRC:.c=.o)
 BUILTIN_DIR = ./builtin_funcitons/

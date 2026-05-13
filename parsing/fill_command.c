@@ -85,6 +85,8 @@ t_commands	*fill_command_struct(char *input, t_envp *env, int exit_status)
 		return (free_parser(my_commands, my_tokens));
 	if (!yokotenkai(my_commands, env, exit_status))
 		return (free_parser(my_commands, my_tokens));
+	if (collect_heredocs(my_commands, env, exit_status) < 0)
+		return (free_parser(my_commands, my_tokens));
 	//remove_empty_arg(my_commands);
 	free_tokens(my_tokens);
 	return (my_commands);

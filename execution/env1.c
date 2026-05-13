@@ -14,16 +14,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// t_env	*create_new_env_node(char *content);
-// int		set_env_var(t_env **list, char *name, char *value);
-// int		unset_env_var(t_env **list, char *name);
-// t_env	*find_env_node(t_env *list, char *name);
-// char	*get_env_var(t_env *list, char *name);
-// int		is_valid_identifier(char *str);
-// void	free_env_list(t_env *list);
-
-void	free_str_array(char **cmd_exec_dir);
-
 int	count_lines(char **env)
 {
 	int	len;

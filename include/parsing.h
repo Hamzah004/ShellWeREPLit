@@ -108,6 +108,8 @@ void			free_redirections(t_redir *redir_list);
 void			*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 t_commands		*fill_command_struct(char *input, t_envp *env,
 					int exit_status);
+int				collect_heredocs(t_commands *cmds, t_envp *env,
+					int exit_status);
 // EXPANSION
 
 char			**expand_argv(char *input, t_envp *env, int exit_status);

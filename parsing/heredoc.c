@@ -12,6 +12,8 @@
 
 #include "../include/parsing.h"
 
+int		handel_herdoc(char *drlimiter, t_envp *env, int exit_status, int quoted);
+
 char	*handel_multyarg(char **tmp)
 {
 	int		i;
@@ -68,6 +70,30 @@ void	add_free(char *after_exp, int fd)
 	ft_putstr_fd(after_exp, fd);
 	ft_putstr_fd("\n", fd);
 	free(after_exp);
+}
+
+int	collect_heredocs(t_commands *cmds, t_envp *env, int exit_status)
+{
+	t_redir	*r;
+	int		fd;
+
+	while (cmds)
+	{
+		r = cmds->redirection;
+		while (r)
+		{
+			if (r->type == TOK_HEREDOC && r->heredoc_fd == -1)
+			{
+				fd = handel_herdoc(r->file, env, exit_status, 1);
+				if (fd < 0)
+					return (-1);
+				r->heredoc_fd = fd;
+			}
+			r = r->next;
+		}
+		cmds = cmds->next;
+	}
+	return (0);
 }
 
 int	handel_herdoc(char *drlimiter, t_envp *env, int exit_status, int quoted)
