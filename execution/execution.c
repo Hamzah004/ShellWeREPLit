@@ -12,6 +12,7 @@
 
 #include "../include/execution.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -70,6 +71,7 @@ int	execution(t_program_info *info)
 {
 	t_commands	*my_commands;
 	pid_t		pid;
+	int			status;
 
 	my_commands = info->my_commands;
 	info->original_stdin = dup(STDIN_FILENO);
@@ -101,7 +103,11 @@ int	execution(t_program_info *info)
 				exit(0);
 			}
 			else
-				waitpid(pid, NULL, 0);
+				waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+				info->exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				info->exit_status = 128 + WTERMSIG(status);
 		}
 		dup2(info->original_stdin, STDIN_FILENO);
 		dup2(info->original_stdout, STDOUT_FILENO);
