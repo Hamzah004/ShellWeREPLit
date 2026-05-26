@@ -69,21 +69,25 @@ void	read_from_prompt(t_program_info *info)
 		info->my_commands = fill_command_struct(line, info->env,
 				info->exit_status);
 		setup_signals_interactive();
+		if (!info->my_commands)
+		{
+			if (g_sig == SIGINT)
+				info->exit_status = 130;
+			else
+				info->exit_status = 2;
+			g_sig = 0;
+			free(line);
+			continue ;
+		}
 		if (g_sig == SIGINT)
 		{
 			info->exit_status = 130;
 			g_sig = 0;
 		}
-		if (!info->my_commands)
-		{
-			free(line);
-			continue ;
-		}
-		// printf("command: %s\nargv[1]:%s\n", info->my_commands->argv[0], info->my_commands->argv[1]);
-			execution(info);
-			free_commands(info->my_commands);
-			free(line);
-			info->my_commands = NULL;
+		execution(info);
+		free_commands(info->my_commands);
+		free(line);
+		info->my_commands = NULL;
 	}
 }
 

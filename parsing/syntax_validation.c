@@ -20,6 +20,17 @@ int	is_redirection(t_token_type type)
 	return (0);
 }
 
+static int	syntax_error(t_tokens *tok)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	if (tok)
+		ft_putstr_fd(tok->value, 2);
+	else
+		ft_putstr_fd("newline", 2);
+	ft_putendl_fd("'", 2);
+	return (0);
+}
+
 int	syntax_validation(t_tokens *my_tokens)
 {
 	t_tokens	*token;
@@ -27,21 +38,24 @@ int	syntax_validation(t_tokens *my_tokens)
 	token = my_tokens;
 	while (token)
 	{
-		if (token -> type == TOK_PIPE)
+		if (token->type == TOK_PIPE)
 		{
-			if (!token->prev || !token->next)
-				return (0);
-			if (token->prev->type != TOK_WORD
-				|| token->next->type == TOK_PIPE)
-				return (0);
+			if (!token->prev)
+				return (syntax_error(token));
+			if (!token->next)
+				return (syntax_error(NULL));
+			if (token->prev->type != TOK_WORD || token->next->type == TOK_PIPE)
+				return (syntax_error(token->next));
 		}
 		if (is_redirection(token->type))
 		{
-			if (!token->next || is_redirection(token->next->type)
+			if (!token->next)
+				return (syntax_error(NULL));
+			if (is_redirection(token->next->type)
 				|| token->next->type == TOK_PIPE)
-				return (0);
+				return (syntax_error(token->next));
 		}
-		token = token -> next;
+		token = token->next;
 	}
 	return (1);
 }
