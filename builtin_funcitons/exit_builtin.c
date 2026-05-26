@@ -65,6 +65,8 @@ static void	kill_this_mada_faka(t_program_info *info, int status)
 	free_str_array(info->envp);
 	free_str_array(info->cmd_exec_dir);
 	free_commands(info->my_commands);
+ 	close(info->original_stdin);
+  	close(info->original_stdout);
 	rl_clear_history();
 	exit(status);
 }

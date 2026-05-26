@@ -116,6 +116,8 @@ static void	exec_external_cmd(t_program_info *info, t_commands *my_commands)
 			exit(1);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
+		close(info->original_stdin);
+		close(info->original_stdout);
 		execute_single_cmd(info);
 		exit(0);
 	}
@@ -187,6 +189,8 @@ void	child_process(t_program_info *info, t_commands *current, int prev_read,
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	close(info->original_stdin);
+	close(info->original_stdout);
 	set_child_fds(pipe_fd, prev_read);
 	info->my_commands = current;
 	if (apply_redir(current) < 0)
