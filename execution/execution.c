@@ -12,6 +12,7 @@
 
 #include "../include/execution.h"
 #include <readline/readline.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -32,8 +33,30 @@ void	execute_single_cmd(t_program_info *info)
 	cmd_path = get_cmd_bin(info);
 	if (cmd_path == NULL)
 	{
-		perror("command not found");
-		exit(127);
+		if (ft_strchr(info->my_commands->argv[0], '/'))
+		{
+			if (access(info->my_commands->argv[0], F_OK) != 0)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(info->my_commands->argv[0], 2);
+				ft_putendl_fd(": No such file or directory", 2);
+				exit(127);
+			}
+			if (access(info->my_commands->argv[0], X_OK) != 0)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(info->my_commands->argv[0], 2);
+				ft_putendl_fd(": Permission denied", 2);
+				exit(126);
+			}
+		}
+		else
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(info->my_commands->argv[0], 2);
+			ft_putendl_fd(": command not found", 2);
+			exit(127);
+		}
 	}
 	execve(cmd_path, info->my_commands->argv, info->envp);
 	perror("execve");
@@ -91,6 +114,8 @@ static void	exec_external_cmd(t_program_info *info, t_commands *my_commands)
 	{
 		if (apply_redir(my_commands) < 0)
 			exit(1);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		execute_single_cmd(info);
 		exit(0);
 	}
@@ -99,7 +124,13 @@ static void	exec_external_cmd(t_program_info *info, t_commands *my_commands)
 	if (WIFEXITED(status))
 		info->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+			write(1, "\n", 1);
+		else if (WTERMSIG(status) == SIGQUIT)
+			ft_putendl_fd("Quit (core dumped)", 2);
 		info->exit_status = 128 + WTERMSIG(status);
+	}
 }
 
 static void	exec_builtin_and_single_cmd(t_program_info *info,
@@ -154,6 +185,8 @@ void	set_child_fds(int pipe_fd[2], int prev_read)
 void	child_process(t_program_info *info, t_commands *current, int prev_read,
 		int pipe_fd[2])
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	set_child_fds(pipe_fd, prev_read);
 	info->my_commands = current;
 	if (apply_redir(current) < 0)
@@ -187,7 +220,13 @@ void	wait_for_all(t_program_info *info, int last_pid)
 			if (WIFEXITED(status))
 				info->exit_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
+			{
+				if (WTERMSIG(status) == SIGINT)
+					write(1, "\n", 1);
+				else if (WTERMSIG(status) == SIGQUIT)
+					ft_putendl_fd("Quit (core dumped)", 2);
 				info->exit_status = 128 + WTERMSIG(status);
+			}
 		}
 		wait_reutrn = waitpid(-1, &status, 0);
 	}
@@ -223,11 +262,13 @@ int	execution(t_program_info *info)
 
 	info->original_stdin = dup(STDIN_FILENO);
 	info->original_stdout = dup(STDOUT_FILENO);
+	signal(SIGINT, SIG_IGN);
 	count = commands_count(info->my_commands);
 	if (count == 1)
 		exec_builtin_and_single_cmd(info, info->my_commands);
 	else
 		pipeline_execution(info, info->my_commands);
+	setup_signals_interactive();
 	close(info->original_stdin);
 	close(info->original_stdout);
 	return (0);

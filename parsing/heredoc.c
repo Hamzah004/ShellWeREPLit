@@ -10,9 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/execution.h"
 #include "../include/parsing.h"
+#include <signal.h>
+#include <unistd.h>
 
-int		handel_herdoc(char *drlimiter, t_envp *env, int exit_status, int quoted);
+int			handel_herdoc(char *drlimiter, t_envp *env, int exit_status,
+				int quoted);
 
 char	*handel_multyarg(char **tmp)
 {
@@ -36,7 +40,8 @@ char	*handel_multyarg(char **tmp)
 	return (output);
 }
 
-char	*heredoc_expansion(char *input, t_envp *env, int exit_status, int quoted)
+char	*heredoc_expansion(char *input, t_envp *env, int exit_status,
+		int quoted)
 {
 	char	**tmp;
 	char	*final_output;
@@ -44,7 +49,7 @@ char	*heredoc_expansion(char *input, t_envp *env, int exit_status, int quoted)
 	if (!quoted)
 	{
 		final_output = ft_strdup(input);
-		free (input);
+		free(input);
 		return (final_output);
 	}
 	tmp = expand_argv(input, env, exit_status);
@@ -96,22 +101,44 @@ int	collect_heredocs(t_commands *cmds, t_envp *env, int exit_status)
 	return (0);
 }
 
+static int	heredoc_clean(int fd[2], int save_stdin, char *input)
+{
+	free(input);
+	dup2(save_stdin, STDIN_FILENO);
+	close(save_stdin);
+	close(fd[0]);
+	close(fd[1]);
+	return (-1);
+}
+
+static int	heredoc_setup(int fd[2], int *save_stdin)
+{
+	if (pipe(fd) == -1)
+		return (-1);
+	*save_stdin = dup(STDIN_FILENO);
+	setup_heredoc_signal();
+	return (0);
+}
+
 int	handel_herdoc(char *drlimiter, t_envp *env, int exit_status, int quoted)
 {
 	char	*input;
 	char	*after_exp;
 	int		fd[2];
+	int		save_stdin;
 
-	if (pipe(fd) == -1)
+	if (heredoc_setup(fd, &save_stdin) == -1)
 		return (-1);
 	while (1)
 	{
 		input = readline("> ");
+		if (g_sig == SIGINT)
+			return (heredoc_clean(fd, save_stdin, input));
 		if (!input)
-			return (-1);
+			return (heredoc_clean(fd, save_stdin, input));
 		after_exp = heredoc_expansion(input, env, exit_status, quoted);
 		if (!after_exp)
-			return (-1);
+			return (heredoc_clean(fd, save_stdin, NULL));
 		if (ft_strcmp(after_exp, drlimiter) == 0)
 		{
 			free(after_exp);
@@ -120,21 +147,6 @@ int	handel_herdoc(char *drlimiter, t_envp *env, int exit_status, int quoted)
 		add_free(after_exp, fd[1]);
 	}
 	close(fd[1]);
+	close(save_stdin);
 	return (fd[0]);
 }
-// int	main(int argc, char **argv, char **env)
-// {
-// 	argc = 0;
-// 	argv = NULL;
-// 	int		fd;
-// 	char	buffer[1024];
-// 	int		n;
-
-// 	fd = handel_herdoc("EOF", env, 0);
-// 	dup2(fd, 0);
-// 	close(fd);
-// 	n = read(0, buffer, sizeof(buffer) - 1);
-// 	buffer[n] = '\0';
-// 	printf("READ FROM STDIN:\n%s\n", buffer);
-// 	return (0);
-// }

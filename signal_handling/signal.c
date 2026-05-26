@@ -25,9 +25,29 @@ static void	sigint_interactive_handler(int signo)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
+
+static void	heredoc_sigint(int signo)
+{
+	(void)signo;
+	g_sig = SIGINT;
+	close(STDIN_FILENO);
+	write(1, "\n", 1);
+}
+
+void	setup_heredoc_signal(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = heredoc_sigint;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+}
+
 void	setup_signals_interactive(void)
 {
 	struct sigaction	sig_handler;
+
 	sigemptyset(&sig_handler.sa_mask);
 	sig_handler.sa_handler = sigint_interactive_handler;
 	sig_handler.sa_flags = 0;

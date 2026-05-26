@@ -75,6 +75,7 @@ char							**struct_to_arr(t_envp *env);
 
 /* Signals */
 void							setup_signals_interactive(void);
+void	setup_heredoc_signal(void);
 
 /* builtins */
 int								builtin_cd(t_program_info *info);

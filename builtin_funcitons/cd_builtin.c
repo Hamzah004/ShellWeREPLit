@@ -12,6 +12,7 @@
 
 #include "../include/execution.h"
 #include <unistd.h>
+#include <errno.h>
 
 const char	*get_path(t_program_info *info)
 {
@@ -19,7 +20,7 @@ const char	*get_path(t_program_info *info)
 
 	if (info->my_commands->argv[1] && info->my_commands->argv[2])
 	{
-		perror("Error");
+		ft_putendl_fd("minishell: cd: too many arguments", 2);
 		return (NULL);
 	}
 	if (!info->my_commands->argv[1])
@@ -29,31 +30,28 @@ const char	*get_path(t_program_info *info)
 	return (path);
 }
 
-// void	update_env_vars(t_program_info *info)
-// {
-//
-// }
-
 int	builtin_cd(t_program_info *info)
 {
 	const char	*path;
+	char		old[1024];
+	char		new[1024];
 
-	// char	cwd[1024];
 	if (!info)
 		return (1);
 	path = get_path(info);
 	if (!path)
 		return (1);
-	chdir(path);
-	// getcwd(cwd, sizeof(cwd));
+	getcwd(old, sizeof(old));
+	if (chdir(path) != 0)
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd((char *)path, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putendl_fd(strerror(errno), 2);
+		return (1);
+	}
+	getcwd(new, sizeof(new));
+	env_set(&info->env, "OLDPWD", old, 1);
+	env_set(&info->env, "PWD", new, 1);
 	return (0);
 }
-
-// what to do now:
-// Step 1 (spec lock): write a tiny cd behavior contract before coding (5-8 lines in your notes),
-	// with these rules:
-//  - cd <relative_or_absolute_path>: try chdir(path), return 0 on success.
-//  - cd with no arg: use $HOME (bash reference).
-//  - cd with more than one arg: print error, return 1.
-//  - On chdir failure: print perror("minishell: cd"), return 1.
-//  - On success: update OLDPWD to previous cwd and PWD to new cwd.

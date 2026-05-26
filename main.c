@@ -45,12 +45,10 @@ static t_error	validate_arguments(int argc)
 
 void	read_from_prompt(t_program_info *info)
 {
-	// char	buf[1024];
 	char	*line;
 
 	while (1)
 	{
-		// getcwd(buf, sizeof(buf));
 		line = readline("minishell$ ");
 		if (g_sig == SIGINT)
 		{
@@ -70,6 +68,12 @@ void	read_from_prompt(t_program_info *info)
 		add_history(line);
 		info->my_commands = fill_command_struct(line, info->env,
 				info->exit_status);
+		setup_signals_interactive();
+		if (g_sig == SIGINT)
+		{
+			info->exit_status = 130;
+			g_sig = 0;
+		}
 		if (!info->my_commands)
 		{
 			free(line);

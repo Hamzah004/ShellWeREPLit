@@ -13,6 +13,7 @@
 #include "../include/execution.h"
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 int	count_lines(char **env)
 {
@@ -78,13 +79,15 @@ char	*get_cmd_bin(t_program_info *info)
 	if (!info->my_commands->argv || !info->my_commands->argv[0]
 		|| info->my_commands->argv[0][0] == '\0')
 		return (NULL);
-	if (info->my_commands->argv[0][0] == '/'
-		&& access(info->my_commands->argv[0], X_OK) == 0)
-		return (ft_strdup(info->my_commands->argv[0]));
+	if (ft_strchr(info->my_commands->argv[0], '/'))
+	{
+		if (access(info->my_commands->argv[0], X_OK) == 0)
+			return (ft_strdup(info->my_commands->argv[0]));
+		return (NULL);
+	}
 	while (info->cmd_exec_dir && info->cmd_exec_dir[i])
 	{
 		tmp = ft_strjoin(info->cmd_exec_dir[i], "/");
-		// TODO: see if there is a return message will be here on the check
 		if (!tmp)
 			return (NULL);
 		cmd_bin = ft_strjoin(tmp, info->my_commands->argv[0]);
