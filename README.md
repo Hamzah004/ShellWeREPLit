@@ -15,4 +15,5 @@ a custom, lightweight Unix shell interpreter developed in C, designed to emulate
 - [dup() and dup2() Linux system call](https://www.geeksforgeeks.org/c/dup-dup2-linux-system-call/)
 - [ctrl d is line enter](https://hackarcana.com/article/ctrl-d-is-like-enter)
 - [What does Ctrl D hmean on Unix Linux systems](https://www.quora.com/What-does-Ctrl-D-mean-on-Unix-Linux-systems)
+- [REPL wiki](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)
 - valgrind test: valgrind --leak-check=full --show-leak-kinds=all --suppressions=supp.supp --trace-children=yes --track-fds=yes ./minishell
