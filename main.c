@@ -105,6 +105,9 @@ int	main(int argc, char **argv, char **env)
 	}
 	init_program_info(&info, env);
 	read_from_prompt(&info);
+	free_env(info.env);
+	free_str_array(info.cmd_exec_dir);
+	free_str_array(info.envp);
 	rl_clear_history();
-	return (0);
+	return (info.exit_status);
 }

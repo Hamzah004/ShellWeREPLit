@@ -49,6 +49,11 @@ char							*get_cmd_bin(t_program_info *info);
 void							execute_single_cmd(t_program_info *info);
 void							read_from_prompt(t_program_info *info);
 int								apply_redir(t_commands *my_commands);
+void							free_all_and_exit(t_program_info *info,
+									int status);
+void							handle_no_cmd_path(t_program_info *info);
+void							set_exit_from_status(t_program_info *info,
+									int status);
 
 /* main loop */
 int								init_program_info(t_program_info *info,

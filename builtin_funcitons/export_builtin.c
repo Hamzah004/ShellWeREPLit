@@ -12,6 +12,22 @@
 
 #include "../include/execution.h"
 
+int	is_valid_identifier(const char *s)
+{
+	if (!s || !*s)
+		return (0);
+	if (!ft_isalpha(*s) && *s != '_')
+		return (0);
+	s++;
+	while (*s)
+	{
+		if (!ft_isalnum(*s) && *s != '_')
+			return (0);
+		s++;
+	}
+	return (1);
+}
+
 static int	print_export_no_arg(t_envp *head)
 {
 	while (head)

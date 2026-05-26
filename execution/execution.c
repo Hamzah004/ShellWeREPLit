@@ -28,38 +28,15 @@ void	execute_single_cmd(t_program_info *info)
 	if (!info->envp)
 	{
 		perror("env allocation failed");
-		exit(1);
+		free_all_and_exit(info, 1);
 	}
 	cmd_path = get_cmd_bin(info);
 	if (cmd_path == NULL)
-	{
-		if (ft_strchr(info->my_commands->argv[0], '/'))
-		{
-			if (access(info->my_commands->argv[0], F_OK) != 0)
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(info->my_commands->argv[0], 2);
-				ft_putendl_fd(": No such file or directory", 2);
-				exit(127);
-			}
-			if (access(info->my_commands->argv[0], X_OK) != 0)
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(info->my_commands->argv[0], 2);
-				ft_putendl_fd(": Permission denied", 2);
-				exit(126);
-			}
-		}
-		else
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(info->my_commands->argv[0], 2);
-			ft_putendl_fd(": command not found", 2);
-			exit(127);
-		}
-	}
+		handle_no_cmd_path(info);
 	execve(cmd_path, info->my_commands->argv, info->envp);
 	perror("execve");
+	free(cmd_path);
+	free_all_and_exit(info, 126);
 }
 
 static int	isbuiltin(char *command)
@@ -109,53 +86,47 @@ static void	exec_external_cmd(t_program_info *info, t_commands *my_commands)
 	pid_t	pid;
 	int		status;
 
+	status = 0;
 	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		info->exit_status = 1;
+		return ;
+	}
 	if (pid == 0)
 	{
 		if (apply_redir(my_commands) < 0)
-			exit(1);
+			free_all_and_exit(info, 1);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		close(info->original_stdin);
 		close(info->original_stdout);
+		info->original_stdin = -1;
+		info->original_stdout = -1;
 		execute_single_cmd(info);
-		exit(0);
 	}
-	else
-		waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		info->exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == SIGINT)
-			write(1, "\n", 1);
-		else if (WTERMSIG(status) == SIGQUIT)
-			ft_putendl_fd("Quit (core dumped)", 2);
-		info->exit_status = 128 + WTERMSIG(status);
-	}
+	waitpid(pid, &status, 0);
+	set_exit_from_status(info, status);
 }
 
 static void	exec_builtin_and_single_cmd(t_program_info *info,
 		t_commands *my_commands)
 {
-	if (!my_commands->argv || !my_commands->argv[0])
-	{
-		if (apply_redir(my_commands) < 0)
-			info->exit_status = 1;
-		else
-			info->exit_status = 0;
-	}
-	else if (isbuiltin(my_commands->argv[0]))
-	{
-		if (apply_redir(my_commands) < 0)
-			info->exit_status = 1;
-		else
-			info->exit_status = execute_builtin(info);
-	}
+	if (my_commands->argv && my_commands->argv[0]
+		&& !isbuiltin(my_commands->argv[0]))
+		return (exec_external_cmd(info, my_commands));
+	if (apply_redir(my_commands) < 0)
+		info->exit_status = 1;
+	else if (!my_commands->argv || !my_commands->argv[0])
+		info->exit_status = 0;
 	else
-		exec_external_cmd(info, my_commands);
-	dup2(info->original_stdin, STDIN_FILENO);
-	dup2(info->original_stdout, STDOUT_FILENO);
+		info->exit_status = execute_builtin(info);
+	if (my_commands->redirection)
+	{
+		dup2(info->original_stdin, STDIN_FILENO);
+		dup2(info->original_stdout, STDOUT_FILENO);
+	}
 }
 
 // NOTE: you either make a pipe if needed or you don't so you set the pipe as -1
@@ -191,16 +162,17 @@ void	child_process(t_program_info *info, t_commands *current, int prev_read,
 	signal(SIGQUIT, SIG_DFL);
 	close(info->original_stdin);
 	close(info->original_stdout);
+	info->original_stdin = -1;
+	info->original_stdout = -1;
 	set_child_fds(pipe_fd, prev_read);
 	info->my_commands = current;
 	if (apply_redir(current) < 0)
-		exit(1);
+		free_all_and_exit(info, 1);
 	if (!current->argv || !current->argv[0])
-		exit(0);
+		free_all_and_exit(info, 0);
 	if (isbuiltin(current->argv[0]))
-		exit(execute_builtin(info));
+		free_all_and_exit(info, execute_builtin(info));
 	execute_single_cmd(info);
-	exit(1);
 }
 
 static int	parent_cleanup(int pipe_fd[2], int prev_read)
@@ -216,22 +188,12 @@ void	wait_for_all(t_program_info *info, int last_pid)
 	int	status;
 	int	wait_reutrn;
 
+	status = 0;
 	wait_reutrn = waitpid(-1, &status, 0);
 	while (wait_reutrn > 0)
 	{
 		if (wait_reutrn == last_pid)
-		{
-			if (WIFEXITED(status))
-				info->exit_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-			{
-				if (WTERMSIG(status) == SIGINT)
-					write(1, "\n", 1);
-				else if (WTERMSIG(status) == SIGQUIT)
-					ft_putendl_fd("Quit (core dumped)", 2);
-				info->exit_status = 128 + WTERMSIG(status);
-			}
-		}
+			set_exit_from_status(info, status);
 		wait_reutrn = waitpid(-1, &status, 0);
 	}
 }

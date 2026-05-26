@@ -59,18 +59,6 @@ static int	validate_arg(const char *s, long long *out)
 	return (1);
 }
 
-static void	kill_this_mada_faka(t_program_info *info, int status)
-{
-	free_env(info->env);
-	free_str_array(info->envp);
-	free_str_array(info->cmd_exec_dir);
-	free_commands(info->my_commands);
- 	close(info->original_stdin);
-  	close(info->original_stdout);
-	rl_clear_history();
-	exit(status);
-}
-
 int	builtin_exit(t_program_info *info, char **argv)
 {
 	int			exit_status;
@@ -82,14 +70,14 @@ int	builtin_exit(t_program_info *info, char **argv)
 	if (!argv[1])
 	{
 		exit_status = info->exit_status;
-		kill_this_mada_faka(info, (unsigned char)exit_status);
+		free_all_and_exit(info, (unsigned char)exit_status);
 	}
 	if (!validate_arg(argv[1], &ll))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(argv[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
-		kill_this_mada_faka(info, 2);
+		free_all_and_exit(info, 2);
 	}
 	if (argv[2])
 	{
@@ -97,6 +85,6 @@ int	builtin_exit(t_program_info *info, char **argv)
 		// TODO: check the status code and if you kill or not in campus
 		return (1);
 	}
-	kill_this_mada_faka(info, (unsigned char)ll);
+	free_all_and_exit(info, (unsigned char)ll);
 	return (0);
 }
