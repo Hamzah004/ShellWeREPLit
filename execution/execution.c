@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
+#include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -124,22 +125,96 @@ static void	exec_builtin_and_single_cmd(t_program_info *info,
 	dup2(info->original_stdout, STDOUT_FILENO);
 }
 
+// NOTE: you either make a pipe if needed or you don't so you set the pipe as -1
+static void	make_pipe(t_commands *current, int pipe_fd[2])
+{
+	if (current->next)
+		pipe(pipe_fd);
+	else
+	{
+		pipe_fd[0] = -1;
+		pipe_fd[1] = -1;
+	}
+}
+void	set_child_fds(int pipe_fd[2], int prev_read)
+{
+	if (prev_read != -1)
+	{
+		dup2(prev_read, STDIN_FILENO);
+		close(prev_read);
+	}
+	if (pipe_fd[1] != -1)
+	{
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[1]);
+	}
+	if (pipe_fd[0] != -1)
+		close(pipe_fd[0]);
+}
+void	child_process(t_program_info *info, t_commands *current, int prev_read,
+		int pipe_fd[2])
+{
+	set_child_fds(pipe_fd, prev_read);
+	info->my_commands = current;
+	if (apply_redir(current) < 0)
+		exit(1);
+	if (!current->argv || !current->argv[0])
+		exit(0);
+	if (isbuiltin(current->argv[0]))
+		exit(execute_builtin(info));
+	execute_single_cmd(info);
+	exit(1);
+}
+
+static int	parent_cleanup(int pipe_fd[2], int prev_read)
+{
+	if (prev_read != -1)
+		close(prev_read);
+	if (pipe_fd[1] != -1)
+		close(pipe_fd[1]);
+	return (pipe_fd[0]);
+}
+void	wait_for_all(t_program_info *info, int last_pid)
+{
+	int	status;
+	int	wait_reutrn;
+
+	wait_reutrn = waitpid(-1, &status, 0);
+	while (wait_reutrn > 0)
+	{
+		if (wait_reutrn == last_pid)
+		{
+			if (WIFEXITED(status))
+				info->exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				info->exit_status = 128 + WTERMSIG(status);
+		}
+		wait_reutrn = waitpid(-1, &status, 0);
+	}
+}
+
 static void	pipeline_execution(t_program_info *info, t_commands *my_commands)
 {
+	int			pipe_fd[2];
 	t_commands	*current;
-	pid_t	pid;
-	pid_t	last_pid;
+	pid_t		pid;
+	pid_t		last_pid;
+	int			prev_read;
 
 	current = my_commands;
+	last_pid = -1;
+	prev_read = -1;
 	while (current)
 	{
+		make_pipe(current, pipe_fd);
 		pid = fork();
 		if (pid == 0)
-			exec_builtin_and_single_cmd(info, my_commands);
-		else
-			last_pid = pid;
+			child_process(info, current, prev_read, pipe_fd);
+		last_pid = pid;
+		prev_read = parent_cleanup(pipe_fd, prev_read);
 		current = current->next;
 	}
+	wait_for_all(info, last_pid);
 }
 
 int	execution(t_program_info *info)
