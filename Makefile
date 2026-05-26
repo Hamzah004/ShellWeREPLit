@@ -10,22 +10,28 @@
 #                                                                              #
 # **************************************************************************** #
 
-COM_COLOR   = \033[0;34m
-OK_COLOR    = \033[0;32m
-NO_COLOR    = \033[m
-
-OK_STRING    = "[OK]"
-COM_STRING   = "Compiling"
+NAME = minishell
 
 CC = cc
 CFLAGS = -g3 -Wall -Werror -Wextra -I./include
-NAME = minishell
+RM = rm -f
 
-EXECUTION_DIR = ./execution
-PARSING_DIR = ./parsing
-LIBFT_DIR = ./libft
-LIBFT_A = $(LIBFT_DIR)/libft.a
+# ----------------------------- output colors ------------------------------- #
+COM_COLOR	= \033[0;34m
+OK_COLOR	= \033[0;32m
+NO_COLOR	= \033[m
+COM_STRING	= Compiling
+OK_STRING	= [OK]
 
+# ----------------------------- directories --------------------------------- #
+EXECUTION_DIR		= ./execution
+PARSING_DIR		= ./parsing
+BUILTIN_DIR		= ./builtin_funcitons
+SIGNAL_HANDLE_DIR	= ./signal_handling
+LIBFT_DIR		= ./libft
+LIBFT_A			= $(LIBFT_DIR)/libft.a
+
+# ------------------------------- sources ----------------------------------- #
 SRC =	main.c \
 	error.c \
 	$(EXECUTION_DIR)/execution.c \
@@ -58,30 +64,29 @@ SRC =	main.c \
 	$(PARSING_DIR)/heredoc.c
 
 OBJS = $(SRC:.c=.o)
-BUILTIN_DIR = ./builtin_funcitons/
-SIGNAL_HANDLE_DIR = ./signal_handling/
 
+# -------------------------------- rules ------------------------------------ #
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_A)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) -lreadline -o $(NAME)
-	@printf "$(OK_COLOR)$(OK_STRING) final minishell executable successfully created\n$(NO_COLOR)"
+	@printf "%b" "$(OK_COLOR)$(OK_STRING) final minishell executable successfully created\n$(NO_COLOR)"
 
 $(LIBFT_A):
 	@make --no-print-directory -C $(LIBFT_DIR) all bonus
-	@printf "$(OK_COLOR)$(OK_STRING) libft archive cerated\n$(NO_COLOR)"
+	@printf "%b" "$(OK_COLOR)$(OK_STRING) libft archive created\n$(NO_COLOR)"
 
-%.o : %.c
+%.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "%b" "$(COM_COLOR)$(COM_STRING) $<\n$(NO_COLOR)"
 
 clean:
-	@rm -f $(OBJS)
-	@printf "%b" "$(OK_COLOR)$(OK_STRING) minishell Object files cleaned\n$(NO_COLOR)";
+	@$(RM) $(OBJS)
+	@printf "%b" "$(OK_COLOR)$(OK_STRING) minishell object files cleaned\n$(NO_COLOR)"
 	@make --no-print-directory -C $(LIBFT_DIR) clean
 
 fclean: clean
-	@rm -f $(NAME)
+	@$(RM) $(NAME)
 	@printf "%b" "$(OK_COLOR)$(OK_STRING) minishell executable cleaned\n$(NO_COLOR)"
 	@make --no-print-directory -C $(LIBFT_DIR) fclean
 
