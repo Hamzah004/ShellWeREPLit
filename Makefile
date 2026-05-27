@@ -61,7 +61,8 @@ SRC =	main.c \
 	$(PARSING_DIR)/command_expansion_utils2.c \
 	$(PARSING_DIR)/command_expansion_utils3.c \
 	$(PARSING_DIR)/fill_command.c \
-	$(PARSING_DIR)/heredoc.c
+	$(PARSING_DIR)/heredoc.c \
+	$(PARSING_DIR)/heredoc_utils.c
 
 OBJS = $(SRC:.c=.o)
 

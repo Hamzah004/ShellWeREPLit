@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 14:18:10 by amufleh           #+#    #+#             */
-/*   Updated: 2026/05/09 16:45:13 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/05/27 15:09:13 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*heredoc_expansion(char *input, t_envp *env, int exit_status,
 	char	**tmp;
 	char	*final_output;
 
-	if (!quoted)
+	if (quoted)
 	{
 		final_output = ft_strdup(input);
 		free(input);
@@ -70,11 +70,23 @@ char	*heredoc_expansion(char *input, t_envp *env, int exit_status,
 	}
 }
 
-void	add_free(char *after_exp, int fd)
+static int	run_heredoc(t_redir *r, t_envp *env, int exit_status)
 {
-	ft_putstr_fd(after_exp, fd);
-	ft_putstr_fd("\n", fd);
-	free(after_exp);
+	int		quoted;
+	char	*delim;
+	int		fd;
+
+	quoted = is_quoted(r->file);
+	delim = ft_strdup(r->file);
+	if (!delim)
+		return (-1);
+	if (quoted)
+		delim = replace_str(delim);
+	if (!delim)
+		return (-1);
+	fd = handel_herdoc(delim, env, exit_status, quoted);
+	free(delim);
+	return (fd);
 }
 
 int	collect_heredocs(t_commands *cmds, t_envp *env, int exit_status)
@@ -89,7 +101,7 @@ int	collect_heredocs(t_commands *cmds, t_envp *env, int exit_status)
 		{
 			if (r->type == TOK_HEREDOC && r->heredoc_fd == -1)
 			{
-				fd = handel_herdoc(r->file, env, exit_status, 1);
+				fd = run_heredoc(r, env, exit_status);
 				if (fd < 0)
 					return (-1);
 				r->heredoc_fd = fd;

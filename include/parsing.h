@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:25:30 by amufleh           #+#    #+#             */
-/*   Updated: 2026/05/09 17:31:30 by amufleh          ###   ########.fr       */
+/*   Updated: 2026/05/27 13:36:53 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,5 +146,10 @@ int				free_tokens(t_tokens *head);
 void			free_commands(t_commands *my_commands);
 void			free_redirections(t_redir *redir_list);
 char			**free_argv(char **argv);
+
+// HEREDOC
+
+int	is_quoted(char *delimiter);
+void	add_free(char *after_exp, int fd);
 
 #endif
