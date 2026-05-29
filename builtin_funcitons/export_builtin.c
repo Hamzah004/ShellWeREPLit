@@ -12,22 +12,6 @@
 
 #include "../include/execution.h"
 
-int	is_valid_identifier(const char *s)
-{
-	if (!s || !*s)
-		return (0);
-	if (!ft_isalpha(*s) && *s != '_')
-		return (0);
-	s++;
-	while (*s)
-	{
-		if (!ft_isalnum(*s) && *s != '_')
-			return (0);
-		s++;
-	}
-	return (1);
-}
-
 static int	print_export_no_arg(t_envp *head)
 {
 	while (head)
@@ -54,59 +38,57 @@ static int	print_export_error(char *arg)
 	return (1);
 }
 
-int	builtin_export(t_program_info *info, char **argv)
+static int	export_assign(t_program_info *info, char *argv, char *eq)
 {
 	int		status;
-	char	*eq;
 	char	*key;
 	char	*value;
 
+	key = ft_substr(argv, 0, eq - argv);
+	value = ft_strdup(eq + 1);
+	status = 0;
+	if (!key || !value)
+		status = 1;
+	else if (!is_valid_identifier(key))
+		status = print_export_error(argv);
+	else
+	{
+		env_set(&info->env, key, value, 1);
+		if (!ft_strcmp(key, "PATH"))
+			get_and_update_path(info);
+	}
+	free(key);
+	free(value);
+	return (status);
+}
+
+static int	export_one(t_program_info *info, char *argv)
+{
+	char	*eq;
+
+	eq = ft_strchr(argv, '=');
+	if (eq)
+		return (export_assign(info, argv, eq));
+	if (!is_valid_identifier(argv))
+		return (print_export_error(argv));
+	env_set(&info->env, argv, NULL, 0);
+	return (0);
+}
+
+int	builtin_export(t_program_info *info, char **argv)
+{
+	int	status;
+
 	if (!info || !argv)
 		return (1);
-	status = 0;
 	argv++;
 	if (!*argv)
-	{
-		print_export_no_arg(info->env);
-		return (0);
-	}
+		return (print_export_no_arg(info->env));
+	status = 0;
 	while (*argv)
 	{
-		eq = ft_strchr(*argv, '=');
-		if (eq)
-		{
-			key = ft_substr(*argv, 0, eq - *argv);
-			value = ft_strdup(eq + 1);
-			if (!key || (eq && !value))
-			{
-				free(key);
-				free(value);
-				return (1);
-			}
-			if (!is_valid_identifier(key))
-			{
-				print_export_error(*argv);
-				status = 1;
-			}
-			else
-			{
-				env_set(&info->env, key, value, 1);
-				if (!ft_strcmp(key, "PATH"))
-					get_and_update_path(info);
-			}
-			free(key);
-			free(value);
-		}
-		else
-		{
-			if (!is_valid_identifier(*argv))
-			{
-				print_export_error(*argv);
-				status = 1;
-			}
-			else
-				env_set(&info->env, *argv, NULL, 0);
-		}
+		if (export_one(info, *argv) != 0)
+			status = 1;
 		argv++;
 	}
 	return (status);

@@ -53,6 +53,7 @@ SRC =	main.c \
 	$(BUILTIN_DIR)/export_builtin.c \
 	$(BUILTIN_DIR)/pwd_builtin.c \
 	$(BUILTIN_DIR)/unset_builtin.c \
+	$(BUILTIN_DIR)/helpers.c \
 	$(PARSING_DIR)/tokenizer.c \
 	$(PARSING_DIR)/tokenizer_utls.c \
 	$(PARSING_DIR)/command_expansion.c \

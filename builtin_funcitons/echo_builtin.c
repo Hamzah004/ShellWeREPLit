@@ -15,6 +15,7 @@
 static int	is_n_flag(char *s)
 {
 	int	i;
+
 	if (!s || s[0] != '-' || s[1] != 'n')
 		return (0);
 	i = 2;

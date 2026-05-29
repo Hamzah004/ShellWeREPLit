@@ -11,19 +11,38 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <readline/readline.h>
 #include <limits.h>
+#include <readline/readline.h>
 
 // NOTE: this: acc * 10 + digit > ULLONG_MAX
 // is same as this: if (acc > (ULLONG_MAX - digit) / 10)
 // use it to check if there is a overflow
+
+static int	parse_digit(const char *s, unsigned long long *num)
+{
+	int	digit;
+
+	*num = 0;
+	if (!*s)
+		return (0);
+	while (*s)
+	{
+		if (!ft_isdigit(*s))
+			return (0);
+		digit = *s - '0';
+		if (*num > (ULLONG_MAX - digit) / 10)
+			return (0);
+		*num = *num * 10 + digit;
+		s++;
+	}
+	return (1);
+}
 
 static int	validate_arg(const char *s, long long *out)
 {
 	int					i;
 	int					sign;
 	unsigned long long	num;
-	int					digit;
 
 	if (!s || !*s)
 		return (0);
@@ -35,19 +54,8 @@ static int	validate_arg(const char *s, long long *out)
 			sign = -1;
 		i++;
 	}
-	if (!s[i])
+	if (!parse_digit(s + i, &num))
 		return (0);
-	num = 0;
-	while (s[i])
-	{
-		if (!ft_isdigit(s[i]))
-			return (0);
-		digit = s[i] - '0';
-		if (num > (ULLONG_MAX - digit) / 10)
-			return (0);
-		num = num * 10 + digit;
-		i++;
-	}
 	if (sign == 1 && num > (unsigned long long)LLONG_MAX)
 		return (0);
 	if (sign == -1 && num > (unsigned long long)LLONG_MAX + 1ULL)
@@ -82,7 +90,6 @@ int	builtin_exit(t_program_info *info, char **argv)
 	if (argv[2])
 	{
 		ft_putendl_fd("minishell$ exit: too many arguments", 2);
-		// TODO: check the status code and if you kill or not in campus
 		return (1);
 	}
 	free_all_and_exit(info, (unsigned char)ll);
