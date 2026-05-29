@@ -55,7 +55,7 @@ int	run_heredoc(t_redir *r, t_envp *env, int exit_status)
 	delim = ft_strdup(r->file);
 	if (!delim)
 		return (-1);
-	delim = replace_str(delim);
+	delim = replace_str(delim, env);
 	if (!delim)
 		return (-1);
 	fd = handel_herdoc(delim, env, exit_status, quoted);

@@ -38,13 +38,27 @@ char	*polish(char *value)
 	return (result);
 }
 
-char	*replace_str(char *old)
+char	*replace_str(char *old, t_envp *env)
 {
-	char	*tmp_file;
+	char	**tmp_file;
+	char	*final_output;
 
-	tmp_file = expand_files(old);
+	if (old[0] == '$' && old[1] != '\0')
+		tmp_file = expand_argv(old, env, 0);
+	else
+	{
+		tmp_file = malloc(2 * sizeof(char *));
+		if (!tmp_file)
+			return (free(old), NULL);
+		tmp_file[0] = expand_files(old);
+		tmp_file[1] = NULL;
+	}
+	if (!tmp_file || !tmp_file[0])
+		return (free(old), free_argv(tmp_file), NULL);
 	free(old);
-	return (tmp_file);
+	final_output = ft_strdup(tmp_file[0]);
+	free_argv(tmp_file);
+	return (final_output);
 }
 
 int	only_space(char *str)

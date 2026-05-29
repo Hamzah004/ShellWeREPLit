@@ -128,7 +128,7 @@ int				yokotenkai(t_commands *my_commands, t_envp *env,
 char			**quote_tracker(t_track_quote *tracker, char *input,
 					char **result, t_envp *env, int exit_status);
 char			*expand_files(char *file);
-char			*replace_str(char *old);
+char			*replace_str(char *old, t_envp *env);	
 char			*polish(char *value);
 int				remove_empty_arg(t_commands *my_commands);
 int				only_space(char *str);

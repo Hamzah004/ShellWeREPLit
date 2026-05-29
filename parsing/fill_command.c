@@ -55,7 +55,7 @@ int	yokotenkai(t_commands *cmd, t_envp *env, int exit_status)
 		{
 			if (tmp->type != TOK_HEREDOC)
 			{
-				tmp->file = replace_str(tmp->file);
+				tmp->file = replace_str(tmp->file, env);
 				if (!tmp->file)
 					return (0);
 			}
@@ -83,7 +83,6 @@ t_commands	*fill_command_struct(char *input, t_envp *env, int exit_status)
 	token_analyser(input, &my_tokens);
 	if (!syntax_validation(my_tokens))
 		return (free_parser(my_commands, my_tokens));
-	// print_tokens(my_tokens);
 	if (!the_parser(my_tokens, my_commands))
 		return (free_parser(my_commands, my_tokens));
 	if (!yokotenkai(my_commands, env, exit_status))
