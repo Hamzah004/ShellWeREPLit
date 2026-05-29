@@ -38,7 +38,7 @@ int	execution(t_program_info *info)
 	signal(SIGINT, SIG_IGN);
 	count = commands_count(info->my_commands);
 	if (count == 1)
-		exec_builtin_and_single_cmd(info, info->my_commands);
+		builtin_and_single_cmd(info, info->my_commands);
 	else
 		pipeline_execution(info, info->my_commands);
 	setup_signals_interactive();

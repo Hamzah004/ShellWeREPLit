@@ -42,7 +42,7 @@ static void	exec_external_cmd(t_program_info *info, t_commands *my_commands)
 	set_exit_from_status(info, status);
 }
 
-void	exec_builtin_and_single_cmd(t_program_info *info,
+void	builtin_and_single_cmd(t_program_info *info,
 		t_commands *my_commands)
 {
 	if (my_commands->argv && my_commands->argv[0]

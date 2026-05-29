@@ -77,7 +77,7 @@ int								builtin_pwd(void);
 int								builtin_env(t_program_info *info);
 int								builtin_exit(t_program_info *info, char **argv);
 int								is_valid_identifier(const char *s);
-void							exec_builtin_and_single_cmd(t_program_info *info,
+void							builtin_and_single_cmd(t_program_info *info,
 									t_commands *my_commands);
 void							wait_for_all(t_program_info *info,
 									int last_pid);
@@ -90,8 +90,9 @@ void							pipeline_execution(t_program_info *info,
 									t_commands *my_commands);
 int								isbuiltin(char *command);
 int								execute_builtin(t_program_info *info);
-void							child_process(t_program_info *info, t_commands *current,
-									int prev_read, int pipe_fd[2]);
+void							child_process(t_program_info *info,
+									t_commands *current, int prev_read,
+									int pipe_fd[2]);
 void							pipeline_execution(t_program_info *info,
 									t_commands *my_commands);
 
