@@ -10,7 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "../include/execution.h"
+#include "../include/parsing.h"
+#include <signal.h>
+#include <unistd.h>
 
 void	add_free(char *after_exp, int fd)
 {
@@ -33,8 +36,43 @@ int	is_quoted(char *delimiter)
 	return (0);
 }
 
-void	close_pipe(int fd[2])
+int	heredoc_clean(int fd[2], int save_stdin, char *input)
 {
+	free(input);
+	dup2(save_stdin, STDIN_FILENO);
+	close(save_stdin);
 	close(fd[0]);
 	close(fd[1]);
+	return (-1);
+}
+ 
+int	heredoc_setup(int fd[2], int *save_stdin)
+{
+	if (pipe(fd) == -1)
+		return (-1);
+	*save_stdin = dup(STDIN_FILENO);
+	setup_heredoc_signal();
+	return (0);
+}
+
+char	*handel_multyarg(char **tmp)
+{
+	int		i;
+	char	*output;
+	char	*new_output;
+
+	output = ft_strdup("");
+	if (!output)
+		return (NULL);
+	i = 0;
+	while (tmp[i])
+	{
+		new_output = ft_strjoin(output, tmp[i]);
+		free(output);
+		if (!new_output)
+			return (NULL);
+		output = new_output;
+		i++;
+	}
+	return (output);
 }

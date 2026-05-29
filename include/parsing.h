@@ -149,7 +149,17 @@ char			**free_argv(char **argv);
 
 // HEREDOC
 
-int	is_quoted(char *delimiter);
-void	add_free(char *after_exp, int fd);
+int				handel_herdoc(char *drlimiter, t_envp *env, int exit_status, int quoted);
+int				heredoc_loop(char *drlimiter, t_envp *env, int exit_status,
+				int quoted, int fd[2], int save_stdin);
+int				collect_heredocs(t_commands *cmds, t_envp *env, int exit_status);
+int				run_heredoc(t_redir *r, t_envp *env, int exit_status);
+char			*heredoc_expansion(char *input, t_envp *env, int exit_status,
+					int quoted);
+char			*handel_multyarg(char **tmp);
+int				heredoc_setup(int fd[2], int *save_stdin);
+int				heredoc_clean(int fd[2], int save_stdin, char *input);
+int				is_quoted(char *delimiter);
+void			add_free(char *after_exp, int fd);
 
 #endif
