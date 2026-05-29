@@ -72,7 +72,10 @@ t_commands	*fill_command_struct(char *input, t_envp *env, int exit_status)
 	t_commands	*my_commands;
 
 	if (!input_validation(input))
+	{
+		ft_putendl_fd("-minishell: syntax error unclosed quotes", 2);
 		return (NULL);
+	}
 	my_tokens = NULL;
 	my_commands = new_command();
 	if (!my_commands)
