@@ -6,7 +6,7 @@
 #    By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/11 16:28:02 by hbani-at          #+#    #+#              #
-#    Updated: 2026/05/09 17:40:13 by amufleh          ###   ########.fr        #
+#    Updated: 2026/05/29 16:20:09 by hbani-at         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,11 +36,15 @@ SRC =	main.c \
 	error.c \
 	$(EXECUTION_DIR)/execution.c \
 	$(EXECUTION_DIR)/env.c \
-	$(EXECUTION_DIR)/env_helper.c \
-	$(EXECUTION_DIR)/builtin_functions.c \
-	$(EXECUTION_DIR)/execution_utils.c \
-	$(EXECUTION_DIR)/handle_redir.c \
 	$(EXECUTION_DIR)/env1.c \
+	$(EXECUTION_DIR)/env_helper1.c \
+	$(EXECUTION_DIR)/env_helper2.c \
+	$(EXECUTION_DIR)/execution_utils1.c \
+	$(EXECUTION_DIR)/builtins_dispatch.c \
+  	$(EXECUTION_DIR)/exec_single.c \
+  	$(EXECUTION_DIR)/exec_pipeline.c \
+  	$(EXECUTION_DIR)/exec_child.c \
+	$(EXECUTION_DIR)/handle_redir.c \
 	$(SIGNAL_HANDLE_DIR)/signal.c \
 	$(BUILTIN_DIR)/cd_builtin.c \
 	$(BUILTIN_DIR)/echo_builtin.c \

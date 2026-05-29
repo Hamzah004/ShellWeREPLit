@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution_utils.c                                  :+:      :+:    :+:   */
+/*   execution_utils1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 11:55:03 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/03/09 11:55:43 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/05/29 16:03:54 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
 #include <readline/history.h>
-#include <sys/wait.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 void	free_all_and_exit(t_program_info *info, int status)

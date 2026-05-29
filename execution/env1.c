@@ -6,7 +6,7 @@
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 21:34:01 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/04/28 21:34:28 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/05/29 16:18:33 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,60 +15,6 @@
 #include <string.h>
 #include <unistd.h>
 
-int	count_lines(char **env)
-{
-	int	len;
-
-	len = 0;
-	while (env[len] != NULL)
-	{
-		len++;
-	}
-	return (len);
-}
-
-const char	*get_envp_value(char **envp, const char *name)
-{
-	int	i;
-	int	name_len;
-
-	if (!name || !*name || !envp)
-		return (NULL);
-	i = 0;
-	name_len = ft_strlen(name);
-	while (envp[i] != NULL)
-	{
-		if ((ft_strncmp(envp[i], name, name_len)) == 0
-			&& envp[i][name_len] == '=')
-			return (envp[i] + name_len + 1);
-		i++;
-	}
-	return (NULL);
-}
-
-int	set_envp_value(char **envp, const char *name, const char *new_value)
-{
-	int	i;
-	int	name_len;
-
-	if (!name || !*name || !envp)
-		return (1);
-	i = 0;
-	name_len = ft_strlen(name);
-	while (envp[i] != NULL)
-	{
-		if ((ft_strncmp(envp[i], name, name_len)) == 0
-			&& envp[i][name_len] == '=')
-		{
-			envp[i] = ft_strjoin(envp[i] + name_len + 1, new_value);
-			return (0);
-		}
-		i++;
-	}
-	return (1);
-}
-
-// TODO: Update this function to take both absolute and rilative path
 char	*get_cmd_bin(t_program_info *info)
 {
 	char	*cmd_bin;
@@ -105,6 +51,7 @@ char	*get_cmd_bin(t_program_info *info)
 int	get_and_update_path(t_program_info *info)
 {
 	const char	*path_value;
+
 	if (!info)
 		return (1);
 	if (info->cmd_exec_dir)
@@ -122,8 +69,9 @@ int	get_and_update_path(t_program_info *info)
 void	free_str_array(char **str)
 {
 	int	i;
+
 	if (!str)
-		return;
+		return ;
 	i = 0;
 	while (str[i])
 	{
@@ -131,22 +79,4 @@ void	free_str_array(char **str)
 		i++;
 	}
 	free(str);
-}
-
-t_error	get_envp(t_program_info *info, char **env)
-{
-	int	i;
-
-	i = count_lines(env);
-	info->envp = malloc(sizeof(char *) * (i + 1));
-	if (!info->envp)
-		return (ERROR_MEMORY);
-	i = 0;
-	while (env[i] != NULL)
-	{
-		info->envp[i] = ft_strdup(env[i]);
-		i++;
-	}
-	info->envp[i] = NULL;
-	return (ERROR_SUCCESS);
 }

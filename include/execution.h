@@ -6,7 +6,7 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:18:49 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/05/08 17:41:55 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/05/29 16:17:03 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ typedef enum e_error
 
 int								execution(t_program_info *info);
 void							print_error(t_error error);
-int								count_lines(char **env);
-t_error							get_envp(t_program_info *info, char **env);
-const char						*get_envp_value(char **envp, const char *name);
 char							*get_cmd_bin(t_program_info *info);
 void							execute_single_cmd(t_program_info *info);
 void							read_from_prompt(t_program_info *info);
@@ -80,7 +77,7 @@ char							**struct_to_arr(t_envp *env);
 
 /* Signals */
 void							setup_signals_interactive(void);
-void	setup_heredoc_signal(void);
+void							setup_heredoc_signal(void);
 
 /* builtins */
 int								builtin_cd(t_program_info *info);
@@ -93,5 +90,16 @@ int								builtin_pwd(void);
 int								builtin_env(t_program_info *info);
 int								builtin_exit(t_program_info *info, char **argv);
 int								is_valid_identifier(const char *s);
+void							wait_for_all(t_program_info *info,
+									int last_pid);
+void							exec_builtin_and_single_cmd(t_program_info *info,
+									t_commands *my_commands);
 
+int	isbuiltin(char *command);
+int	execute_builtin(t_program_info *info);
+
+void	child_process(t_program_info *info, t_commands *current, int prev_read,
+		int pipe_fd[2]);
+
+void	pipeline_execution(t_program_info *info, t_commands *my_commands);
 #endif
