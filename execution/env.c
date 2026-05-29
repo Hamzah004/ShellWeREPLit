@@ -57,48 +57,48 @@ t_envp	*create_new_env_node(char *key, char *value)
 	return (new_node);
 }
 
-t_envp	*init_env(char **env)
+static int	add_env_entry(t_envp **head, char *env)
 {
-	t_envp	*head;
 	t_envp	*new_node;
 	char	*key;
 	char	*value;
 	char	*eq;
-	int		key_len;
+
+	eq = ft_strchr(env, '=');
+	if (eq)
+		key = ft_substr(env, 0, eq - env);
+	else
+		key = ft_strdup(env);
+	value = NULL;
+	if (eq)
+		value = ft_strdup(eq + 1);
+	new_node = NULL;
+	if (key && (!eq || value))
+		new_node = create_new_env_node(key, value);
+	if (!new_node)
+	{
+		free(key);
+		free(value);
+		return (1);
+	}
+	env_add_back(head, new_node);
+	return (0);
+}
+
+t_envp	*init_env(char **env)
+{
+	t_envp	*head;
 
 	if (!env)
 		return (NULL);
 	head = NULL;
 	while (*env != NULL)
 	{
-		eq = ft_strchr(*env, '=');
-		if (eq)
+		if (add_env_entry(&head, *env) != 0)
 		{
-			key_len = eq - *env;
-			key = ft_substr(*env, 0, key_len);
-			value = ft_strdup(eq + 1);
-		}
-		else
-		{
-			key = ft_strdup(*env);
-			value = NULL;
-		}
-		if (!key || (eq && !value))
-		{
-			free(key);
-			free(value);
 			free_env(head);
 			return (NULL);
 		}
-		new_node = create_new_env_node(key, value);
-		if (!new_node)
-		{
-			free(key);
-			free(value);
-			free_env(head);
-			return (NULL);
-		}
-		env_add_back(&head, new_node);
 		env++;
 	}
 	return (head);

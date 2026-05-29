@@ -15,22 +15,13 @@
 #include <string.h>
 #include <unistd.h>
 
-char	*get_cmd_bin(t_program_info *info)
+static char	*search_in_path(t_program_info *info)
 {
 	char	*cmd_bin;
 	char	*tmp;
 	int		i;
 
 	i = 0;
-	if (!info->my_commands->argv || !info->my_commands->argv[0]
-		|| info->my_commands->argv[0][0] == '\0')
-		return (NULL);
-	if (ft_strchr(info->my_commands->argv[0], '/'))
-	{
-		if (access(info->my_commands->argv[0], X_OK) == 0)
-			return (ft_strdup(info->my_commands->argv[0]));
-		return (NULL);
-	}
 	while (info->cmd_exec_dir && info->cmd_exec_dir[i])
 	{
 		tmp = ft_strjoin(info->cmd_exec_dir[i], "/");
@@ -46,6 +37,20 @@ char	*get_cmd_bin(t_program_info *info)
 		i++;
 	}
 	return (NULL);
+}
+
+char	*get_cmd_bin(t_program_info *info)
+{
+	if (!info->my_commands->argv || !info->my_commands->argv[0]
+		|| info->my_commands->argv[0][0] == '\0')
+		return (NULL);
+	if (ft_strchr(info->my_commands->argv[0], '/'))
+	{
+		if (access(info->my_commands->argv[0], X_OK) == 0)
+			return (ft_strdup(info->my_commands->argv[0]));
+		return (NULL);
+	}
+	return (search_in_path(info));
 }
 
 int	get_and_update_path(t_program_info *info)

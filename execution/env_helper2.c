@@ -43,12 +43,24 @@ char	*env_make_line(const char *key, const char *value)
 	return (line);
 }
 
+static void	free_partial(char **envp, int count)
+{
+	int	j;
+
+	j = 0;
+	while (j < count)
+	{
+		free(envp[j]);
+		j++;
+	}
+	free(envp);
+}
+
 char	**struct_to_arr(t_envp *env)
 {
 	int		i;
 	int		len;
 	char	**envp;
-	int		j;
 
 	len = env_count_nodes(env);
 	envp = malloc(sizeof(char *) * (len + 1));
@@ -62,13 +74,7 @@ char	**struct_to_arr(t_envp *env)
 			envp[i] = env_make_line(env->key, env->value);
 			if (!envp[i])
 			{
-				j = 0;
-				while (j < i)
-				{
-					free(envp[j]);
-					j++;
-				}
-				free(envp);
+				free_partial(envp, i);
 				return (NULL);
 			}
 			i++;
@@ -77,4 +83,32 @@ char	**struct_to_arr(t_envp *env)
 	}
 	envp[i] = NULL;
 	return (envp);
+}
+
+int	env_unset(t_envp **head, const char *key)
+{
+	t_envp	*current;
+	t_envp	*prev;
+
+	if (!head || !key || !key[0])
+		return (1);
+	current = *head;
+	prev = NULL;
+	while (current)
+	{
+		if (ft_strcmp(current->key, key) == 0)
+		{
+			if (prev == NULL)
+				*head = current->next;
+			else
+				prev->next = current->next;
+			free(current->key);
+			free(current->value);
+			free(current);
+			return (0);
+		}
+		prev = current;
+		current = current->next;
+	}
+	return (0);
 }

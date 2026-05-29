@@ -56,6 +56,11 @@ char	*handle_var(char *input, t_track_quote *tracker, t_envp *env,
 		tracker->i += 2;
 		return (ft_itoa(exit_status));
 	}
+	if (!ft_isalnum(input[tracker->i + 1]) && input[tracker->i + 1] != '_')
+	       {
+	               tracker->i++;
+	               return (ft_strdup("$"));
+	       }
 	tracker->i++;
 	start = tracker->i;
 	while (input[tracker->i] && (ft_isalnum(input[tracker->i])

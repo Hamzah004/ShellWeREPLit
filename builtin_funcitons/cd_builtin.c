@@ -24,7 +24,7 @@ const char	*get_path(t_program_info *info)
 		return (NULL);
 	}
 	if (!info->my_commands->argv[1])
-		path = get_env_value("HOME", info->env);
+		path = env_find_value(info->env, "HOME");
 	else
 		path = info->my_commands->argv[1];
 	return (path);
