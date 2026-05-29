@@ -43,6 +43,32 @@ static t_error	validate_arguments(int argc)
 	return (ERROR_SUCCESS);
 }
 
+static int	process_cmd(t_program_info *info, char *line)
+{
+	info->my_commands = fill_command_struct(line, info);
+	setup_signals_interactive();
+	if (!info->my_commands)
+	{
+		if (g_sig == SIGINT)
+			info->exit_status = 130;
+		else
+			info->exit_status = 2;
+		g_sig = 0;
+		free(line);
+		return (1);
+	}
+	if (g_sig == SIGINT)
+	{
+		info->exit_status = 130;
+		g_sig = 0;
+	}
+	execution(info);
+	free_commands(info->my_commands);
+	free(line);
+	info->my_commands = NULL;
+	return (0);
+}
+
 void	read_from_prompt(t_program_info *info)
 {
 	char	*line;
@@ -66,27 +92,8 @@ void	read_from_prompt(t_program_info *info)
 			continue ;
 		}
 		add_history(line);
-		info->my_commands = fill_command_struct(line, info);
-		setup_signals_interactive();
-		if (!info->my_commands)
-		{
-			if (g_sig == SIGINT)
-				info->exit_status = 130;
-			else
-				info->exit_status = 2;
-			g_sig = 0;
-			free(line);
+		if (process_cmd(info, line) == 1)
 			continue ;
-		}
-		if (g_sig == SIGINT)
-		{
-			info->exit_status = 130;
-			g_sig = 0;
-		}
-		execution(info);
-		free_commands(info->my_commands);
-		free(line);
-		info->my_commands = NULL;
 	}
 }
 

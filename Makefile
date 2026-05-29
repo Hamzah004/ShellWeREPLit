@@ -58,7 +58,6 @@ SRC =	main.c \
 	$(PARSING_DIR)/tokenizer_utls.c \
 	$(PARSING_DIR)/command_expansion.c \
 	$(PARSING_DIR)/command_expansion_utils.c \
-	$(PARSING_DIR)/debugging_functions.c \
 	$(PARSING_DIR)/free_parser.c \
 	$(PARSING_DIR)/parser.c \
 	$(PARSING_DIR)/parser_utils.c \
