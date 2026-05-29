@@ -89,7 +89,7 @@ int	builtin_exit(t_program_info *info, char **argv)
 	}
 	if (argv[2])
 	{
-		ft_putendl_fd("minishell$ exit: too many arguments", 2);
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		return (1);
 	}
 	free_all_and_exit(info, (unsigned char)ll);

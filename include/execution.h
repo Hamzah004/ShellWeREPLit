@@ -55,9 +55,6 @@ void							set_exit_from_status(t_program_info *info,
 /* main loop */
 int								init_program_info(t_program_info *info,
 									char **env);
-void							destroy_program_info(t_program_info *info);
-int								shell_loop(t_program_info *info);
-int								is_blank_line(const char *line);
 
 /* env */
 
@@ -69,7 +66,6 @@ t_envp							*create_new_env_node(char *key, char *value);
 int								env_unset(t_envp **head, const char *key);
 t_envp							*env_find_node(t_envp *head, const char *key);
 char							*env_find_value(t_envp *head, const char *key);
-void							print_env(t_envp *head);
 int								env_set(t_envp **head, const char *key,
 									const char *value, int overwrite);
 void							free_str_array(char **str);
