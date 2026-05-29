@@ -27,6 +27,7 @@ char	*get_env_value(char *name, t_envp *env)
 	return (ft_strdup(""));
 }
 
+// TODO: check this function and that it's safe
 char	*handle_env_value(char *name, t_envp *env)
 {
 	char	*value;
@@ -44,8 +45,7 @@ char	*handle_env_value(char *name, t_envp *env)
 	return (after_polish);
 }
 
-char	*handle_var(char *input, t_track_quote *tracker, t_envp *env,
-	int exit_status)
+char	*handle_var(char *input, t_track_quote *tracker, t_program_info *info)
 {
 	int		start;
 	char	*name;
@@ -54,20 +54,20 @@ char	*handle_var(char *input, t_track_quote *tracker, t_envp *env,
 	if (input[tracker->i] == '$' && input[tracker->i + 1] == '?')
 	{
 		tracker->i += 2;
-		return (ft_itoa(exit_status));
+		return (ft_itoa(info->exit_status));
 	}
 	if (!ft_isalnum(input[tracker->i + 1]) && input[tracker->i + 1] != '_')
-	       {
-	               tracker->i++;
-	               return (ft_strdup("$"));
-	       }
+	{
+		tracker->i++;
+		return (ft_strdup("$"));
+	}
 	tracker->i++;
 	start = tracker->i;
 	while (input[tracker->i] && (ft_isalnum(input[tracker->i])
 			|| input[tracker->i] == '_'))
 		tracker->i++;
 	name = ft_strndup(input + start, tracker->i - start);
-	value = handle_env_value(name, env);
+	value = handle_env_value(name, info->env);
 	free(name);
 	if (!value)
 		return (ft_strdup(""));

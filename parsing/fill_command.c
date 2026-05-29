@@ -37,7 +37,7 @@ int	input_validation(char *input)
 	return (1);
 }
 
-int	yokotenkai(t_commands *cmd, t_envp *env, int exit_status)
+int	yokotenkai(t_commands *cmd, t_program_info *info)
 {
 	int		i;
 	t_redir	*tmp;
@@ -47,7 +47,7 @@ int	yokotenkai(t_commands *cmd, t_envp *env, int exit_status)
 		i = 0;
 		while (cmd->argv && cmd->argv[i])
 		{
-			if (!handle_expansion(cmd, env, exit_status, &i))
+			if (!handle_expansion(cmd, info, &i))
 				return (0);
 		}
 		tmp = cmd->redirection;
@@ -55,7 +55,7 @@ int	yokotenkai(t_commands *cmd, t_envp *env, int exit_status)
 		{
 			if (tmp->type != TOK_HEREDOC)
 			{
-				tmp->file = replace_str(tmp->file, env);
+				tmp->file = replace_str(tmp->file, info);
 				if (!tmp->file)
 					return (0);
 			}
@@ -66,7 +66,7 @@ int	yokotenkai(t_commands *cmd, t_envp *env, int exit_status)
 	return (1);
 }
 
-t_commands	*fill_command_struct(char *input, t_envp *env, int exit_status)
+t_commands	*fill_command_struct(char *input, t_program_info *info)
 {
 	t_tokens	*my_tokens;
 	t_commands	*my_commands;
@@ -85,9 +85,9 @@ t_commands	*fill_command_struct(char *input, t_envp *env, int exit_status)
 		return (free_parser(my_commands, my_tokens));
 	if (!the_parser(my_tokens, my_commands))
 		return (free_parser(my_commands, my_tokens));
-	if (!yokotenkai(my_commands, env, exit_status))
+	if (!yokotenkai(my_commands, info))
 		return (free_parser(my_commands, my_tokens));
-	if (collect_heredocs(my_commands, env, exit_status) < 0)
+	if (collect_heredocs(my_commands, info) < 0)
 		return (free_parser(my_commands, my_tokens));
 	remove_empty_arg(my_commands);
 	free_tokens(my_tokens);

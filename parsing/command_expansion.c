@@ -29,11 +29,11 @@ char	**handel_single_quote(char *input, int *i, char **result)
 }
 
 char	**handel_double_quote(t_track_quote *tracker, char *input,
-		char **result, t_envp *env, int exit_status)
+		char **result, t_program_info *info)
 {
 	char	*tmp;
 
-	tmp = handle_var(input, tracker, env, exit_status);
+	tmp = handle_var(input, tracker, info);
 	if (!tmp)
 		return (free_argv(result));
 	if (tracker->d_quote)
@@ -47,8 +47,8 @@ char	**handel_double_quote(t_track_quote *tracker, char *input,
 	return (handle_unquoted_var(tmp, result));
 }
 
-char	**quote_tracker(t_track_quote *tracker, char *input,
-	char **result, t_envp *env, int exit_status)
+char	**quote_tracker(t_track_quote *tracker, char *input, char **result,
+		t_program_info *info)
 {
 	if (input[tracker->i] == '\'')
 	{
@@ -64,7 +64,7 @@ char	**quote_tracker(t_track_quote *tracker, char *input,
 	}
 	if (input[tracker->i] == '$' && !tracker->s_quote)
 	{
-		result = handel_double_quote(tracker, input, result, env, exit_status);
+		result = handel_double_quote(tracker, input, result, info);
 		if (!result)
 			return (NULL);
 	}
@@ -77,7 +77,7 @@ char	**quote_tracker(t_track_quote *tracker, char *input,
 	return (result);
 }
 
-char	**expand_argv(char *input, t_envp *env, int exit_status)
+char	**expand_argv(char *input, t_program_info *info)
 {
 	char			**result;
 	t_track_quote	tracker;
@@ -93,7 +93,7 @@ char	**expand_argv(char *input, t_envp *env, int exit_status)
 	result[1] = NULL;
 	while (input[tracker.i])
 	{
-		result = quote_tracker(&tracker, input, result, env, exit_status);
+		result = quote_tracker(&tracker, input, result, info);
 		if (!result)
 			return (NULL);
 	}
@@ -105,12 +105,12 @@ char	**expand_argv(char *input, t_envp *env, int exit_status)
 	return (result);
 }
 
-int	handle_expansion(t_commands *cmd, t_envp *env, int exit_status, int *i)
+int	handle_expansion(t_commands *cmd, t_program_info *info, int *i)
 {
 	char	**tmp;
 	int		added_words;
 
-	tmp = expand_argv(cmd->argv[*i], env, exit_status);
+	tmp = expand_argv(cmd->argv[*i], info);
 	if (!tmp)
 		return (0);
 	if (tmp[1])

@@ -29,28 +29,27 @@ int	is_quoted(char *delimiter)
 	if (!delimiter)
 		return (0);
 	len = ft_strlen(delimiter);
-	if (len >= 2
-		&& ((delimiter[0] == '\'' && delimiter[len - 1] == '\'')
+	if (len >= 2 && ((delimiter[0] == '\'' && delimiter[len - 1] == '\'')
 			|| (delimiter[0] == '"' && delimiter[len - 1] == '"')))
 		return (1);
 	return (0);
 }
 
-int	heredoc_clean(int fd[2], int save_stdin, char *input)
+int	heredoc_clean(t_heredoc *hd, char *input)
 {
 	free(input);
-	dup2(save_stdin, STDIN_FILENO);
-	close(save_stdin);
-	close(fd[0]);
-	close(fd[1]);
+	dup2(hd->save_stdin, STDIN_FILENO);
+	close(hd->save_stdin);
+	close(hd->fd[0]);
+	close(hd->fd[1]);
 	return (-1);
 }
- 
-int	heredoc_setup(int fd[2], int *save_stdin)
+
+int	heredoc_setup(t_heredoc *hd)
 {
-	if (pipe(fd) == -1)
+	if (pipe(hd->fd) == -1)
 		return (-1);
-	*save_stdin = dup(STDIN_FILENO);
+	hd->save_stdin = dup(STDIN_FILENO);
 	setup_heredoc_signal();
 	return (0);
 }

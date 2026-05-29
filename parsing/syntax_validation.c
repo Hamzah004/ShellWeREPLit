@@ -14,8 +14,8 @@
 
 int	is_redirection(t_token_type type)
 {
-	if (type == TOK_REDIR_IN || type == TOK_REDIR_OUT
-		|| type == TOK_APPEND || type == TOK_HEREDOC)
+	if (type == TOK_REDIR_IN || type == TOK_REDIR_OUT || type == TOK_APPEND
+		|| type == TOK_HEREDOC)
 		return (1);
 	return (0);
 }

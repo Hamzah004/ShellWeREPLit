@@ -66,8 +66,7 @@ void	read_from_prompt(t_program_info *info)
 			continue ;
 		}
 		add_history(line);
-		info->my_commands = fill_command_struct(line, info->env,
-				info->exit_status);
+		info->my_commands = fill_command_struct(line, info);
 		setup_signals_interactive();
 		if (!info->my_commands)
 		{

@@ -14,20 +14,19 @@
 #include "../include/parsing.h"
 #include <signal.h>
 #include <unistd.h>
- 
-char	*heredoc_expansion(char *input, t_envp *env, int exit_status,
-		int quoted)
+
+char	*heredoc_expansion(char *input, t_program_info *info, int quoted)
 {
 	char	**tmp;
 	char	*final_output;
- 
+
 	if (quoted)
 	{
 		final_output = ft_strdup(input);
 		free(input);
 		return (final_output);
 	}
-	tmp = expand_argv(input, env, exit_status);
+	tmp = expand_argv(input, info);
 	free(input);
 	if (!tmp)
 		return (0);
@@ -44,30 +43,30 @@ char	*heredoc_expansion(char *input, t_envp *env, int exit_status,
 		return (final_output);
 	}
 }
- 
-int	run_heredoc(t_redir *r, t_envp *env, int exit_status)
+
+int	run_heredoc(t_redir *r, t_program_info *info)
 {
 	int		quoted;
 	char	*delim;
 	int		fd;
- 
+
 	quoted = is_quoted(r->file);
 	delim = ft_strdup(r->file);
 	if (!delim)
 		return (-1);
-	delim = replace_str(delim, env);
+	delim = replace_str(delim, info);
 	if (!delim)
 		return (-1);
-	fd = handel_herdoc(delim, env, exit_status, quoted);
+	fd = handel_herdoc(delim, info, quoted);
 	free(delim);
 	return (fd);
 }
- 
-int	collect_heredocs(t_commands *cmds, t_envp *env, int exit_status)
+
+int	collect_heredocs(t_commands *cmds, t_program_info *info)
 {
 	t_redir	*r;
 	int		fd;
- 
+
 	while (cmds)
 	{
 		r = cmds->redirection;
@@ -75,7 +74,7 @@ int	collect_heredocs(t_commands *cmds, t_envp *env, int exit_status)
 		{
 			if (r->type == TOK_HEREDOC && r->heredoc_fd == -1)
 			{
-				fd = run_heredoc(r, env, exit_status);
+				fd = run_heredoc(r, info);
 				if (fd < 0)
 					return (-1);
 				r->heredoc_fd = fd;
@@ -87,8 +86,7 @@ int	collect_heredocs(t_commands *cmds, t_envp *env, int exit_status)
 	return (0);
 }
 
-int	heredoc_loop(char *drlimiter, t_envp *env, int exit_status,
-				int quoted, int fd[2], int save_stdin)
+int	heredoc_loop(t_heredoc *hd, t_program_info *info)
 {
 	char	*input;
 	char	*after_exp;
@@ -97,26 +95,27 @@ int	heredoc_loop(char *drlimiter, t_envp *env, int exit_status,
 	{
 		input = readline("> ");
 		if (g_sig == SIGINT || !input)
-			return (heredoc_clean(fd, save_stdin, input));
-		if (ft_strcmp(input, drlimiter) == 0)
+			return (heredoc_clean(hd, input));
+		if (ft_strcmp(input, hd->delimiter) == 0)
 			return (free(input), 0);
-		after_exp = heredoc_expansion(input, env, exit_status, quoted);
+		after_exp = heredoc_expansion(input, info, hd->quoted);
 		if (!after_exp)
-			return (heredoc_clean(fd, save_stdin, NULL));
-		add_free(after_exp, fd[1]);
+			return (heredoc_clean(hd, NULL));
+		add_free(after_exp, hd->fd[1]);
 	}
 }
 
-int	handel_herdoc(char *drlimiter, t_envp *env, int exit_status, int quoted)
+int	handel_herdoc(char *drlimiter, t_program_info *info, int quoted)
 {
-	int	fd[2];
-	int	save_stdin;
+	t_heredoc	hd;
 
-	if (heredoc_setup(fd, &save_stdin) == -1)
+	hd.delimiter = drlimiter;
+	hd.quoted = quoted;
+	if (heredoc_setup(&hd) == -1)
 		return (-1);
-	if (heredoc_loop(drlimiter, env, exit_status, quoted, fd, save_stdin) == -1)
+	if (heredoc_loop(&hd, info) == -1)
 		return (-1);
-	close(fd[1]);
-	close(save_stdin);
-	return (fd[0]);
+	close(hd.fd[1]);
+	close(hd.save_stdin);
+	return (hd.fd[0]);
 }

@@ -38,13 +38,13 @@ char	*polish(char *value)
 	return (result);
 }
 
-char	*replace_str(char *old, t_envp *env)
+char	*replace_str(char *old, t_program_info *info)
 {
 	char	**tmp_file;
 	char	*final_output;
 
 	if (old[0] == '$' && old[1] != '\0')
-		tmp_file = expand_argv(old, env, 0);
+		tmp_file = expand_argv(old, info);
 	else
 	{
 		tmp_file = malloc(2 * sizeof(char *));

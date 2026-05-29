@@ -3,31 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/11 16:18:49 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/05/29 16:17:03 by hbani-at         ###   ########.fr       */
+/*   Created: 2026/05/30 01:59:32 by hbani-at          #+#    #+#             */
+/*   Updated: 2026/05/30 01:59:36 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef EXECUTION_H
+# define EXECUTION_H
 
 # include "parsing.h"
 # include <signal.h>
 
 extern volatile sig_atomic_t	g_sig;
-
-typedef struct s_program_info
-{
-	int							exit_status;
-	int							original_stdin;
-	int							original_stdout;
-	char						**envp;
-	char						**cmd_exec_dir;
-	t_commands					*my_commands;
-	t_envp						*env;
-}								t_program_info;
 
 typedef enum e_error
 {
@@ -37,7 +26,6 @@ typedef enum e_error
 	ERROR_INVALID_KILL = 3,
 	ERROR_MEMORY = 4,
 	INVALID_UNSET_ARG = 5
-
 }								t_error;
 
 int								execution(t_program_info *info);
@@ -86,16 +74,16 @@ int								builtin_pwd(void);
 int								builtin_env(t_program_info *info);
 int								builtin_exit(t_program_info *info, char **argv);
 int								is_valid_identifier(const char *s);
+void								exec_builtin_and_single_cmd(t_program_info *info, t_commands *my_commands);
 void							wait_for_all(t_program_info *info,
 									int last_pid);
-void							exec_builtin_and_single_cmd(t_program_info *info,
+int								isbuiltin(char *command);
+int								execute_builtin(t_program_info *info);
+
+void							child_process(t_program_info *info,
+									t_commands *current, int prev_read,
+									int pipe_fd[2]);
+
+void							pipeline_execution(t_program_info *info,
 									t_commands *my_commands);
-
-int	isbuiltin(char *command);
-int	execute_builtin(t_program_info *info);
-
-void	child_process(t_program_info *info, t_commands *current, int prev_read,
-		int pipe_fd[2]);
-
-void	pipeline_execution(t_program_info *info, t_commands *my_commands);
 #endif

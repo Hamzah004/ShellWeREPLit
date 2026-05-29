@@ -61,8 +61,8 @@ char	**insert_words(char **argv, int index, char **words)
 		ft_memcpy(new_argv, argv, sizeof(char *) * index);
 	ft_memcpy(new_argv + index, words, sizeof(char *) * new_size);
 	if (old_size - index - 1 > 0)
-		ft_memcpy(new_argv + index + new_size, argv + index + 1,
-			sizeof(char *) * (old_size - index - 1));
+		ft_memcpy(new_argv + index + new_size, argv + index + 1, sizeof(char *)
+			* (old_size - index - 1));
 	new_argv[old_size - 1 + new_size] = NULL;
 	free(argv[index]);
 	free(argv);

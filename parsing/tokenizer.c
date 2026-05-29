@@ -54,8 +54,8 @@ int	extract_tokin(t_tokens **my_tokens, char *command, int start, int end)
 
 int	handel_operators(t_tokens **my_tokens, char *command, int *i)
 {
-	if ((command[*i] == '<' && command[*i + 1] == '<')
-		|| (command[*i] == '>' && command[*i + 1] == '>'))
+	if ((command[*i] == '<' && command[*i + 1] == '<') || (command[*i] == '>'
+			&& command[*i + 1] == '>'))
 	{
 		if (!extract_tokin(my_tokens, command, *i, 2))
 			return (0);
