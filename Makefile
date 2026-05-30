@@ -13,7 +13,7 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -g3 -Wall -Werror -Wextra -I./include
+CFLAGS = -Wall -Werror -Wextra -I./include
 RM = rm -f
 
 # ----------------------------- output colors ------------------------------- #
