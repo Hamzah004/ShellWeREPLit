@@ -12,7 +12,6 @@
 
 #include "../include/execution.h"
 #include "../include/parsing.h"
-#include <signal.h>
 #include <unistd.h>
 
 void	add_free(char *after_exp, int fd)

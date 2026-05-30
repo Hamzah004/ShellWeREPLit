@@ -22,6 +22,8 @@ int	builtin_unset(t_program_info *info, char **argv)
 	while (*argv)
 	{
 		env_unset(&info->env, *argv);
+		if (ft_strcmp(*argv, "PATH") == 0)
+			get_and_update_path(info);
 		argv++;
 	}
 	return (0);

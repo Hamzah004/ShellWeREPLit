@@ -94,8 +94,15 @@ int	heredoc_loop(t_heredoc *hd, t_program_info *info)
 	while (1)
 	{
 		input = readline("> ");
-		if (g_sig == SIGINT || !input)
+		if (g_sig == SIGINT)
 			return (heredoc_clean(hd, input));
+		if (!input)
+		{
+			ft_putstr_fd("minishell: warning: heredoc delimited by EOF ",
+				2);
+			ft_putstr_fd(hd->delimiter, 2);
+			return (0);
+		}
 		if (ft_strcmp(input, hd->delimiter) == 0)
 			return (free(input), 0);
 		after_exp = heredoc_expansion(input, info, hd->quoted);
