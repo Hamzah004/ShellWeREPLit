@@ -26,6 +26,8 @@ void	free_all_and_exit(t_program_info *info, int status)
 		close(info->original_stdin);
 	if (info->original_stdout != -1)
 		close(info->original_stdout);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
 	rl_clear_history();
 	exit(status);
 }
