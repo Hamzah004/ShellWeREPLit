@@ -6,21 +6,11 @@
 /*   By: amufleh <amufleh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:43:25 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/05/08 17:41:57 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/06/04 23:47:34 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/execution.h"
-#include "include/parsing.h"
-#include <readline/chardefs.h>
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 int	init_program_info(t_program_info *info, char **env)
 {
@@ -72,10 +62,13 @@ static int	process_cmd(t_program_info *info, char *line)
 void	read_from_prompt(t_program_info *info)
 {
 	char	*line;
+	char	*prompt;
 
 	while (1)
 	{
-		line = readline("minishell$ ");
+		prompt = readline_prompt(info);
+		line = readline(prompt);
+		free(prompt);
 		if (g_sig == SIGINT)
 		{
 			info->exit_status = 130;
@@ -110,6 +103,7 @@ int	main(int argc, char **argv, char **env)
 		return (err);
 	}
 	init_program_info(&info, env);
+	print_banner();
 	read_from_prompt(&info);
 	free_env(info.env);
 	free_str_array(info.cmd_exec_dir);

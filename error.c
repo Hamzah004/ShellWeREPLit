@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "include/execution.h"
-#include "libft/libft.h"
 
 void	print_error(t_error error)
 {

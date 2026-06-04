@@ -11,10 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <readline/readline.h>
-#include <signal.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 static int	commands_count(t_commands *my_commands)
 {

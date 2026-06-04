@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <readline/readline.h>
-#include <signal.h>
 
 volatile sig_atomic_t	g_sig = 0;
 

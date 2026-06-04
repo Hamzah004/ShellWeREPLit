@@ -27,7 +27,6 @@ char	*get_env_value(char *name, t_envp *env)
 	return (ft_strdup(""));
 }
 
-// TODO: check this function and that it's safe
 char	*handle_env_value(char *name, t_envp *env)
 {
 	char	*value;

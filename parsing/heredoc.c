@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include "../include/parsing.h"
-#include <signal.h>
-#include <unistd.h>
 
 char	*heredoc_expansion(char *input, t_program_info *info, int quoted)
 {

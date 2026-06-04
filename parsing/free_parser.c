@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
-#include <unistd.h>
 
 char	**free_argv(char **argv)
 {

@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <limits.h>
-#include <readline/readline.h>
 
 // NOTE: this: acc * 10 + digit > ULLONG_MAX
 // is same as this: if (acc > (ULLONG_MAX - digit) / 10)

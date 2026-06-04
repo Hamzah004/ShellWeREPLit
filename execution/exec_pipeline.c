@@ -11,9 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <sys/wait.h>
 
-// NOTE: you either make a pipe if needed or you don't so you set the pipe as -1
 static void	make_pipe(t_commands *current, int pipe_fd[2])
 {
 	if (current->next)

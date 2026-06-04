@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_helper1.c                                      :+:      :+:    :+:   */
+/*   env_set.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/01 00:37:20 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/05/29 15:49:28 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/06/04 23:30:46 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <stdlib.h>
-#include <string.h>
 
 char	*env_find_value(t_envp *head, const char *key)
 {

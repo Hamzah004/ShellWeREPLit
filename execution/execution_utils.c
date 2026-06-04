@@ -11,10 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <readline/history.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 void	free_all_and_exit(t_program_info *info, int status)
 {

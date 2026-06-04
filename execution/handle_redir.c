@@ -11,12 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <errno.h>
-#include <fcntl.h>
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <stdio.h>
-#include <unistd.h>
 
 static int	apply_redir_in(char *file_name);
 static int	apply_redir_out_trunc(char *file_name);

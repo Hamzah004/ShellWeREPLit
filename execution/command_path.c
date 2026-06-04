@@ -1,19 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env1.c                                             :+:      :+:    :+:   */
+/*   command_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 21:34:01 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/05/29 16:18:33 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/06/04 23:30:44 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 
 static char	*search_in_path(t_program_info *info)
 {

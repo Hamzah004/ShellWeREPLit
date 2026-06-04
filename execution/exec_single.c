@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <sys/wait.h>
 
 static void	exec_external_cmd(t_program_info *info, t_commands *my_commands)
 {

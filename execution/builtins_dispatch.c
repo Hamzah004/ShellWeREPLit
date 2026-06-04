@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include "../libft/libft.h"
 
 int	isbuiltin(char *command)
 {

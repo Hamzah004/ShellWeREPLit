@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_helper2.c                                      :+:      :+:    :+:   */
+/*   env_array.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbani-at <hbani-at@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/01 00:37:20 by hbani-at          #+#    #+#             */
-/*   Updated: 2026/05/29 15:49:55 by hbani-at         ###   ########.fr       */
+/*   Updated: 2026/06/04 23:30:45 by hbani-at         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/execution.h"
-#include <stdlib.h>
-#include <string.h>
 
 int	env_count_nodes(t_envp *env)
 {

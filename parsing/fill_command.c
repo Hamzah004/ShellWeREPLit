@@ -93,30 +93,3 @@ t_commands	*fill_command_struct(char *input, t_program_info *info)
 	free_tokens(my_tokens);
 	return (my_commands);
 }
-
-// #include <readline/readline.h>
-// int	main(int argc, char **argv, char **env)
-// {
-// 	argc = 0;
-// 	argv = NULL;
-// 	t_commands	*my_commands;
-// 	//char	*input = "echo \'\'$HOME\'\'";
-// 	char	*line;
-// 	while ((line = readline("minishell$")) != NULL)
-// 	{
-// 		if (ft_strlen(line) > 0)
-// 		{
-
-// 			my_commands = fill_command_struct(line, env);
-// 			if (my_commands)
-// 			{
-// 				print_commands(my_commands);
-// 				free_commands(my_commands);
-// 			}
-// 		}
-// 		free(line);
-// 		line = (char *)NULL;
-// 	}
-// 	//printf("\n->%s", polish("       Abdallah        Almufleh     "));
-// 	return (0);
-// }

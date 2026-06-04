@@ -20,6 +20,8 @@
 # include <string.h>
 # include <unistd.h>
 
+/* ======================== TYPES ======================== */
+
 typedef enum e_token_type
 {
 	TOK_WORD,
@@ -88,7 +90,7 @@ typedef struct s_heredoc
 	int				save_stdin;
 }					t_heredoc;
 
-// TOKENIZER
+/* ====================== TOKENIZER ====================== */
 
 int					free_tokens(t_tokens *head);
 int					is_separator(char c);
@@ -105,13 +107,13 @@ t_tokens			*new_token(char *value, t_token_type type);
 int					syntax_validation(t_tokens *my_tokens);
 int					is_redirection(t_token_type type);
 
-// DEBUG
+/* ======================== DEBUG ======================== */
 
 void				print_tokens(t_tokens *head);
 void				print_redirections(t_redir *redir);
 void				print_commands(t_commands *cmd);
 
-// PARSER
+/* ======================== PARSER ======================= */
 
 t_redir				*new_redirection(t_token_type type, char *value);
 t_commands			*new_command(void);
@@ -128,7 +130,7 @@ void				free_redirections(t_redir *redir_list);
 void				*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 t_commands			*fill_command_struct(char *input, t_program_info *info);
 int					collect_heredocs(t_commands *cmds, t_program_info *info);
-// EXPANSION
+/* ====================== EXPANSION ====================== */
 
 char				**expand_argv(char *input, t_program_info *info);
 int					handle_expansion(t_commands *cmd, t_program_info *info,
@@ -156,11 +158,11 @@ char				*strjoin_free(char *old, char *new);
 char				**handle_unquoted_var(char *tmp, char **result);
 char				*handle_env_value(char *name, t_envp *env);
 
-// FREE
+/* ========================= FREE ======================== */
 
 char				**free_argv(char **argv);
 
-// HEREDOC
+/* ======================= HEREDOC ======================= */
 
 int					handel_herdoc(char *drlimiter, t_program_info *info,
 						int quoted);
