@@ -62,13 +62,13 @@ static int	process_cmd(t_program_info *info, char *line)
 void	read_from_prompt(t_program_info *info)
 {
 	char	*line;
-	char	*prompt;
+	// char	*prompt;
 
 	while (1)
 	{
-		prompt = readline_prompt(info);
-		line = readline(prompt);
-		free(prompt);
+		// prompt = readline_prompt(info);
+		line = readline("minishell$ ");
+		// free(prompt);
 		if (g_sig == SIGINT)
 		{
 			info->exit_status = 130;
