@@ -67,7 +67,7 @@ void	read_from_prompt(t_program_info *info)
 	while (1)
 	{
 		// prompt = readline_prompt(info);
-		line = readline("minishell$ ");
+		line = readline("ShellWeREPLit$ ");
 		// free(prompt);
 		if (g_sig == SIGINT)
 		{
